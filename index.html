@@ -7,7 +7,7 @@
     <style>
         body { 
             margin: 0; 
-            /* GitHub'daki çift uzantılı isme göre ayarlandı */
+            /* Senin yüklediğin o çift giff dosyası: arka-plan.gif.gif */
             background-image: url('arka-plan.gif.gif'); 
             background-size: cover;
             background-position: center;
@@ -42,9 +42,15 @@
         .btn-group { display: flex; gap: 10px; }
         .control-btn { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 11px; backdrop-filter: blur(5px); transition: 0.3s; }
 
+        /* Müzik Çalar Paneli Düzenlemesi */
         #musicPlayer { background: rgba(0, 0, 0, 0.75); padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 12px; width: 300px; border: 1px solid rgba(255,255,255,0.2); }
-        #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; text-align: center; flex-grow: 1; }
-        #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 35px; height: 35px; }
+        
+        /* O küçük kapak ikonunun stili */
+        #songImg { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; }
+        
+        #songLabel { font-size: 10px; color: #aaa; text-transform: uppercase; margin-bottom: 2px; }
+        #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; flex-grow: 1; }
+        #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 35px; height: 35px; flex-shrink: 0; }
 
         #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; }
 
@@ -58,29 +64,10 @@
 
     <div id="gallery">
         <script>
-            // Kapak ve resimler senin listendeki isimlere göre düzenlendi
-            const kapakResimleri = [
-                'kapak2.jpeg.png', 
-                'kapak3.jpeg.png',
-                'resim1.jpeg.jpeg',
-                'resim2.jpeg.jpeg',
-                'resim3.jpeg.jpeg',
-                'resim4.jpeg.jpeg',
-                'resim5.jpeg.jpeg',
-                'resim6.jpeg.jpeg',
-                'resim7.jpeg.jpeg',
-                'resim8.jpeg.jpeg',
-                'resim9.jpeg.jpeg',
-                'resim10.jpeg.jpeg',
-                'resim11.jpeg.jpeg',
-                'resim12.jpeg.jpeg',
-                'resim13.jpeg.jpeg',
-                'resim14.jpeg.jpeg'
-            ];
-
-            kapakResimleri.forEach((img, index) => {
-                document.write(`<img src="${img}" class="slide ${index === 0 ? 'active' : ''}">`);
-            });
+            // Ana Galeri (Sadece resimler, kapağı müzik çalar çekecek)
+            for(let i=1; i<=14; i++) {
+                document.write(`<img src="resim${i}.jpeg.jpeg" class="slide ${i===1?'active':''}">`);
+            }
         </script>
     </div>
 
@@ -89,8 +76,13 @@
             <button class="control-btn" onclick="changeBG()">🖼️ Manzara Değiştir</button>
             <button class="control-btn" id="snowToggle" onclick="toggleSnow()">❄️ Karı Kapat</button>
         </div>
+        
         <div id="musicPlayer">
-            <p id="songName">SONSUZ OL</p>
+            <img id="songImg" src="kapak2.jpeg.png">
+            <div id="songInfo" style="flex-grow: 1; text-align: left;">
+                <p id="songLabel">Şu an çalıyor:</p>
+                <p id="songName">SONSUZ OL</p>
+            </div>
             <button id="nextBtn" onclick="sonrakiSarki()">⏭</button>
         </div>
     </div>
@@ -102,10 +94,11 @@
     </audio>
 
     <script>
+        // Şarkı listesini senin o çift uzantılı dosya isimlerine göre güncelledim
         const sarkiListesi = [
-            { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3" },
-            { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3" },
-            { isim: "CAMBAZ", dosya: "müzik3.mp3.mp3" }
+            { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3", kapak: "kapak2.jpeg.png" },
+            { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3", kapak: "kapak3.jpeg.png" },
+            { isim: "CAMBAZ", dosya: "müzik3.mp3.mp3", kapak: "resim1.jpeg.jpeg" } // Cambaz'a ilk resmini kapak yaptım
         ];
 
         let sarkiIndex = 0;
@@ -114,12 +107,14 @@
         let snowInterval = null;
         const music = document.getElementById("bgMusic");
         const source = document.getElementById("musicSource");
+        const songNameDisplay = document.getElementById("songName");
+        const songImgDisplay = document.getElementById("songImg");
 
         function changeBG() {
             bgMode++;
             if(bgMode > 3) bgMode = 1;
             
-            // Arka planlar GitHub'daki ismine göre (gif.gif)
+            // Senin o çift giff uzantılı isimlerin
             if(bgMode === 1) {
                 document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
             } else if(bgMode === 2) {
@@ -148,7 +143,9 @@
         function sonrakiSarki() {
             sarkiIndex = (sarkiIndex + 1) % sarkiListesi.length;
             source.src = sarkiListesi[sarkiIndex].dosya;
-            document.getElementById("songName").innerText = sarkiListesi[sarkiIndex].isim;
+            songNameDisplay.innerText = sarkiListesi[sarkiIndex].isim;
+            // O küçük kapak resmini de güncelliyoruz
+            songImgDisplay.src = sarkiListesi[sarkiIndex].kapak;
             music.load();
             music.play();
         }

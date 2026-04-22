@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seni Seviyorum ❤️</title>
+    <title>Seni Seviyorum ZEYNEP ❤️</title>
     <style>
         body { margin: 0; background: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: sans-serif; }
         #text { font-size: 28px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 0 15px #ff3333; color: #ff4d4d; text-align: center; width: 90%; }
-        #gallery { position: relative; width: 85vw; height: 120vw; max-width: 320px; max-height: 450px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(255,255,255,0.2); background: #111; }
-        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
+        #gallery { position: relative; width: 85vw; height: 120vw; max-width: 320px; max-height: 450px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 40px rgba(255, 51, 85, 0.3); background: #111; border: 2px solid #333; }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease-in-out; }
         .active { opacity: 1; }
-        #startBtn { margin-top: 30px; padding: 15px 40px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 1000; -webkit-tap-highlight-color: transparent; }
+        #startBtn { margin-top: 30px; padding: 15px 40px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 1000; box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4); }
     </style>
 </head>
 <body>
@@ -18,26 +18,25 @@
     <div id="text">Seni Seviyorum ❤️</div>
 
     <div id="gallery">
-        <img src="resim1.jpeg" class="slide active" onerror="this.src='resim1.jpg'; this.onerror=function(){this.src='1.jpg'}">
-        <img src="resim2.jpeg" class="slide" onerror="this.src='resim2.jpg'; this.onerror=function(){this.src='2.jpg'}">
-        <img src="resim3.jpeg" class="slide" onerror="this.src='resim3.jpg'">
-        <img src="resim4.jpeg" class="slide" onerror="this.src='resim4.jpg'">
-        <img src="resim5.jpeg" class="slide" onerror="this.src='resim5.jpg'">
-        <img src="resim6.jpeg" class="slide" onerror="this.src='resim6.jpg'">
-        <img src="resim7.jpeg" class="slide" onerror="this.src='resim7.jpg'">
-        <img src="resim8.jpeg" class="slide" onerror="this.src='resim8.jpg'">
-        <img src="resim9.jpeg" class="slide" onerror="this.src='resim9.jpg'">
-        <img src="resim10.jpeg" class="slide" onerror="this.src='resim10.jpg'">
-        <img src="resim11.jpeg" class="slide" onerror="this.src='resim11.jpg'">
-        <img src="resim12.jpeg" class="slide" onerror="this.src='resim12.jpg'">
-        <img src="resim13.jpeg" class="slide" onerror="this.src='resim13.jpg'">
-        <img src="resim14.jpeg" class="slide" onerror="this.src='resim14.jpg'">
+        <img src="resim1.jpeg.jpeg" class="slide active">
+        <img src="resim2.jpeg.jpeg" class="slide">
+        <img src="resim3.jpeg.jpeg" class="slide">
+        <img src="resim4.jpeg.jpeg" class="slide">
+        <img src="resim5.jpeg.jpeg" class="slide">
+        <img src="resim6.jpeg.jpeg" class="slide">
+        <img src="resim7.jpeg.jpeg" class="slide">
+        <img src="resim8.jpeg.jpeg" class="slide">
+        <img src="resim9.jpeg.jpeg" class="slide">
+        <img src="resim10.jpeg.jpeg" class="slide">
+        <img src="resim11.jpeg.jpeg" class="slide">
+        <img src="resim12.jpeg.jpeg" class="slide">
+        <img src="resim13.jpeg.jpeg" class="slide">
+        <img src="resim14.jpeg.jpeg" class="slide">
     </div>
 
     <button id="startBtn" onclick="baslat()">Sürprizi Başlat ✨</button>
 
     <audio id="bgMusic" loop>
-        <source src="müzik.mp3" type="audio/mpeg">
         <source src="müzik.mp3.mp3" type="audio/mpeg">
     </audio>
 
@@ -47,11 +46,11 @@
 
         function baslat() {
             const music = document.getElementById("bgMusic");
-            // Mobilde müzik çalması için kullanıcı etkileşimi şart
-            music.play().catch(e => console.log("Oynatma hatası:", e));
+            music.play().catch(e => console.log("Müzik başlatılamadı, etkileşim bekleniyor."));
             
             document.getElementById("startBtn").style.display = "none";
             
+            // Slayt geçişi (her 3 saniyede bir)
             setInterval(() => {
                 slides[current].classList.remove('active');
                 current = (current + 1) % slides.length;

@@ -7,8 +7,8 @@
     <style>
         body { 
             margin: 0; 
-            /* GitHub'daki tam dosya ismine göre güncellendi */
-            background-image: url('arka-plan.gif.gif.gif'); 
+            /* GitHub'daki çift uzantılı isme göre ayarlandı */
+            background-image: url('arka-plan.gif.gif'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -23,17 +23,10 @@
             overflow: hidden; 
             font-family: 'Segoe UI', sans-serif; 
             position: relative; 
-            transition: background 0.8s ease;
+            transition: background 0.8s ease-in-out;
         }
 
-        #text { 
-            font-size: 26px; 
-            font-weight: bold; 
-            margin-bottom: 20px; 
-            z-index: 10; 
-            animation: pulseColor 4s ease-in-out infinite;
-        }
-
+        #text { font-size: 26px; font-weight: bold; margin-bottom: 20px; z-index: 10; animation: pulseColor 4s ease-in-out infinite; }
         @keyframes pulseColor {
             0% { color: #ffffff; text-shadow: 0 0 5px #ffffff; opacity: 0.3; } 
             33% { color: #ff80ab; text-shadow: 0 0 20px #ff80ab; opacity: 1; } 
@@ -47,26 +40,16 @@
 
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
         .btn-group { display: flex; gap: 10px; }
-
         .control-btn { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 11px; backdrop-filter: blur(5px); transition: 0.3s; }
-        .control-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
-        #musicPlayer { background: rgba(0, 0, 0, 0.75); padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 12px; width: 300px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
-        #songInfo { flex-grow: 1; }
-        #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; text-align: center; }
-        #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; }
+        #musicPlayer { background: rgba(0, 0, 0, 0.75); padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 12px; width: 300px; border: 1px solid rgba(255,255,255,0.2); }
+        #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; text-align: center; flex-grow: 1; }
+        #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 35px; height: 35px; }
 
-        #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; box-shadow: 0 8px 25px rgba(255,0,85,0.5); }
+        #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; }
 
-        .snowflake { position: fixed; top: -10px; color: white; font-size: 1em; z-index: 5; pointer-events: none; animation: fall linear infinite; }
+        .snowflake { position: fixed; top: -10px; color: white; z-index: 5; pointer-events: none; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(105vh); } }
-
-        .butterfly { position: fixed; width: 12px; height: 12px; z-index: 5; pointer-events: none; opacity: 0.8; animation: fly linear infinite; }
-        .butterfly::before, .butterfly::after { content: ''; position: absolute; top: 0; width: 8px; height: 12px; background-color: #ffcc00; border-radius: 3px; animation: flap 0.15s ease-in-out infinite alternate; }
-        .butterfly::before { left: 0; transform-origin: right bottom; }
-        .butterfly::after { right: 0; transform-origin: left bottom; }
-        @keyframes fly { 0% { transform: translate(-10vw, 20vh); } 100% { transform: translate(110vw, -10vh); } }
-        @keyframes flap { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(75deg); } }
     </style>
 </head>
 <body>
@@ -75,10 +58,29 @@
 
     <div id="gallery">
         <script>
-            // Resimlerin resim1.jpeg.jpeg formatında olduğunu teyit ettik
-            for(let i=1; i<=14; i++) {
-                document.write(`<img src="resim${i}.jpeg.jpeg" class="slide ${i===1?'active':''}">`);
-            }
+            // Kapak ve resimler senin listendeki isimlere göre düzenlendi
+            const kapakResimleri = [
+                'kapak2.jpeg.png', 
+                'kapak3.jpeg.png',
+                'resim1.jpeg.jpeg',
+                'resim2.jpeg.jpeg',
+                'resim3.jpeg.jpeg',
+                'resim4.jpeg.jpeg',
+                'resim5.jpeg.jpeg',
+                'resim6.jpeg.jpeg',
+                'resim7.jpeg.jpeg',
+                'resim8.jpeg.jpeg',
+                'resim9.jpeg.jpeg',
+                'resim10.jpeg.jpeg',
+                'resim11.jpeg.jpeg',
+                'resim12.jpeg.jpeg',
+                'resim13.jpeg.jpeg',
+                'resim14.jpeg.jpeg'
+            ];
+
+            kapakResimleri.forEach((img, index) => {
+                document.write(`<img src="${img}" class="slide ${index === 0 ? 'active' : ''}">`);
+            });
         </script>
     </div>
 
@@ -87,11 +89,8 @@
             <button class="control-btn" onclick="changeBG()">🖼️ Manzara Değiştir</button>
             <button class="control-btn" id="snowToggle" onclick="toggleSnow()">❄️ Karı Kapat</button>
         </div>
-        
         <div id="musicPlayer">
-            <div id="songInfo">
-                <p id="songName">SONSUZ OL</p>
-            </div>
+            <p id="songName">SONSUZ OL</p>
             <button id="nextBtn" onclick="sonrakiSarki()">⏭</button>
         </div>
     </div>
@@ -112,20 +111,19 @@
         let sarkiIndex = 0;
         let bgMode = 1;
         let snowActive = true;
-        let snowInterval = null; // Başta boş
+        let snowInterval = null;
         const music = document.getElementById("bgMusic");
         const source = document.getElementById("musicSource");
-        const songNameDisplay = document.getElementById("songName");
 
         function changeBG() {
             bgMode++;
             if(bgMode > 3) bgMode = 1;
             
-            // Üçlü .gif uzantılarına göre ayarlandı
+            // Arka planlar GitHub'daki ismine göre (gif.gif)
             if(bgMode === 1) {
-                document.body.style.backgroundImage = "url('arka-plan.gif.gif.gif')";
+                document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
             } else if(bgMode === 2) {
-                document.body.style.backgroundImage = "url('arka-plan2.gif.gif.gif')";
+                document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
             } else {
                 document.body.style.backgroundImage = "none";
                 document.body.style.backgroundColor = "black";
@@ -135,14 +133,14 @@
         function toggleSnow() {
             const btn = document.getElementById("snowToggle");
             if(snowActive) {
-                clearInterval(snowInterval); 
+                clearInterval(snowInterval);
                 snowInterval = null;
                 btn.innerText = "❄️ Karı Aç";
                 snowActive = false;
                 document.querySelectorAll('.snowflake').forEach(s => s.remove());
             } else {
                 snowActive = true;
-                snowInterval = setInterval(createSnow, 150); 
+                snowInterval = setInterval(createSnow, 150);
                 btn.innerText = "❄️ Karı Kapat";
             }
         }
@@ -150,7 +148,7 @@
         function sonrakiSarki() {
             sarkiIndex = (sarkiIndex + 1) % sarkiListesi.length;
             source.src = sarkiListesi[sarkiIndex].dosya;
-            songNameDisplay.innerText = sarkiListesi[sarkiIndex].isim;
+            document.getElementById("songName").innerText = sarkiListesi[sarkiIndex].isim;
             music.load();
             music.play();
         }
@@ -162,32 +160,15 @@
             snow.className = 'snowflake';
             snow.style.left = Math.random() * 100 + 'vw';
             snow.style.animationDuration = Math.random() * 3 + 2 + 's';
-            snow.style.opacity = Math.random();
             document.body.appendChild(snow);
             setTimeout(() => snow.remove(), 5000);
         }
 
-        function createButterfly() {
-            const b = document.createElement('div');
-            b.className = 'butterfly';
-            b.style.left = Math.random() * 100 + 'vw';
-            b.style.top = Math.random() * 100 + 'vh';
-            b.style.animationDuration = Math.random() * 5 + 7 + 's';
-            document.body.appendChild(b);
-            setTimeout(() => b.remove(), 12000);
-        }
-
         function baslat() {
-            music.play().catch(() => console.log("Müzik etkileşim bekliyor"));
+            music.play().catch(() => {});
             document.getElementById("startBtn").style.display = "none";
             document.getElementById("controls").style.display = "flex";
-            
-            // Kar yağışını başlat ve değişkene ata
-            if(snowActive && !snowInterval) {
-                snowInterval = setInterval(createSnow, 150);
-            }
-            
-            setInterval(createButterfly, 800);
+            if(snowActive && !snowInterval) snowInterval = setInterval(createSnow, 150);
             
             let current = 0;
             const slides = document.querySelectorAll('.slide');

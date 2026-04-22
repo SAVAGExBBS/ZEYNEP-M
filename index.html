@@ -3,18 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seni Seviyorum ZEYNEP ❤️</title>
+    <title>Seni Seviyorum ZEYNEP ❤️ (Piksel Sürpriz)</title>
     <style>
-        body { margin: 0; background: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; position: relative; }
-        #text { font-size: 24px; font-weight: bold; margin-bottom: 15px; text-shadow: 0 0 15px #ff3333; color: #ff4d4d; z-index: 10; }
+        /* Genel Arka Plan - Piksel Çiftlik Manzarası */
+        body { 
+            margin: 0; 
+            /* Buraya senin bulduğun hareketli piksel arka planın linkini koyacağız */
+            /* Şimdilik örnek bir piksel çiftlik GIF'i koyuyorum, sen değiştirebilirsin */
+            background-image: url('https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Y5amdyMHhzMXZ6NW4yNmhxdmh0NXN6OHlzNnM4eml2eWFidTNmaSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSj0d3V3t9r9O8/giphy.gif');
+            background-size: cover; /* Ekranı tam kaplasın */
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            position: relative; 
+        }
+
+        #text { 
+            font-size: 24px; 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            text-shadow: 0 0 15px #ff3333; 
+            color: #ff4d4d; 
+            z-index: 10; 
+        }
         
         /* Fotoğraf Galerisi */
-        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(255,255,255,0.1); background: #111; z-index: 10; border: 2px solid #222; }
+        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(0,0,0,0.5); background: rgba(0,0,0,0.3); z-index: 10; border: 4px solid rgba(255,255,255,0.2); }
         .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
         .active { opacity: 1; }
 
-        /* Müzik Çalar Paneli */
-        #musicPlayer { margin-top: 20px; background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 20px; display: none; align-items: center; gap: 15px; width: 300px; z-index: 20; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        /* Müzik Çalar Paneli (Yarı Saydam) */
+        #musicPlayer { margin-top: 20px; background: rgba(0, 0, 0, 0.5); padding: 15px; border-radius: 20px; display: none; align-items: center; gap: 15px; width: 300px; z-index: 20; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); }
         #songImg { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
         #songInfo { flex-grow: 1; }
         #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; }
@@ -23,13 +49,48 @@
 
         #startBtn { margin-top: 30px; padding: 15px 45px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; box-shadow: 0 5px 20px rgba(255,0,85,0.4); }
 
-        .snowflake { position: fixed; top: -10px; color: white; font-size: 1em; user-select: none; z-index: 5; pointer-events: none; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(105vh); } }
+        /* Uçuşan Kelebek Animasyonu */
+        .butterfly {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background-color: transparent;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: fly linear infinite;
+        }
+
+        .butterfly::before,
+        .butterfly::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 10px;
+            height: 15px;
+            background-color: #ffcc00; /* Piksel kelebek rengi */
+            border-radius: 5px;
+            animation: flap 0.1s ease-in-out infinite alternate;
+        }
+
+        .butterfly::before { left: 0; transform-origin: right bottom; }
+        .butterfly::after { right: 0; transform-origin: left bottom; }
+
+        @keyframes fly {
+            0% { transform: translate(-10vw, 10vh); }
+            100% { transform: translate(110vw, -10vh); }
+        }
+
+        @keyframes flap {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(70deg); }
+        }
+
     </style>
 </head>
 <body>
 
-    <div id="text">Seni Seviyorum ZEYNEP ❤️</div>
+    <div id="text">Seni Seviyorum ❤️</div>
 
     <div id="gallery">
         <script>
@@ -55,11 +116,11 @@
     </audio>
 
     <script>
-        // Şarkı ve Kapak Bilgileri
+        // Şarkı ve Kapak Bilgileri (Aynı Kalıyor)
         const sarkiListesi = [
-            { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3", kapak: "kapak1.jpeg.jpeg" },
-            { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg.jpeg" },
-            { isim: "CAMBAZ", dosya: "müzik3.mp3.mp3", kapak: "kapak3.jpeg.jpeg" }
+            { isim: "Favori Şarkımız 1", dosya: "müzik.mp3.mp3", kapak: "kapak1.jpeg.jpeg" },
+            { isim: "Sevdiğin O Parça", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg.jpeg" },
+            { isim: "Bizim Şarkımız", dosya: "müzik3.mp3.mp3", kapak: "kapak3.jpeg.jpeg" }
         ];
 
         let sarkiIndex = 0;
@@ -83,22 +144,43 @@
 
         music.onended = sonrakiSarki;
 
+        // Kar Tanesi Fonksiyonu (Eski Kar Yağışı)
         function createSnowflake() {
             const snowflake = document.createElement('div');
             snowflake.innerHTML = '❄';
-            snowflake.classList.add('snowflake');
+            snowflake.style.position = 'fixed';
+            snowflake.style.top = '-10px';
+            snowflake.style.color = 'white';
+            snowflake.style.userSelect = 'none';
+            snowflake.style.zIndex = '5';
+            snowflake.style.pointerEvents = 'none';
             snowflake.style.left = Math.random() * 100 + 'vw';
             snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
             snowflake.style.opacity = Math.random();
+            snowflake.style.animation = 'fall linear infinite';
             document.body.appendChild(snowflake);
             setTimeout(() => { snowflake.remove(); }, 5000);
+        }
+
+        // Uçuşan Kelebek Fonksiyonu
+        function createButterfly() {
+            const butterfly = document.createElement('div');
+            butterfly.classList.add('butterfly');
+            butterfly.style.left = Math.random() * 100 + 'vw';
+            butterfly.style.top = Math.random() * 100 + 'vh';
+            butterfly.style.animationDuration = Math.random() * 5 + 5 + 's'; // 5-10 saniye uçuş
+            document.body.appendChild(butterfly);
+            setTimeout(() => { butterfly.remove(); }, 10000);
         }
 
         function baslat() {
             music.play();
             document.getElementById("startBtn").style.display = "none";
             document.getElementById("musicPlayer").style.display = "flex";
+            
+            // Hem Kar hem Kelebek Yağdır
             setInterval(createSnowflake, 100);
+            setInterval(createButterfly, 500); // 0.5 saniyede bir kelebek
             
             let current = 0;
             const slides = document.querySelectorAll('.slide');

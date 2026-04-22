@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seni Seviyorum ZEYNEP ❤️</title>
+    <title>Seni Seviyorum Zeynep ❤️</title>
     <style>
         body { 
             margin: 0; 
-            background-image: url('arka-plan.gif.gif'); 
+            /* GitHub'daki tam dosya ismine göre güncellendi */
+            background-image: url('arka-plan.gif.gif.gif'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -22,10 +23,9 @@
             overflow: hidden; 
             font-family: 'Segoe UI', sans-serif; 
             position: relative; 
-            transition: background 0.5s ease;
+            transition: background 0.8s ease;
         }
 
-        /* Kalp atışı gibi parlayan yazı */
         #text { 
             font-size: 26px; 
             font-weight: bold; 
@@ -45,21 +45,19 @@
         .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
         .active { opacity: 1; }
 
-        /* Kontrol Paneli */
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
         .btn-group { display: flex; gap: 10px; }
 
         .control-btn { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 11px; backdrop-filter: blur(5px); transition: 0.3s; }
         .control-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
-        #musicPlayer { background: rgba(0, 0, 0, 0.75); padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 12px; width: 280px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        #musicPlayer { background: rgba(0, 0, 0, 0.75); padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 12px; width: 300px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
         #songInfo { flex-grow: 1; }
-        #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; }
+        #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; text-align: center; }
         #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; }
 
         #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; box-shadow: 0 8px 25px rgba(255,0,85,0.5); }
 
-        /* Animasyon Elemanları */
         .snowflake { position: fixed; top: -10px; color: white; font-size: 1em; z-index: 5; pointer-events: none; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(105vh); } }
 
@@ -77,7 +75,8 @@
 
     <div id="gallery">
         <script>
-            for(let i=1; i<=22; i++) {
+            // Resimlerin resim1.jpeg.jpeg formatında olduğunu teyit ettik
+            for(let i=1; i<=14; i++) {
                 document.write(`<img src="resim${i}.jpeg.jpeg" class="slide ${i===1?'active':''}">`);
             }
         </script>
@@ -90,7 +89,6 @@
         </div>
         
         <div id="musicPlayer">
-            <img src="https://cdn-icons-png.flaticon.com/512/461/461238.png" width="35">
             <div id="songInfo">
                 <p id="songName">SONSUZ OL</p>
             </div>
@@ -114,7 +112,7 @@
         let sarkiIndex = 0;
         let bgMode = 1;
         let snowActive = true;
-        let snowInterval;
+        let snowInterval = null; // Başta boş
         const music = document.getElementById("bgMusic");
         const source = document.getElementById("musicSource");
         const songNameDisplay = document.getElementById("songName");
@@ -122,21 +120,30 @@
         function changeBG() {
             bgMode++;
             if(bgMode > 3) bgMode = 1;
-            if(bgMode === 1) document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
-            else if(bgMode === 2) document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
-            else { document.body.style.backgroundImage = "none"; document.body.style.backgroundColor = "black"; }
+            
+            // Üçlü .gif uzantılarına göre ayarlandı
+            if(bgMode === 1) {
+                document.body.style.backgroundImage = "url('arka-plan.gif.gif.gif')";
+            } else if(bgMode === 2) {
+                document.body.style.backgroundImage = "url('arka-plan2.gif.gif.gif')";
+            } else {
+                document.body.style.backgroundImage = "none";
+                document.body.style.backgroundColor = "black";
+            }
         }
 
         function toggleSnow() {
             const btn = document.getElementById("snowToggle");
             if(snowActive) {
-                clearInterval(snowInterval);
+                clearInterval(snowInterval); 
+                snowInterval = null;
                 btn.innerText = "❄️ Karı Aç";
                 snowActive = false;
+                document.querySelectorAll('.snowflake').forEach(s => s.remove());
             } else {
-                snowInterval = setInterval(createSnow, 150);
-                btn.innerText = "❄️ Karı Kapat";
                 snowActive = true;
+                snowInterval = setInterval(createSnow, 150); 
+                btn.innerText = "❄️ Karı Kapat";
             }
         }
 
@@ -149,11 +156,13 @@
         }
 
         function createSnow() {
+            if(!snowActive) return;
             const snow = document.createElement('div');
             snow.innerHTML = '❄';
             snow.className = 'snowflake';
             snow.style.left = Math.random() * 100 + 'vw';
             snow.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snow.style.opacity = Math.random();
             document.body.appendChild(snow);
             setTimeout(() => snow.remove(), 5000);
         }
@@ -169,10 +178,15 @@
         }
 
         function baslat() {
-            music.play();
+            music.play().catch(() => console.log("Müzik etkileşim bekliyor"));
             document.getElementById("startBtn").style.display = "none";
             document.getElementById("controls").style.display = "flex";
-            snowInterval = setInterval(createSnow, 150);
+            
+            // Kar yağışını başlat ve değişkene ata
+            if(snowActive && !snowInterval) {
+                snowInterval = setInterval(createSnow, 150);
+            }
+            
             setInterval(createButterfly, 800);
             
             let current = 0;

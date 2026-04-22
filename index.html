@@ -7,7 +7,6 @@
     <style>
         body { 
             margin: 0; 
-            /* Senin yüklediğin o çift giff dosyası: arka-plan.gif.gif */
             background-image: url('arka-plan.gif.gif'); 
             background-size: cover;
             background-position: center;
@@ -23,7 +22,6 @@
             overflow: hidden; 
             font-family: 'Segoe UI', sans-serif; 
             position: relative; 
-            transition: background 0.8s ease-in-out;
         }
 
         #text { font-size: 26px; font-weight: bold; margin-bottom: 20px; z-index: 10; animation: pulseColor 4s ease-in-out infinite; }
@@ -39,18 +37,16 @@
         .active { opacity: 1; }
 
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
-        .btn-group { display: flex; gap: 10px; }
-        .control-btn { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 11px; backdrop-filter: blur(5px); transition: 0.3s; }
-
-        /* Müzik Çalar Paneli Düzenlemesi */
-        #musicPlayer { background: rgba(0, 0, 0, 0.75); padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 12px; width: 300px; border: 1px solid rgba(255,255,255,0.2); }
         
-        /* O küçük kapak ikonunun stili */
-        #songImg { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; }
-        
-        #songLabel { font-size: 10px; color: #aaa; text-transform: uppercase; margin-bottom: 2px; }
-        #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; flex-grow: 1; }
+        #musicPlayer { background: rgba(0, 0, 0, 0.75); padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 12px; width: 310px; border: 1px solid rgba(255,255,255,0.2); }
+        #songImg { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
+        #songInfo { flex-grow: 1; text-align: left; }
+        #songLabel { font-size: 9px; color: #aaa; text-transform: uppercase; margin: 0; }
+        #songName { font-size: 11px; font-weight: bold; color: #fff; margin: 0; }
         #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 35px; height: 35px; flex-shrink: 0; }
+
+        .btn-group { display: flex; gap: 10px; }
+        .control-btn { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 6px 12px; border-radius: 15px; cursor: pointer; font-size: 11px; backdrop-filter: blur(5px); }
 
         #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; }
 
@@ -64,7 +60,6 @@
 
     <div id="gallery">
         <script>
-            // Ana Galeri (Sadece resimler, kapağı müzik çalar çekecek)
             for(let i=1; i<=14; i++) {
                 document.write(`<img src="resim${i}.jpeg.jpeg" class="slide ${i===1?'active':''}">`);
             }
@@ -78,8 +73,8 @@
         </div>
         
         <div id="musicPlayer">
-            <img id="songImg" src="kapak2.jpeg.png">
-            <div id="songInfo" style="flex-grow: 1; text-align: left;">
+            <img id="songImg" src="kapak1.jpeg">
+            <div id="songInfo">
                 <p id="songLabel">Şu an çalıyor:</p>
                 <p id="songName">SONSUZ OL</p>
             </div>
@@ -94,11 +89,14 @@
     </audio>
 
     <script>
-        // Şarkı listesini senin o çift uzantılı dosya isimlerine göre güncelledim
         const sarkiListesi = [
-            { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3", kapak: "kapak2.jpeg.png" },
-            { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3", kapak: "kapak3.jpeg.png" },
-            { isim: "CAMBAZ", dosya: "müzik3.mp3.mp3", kapak: "resim1.jpeg.jpeg" } // Cambaz'a ilk resmini kapak yaptım
+            { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3", kapak: "kapak1.jpeg" },
+            { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg" },
+            { isim: "CAMBAZ", dosya: "müzik3.mp3.mp3", kapak: "kapak3.jpeg" },
+            { isim: "AŞK DURDUKÇA", dosya: "müzik4.mp3.mp3", kapak: "kapak4.jpeg" },
+            { isim: "HARD CORE MELANKOLİ", dosya: "müzik5.mp3.mp3", kapak: "kapak5.jpeg" },
+            { isim: "TUTAMIYORUM ZAMANI", dosya: "müzik6.mp3.mp3", kapak: "kapak6.jpeg" },
+            { isim: "ARNAVUT KALDIRIMI", dosya: "müzik7.mp3.mp3", kapak: "kapak7.jpeg" }
         ];
 
         let sarkiIndex = 0;
@@ -112,30 +110,19 @@
 
         function changeBG() {
             bgMode++;
-            if(bgMode > 3) bgMode = 1;
-            
-            // Senin o çift giff uzantılı isimlerin
-            if(bgMode === 1) {
-                document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
-            } else if(bgMode === 2) {
-                document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
-            } else {
-                document.body.style.backgroundImage = "none";
-                document.body.style.backgroundColor = "black";
-            }
+            if(bgMode > 2) bgMode = 1;
+            if(bgMode === 1) document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
+            if(bgMode === 2) document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
         }
 
         function toggleSnow() {
             const btn = document.getElementById("snowToggle");
             if(snowActive) {
-                clearInterval(snowInterval);
-                snowInterval = null;
-                btn.innerText = "❄️ Karı Aç";
-                snowActive = false;
+                clearInterval(snowInterval); snowInterval = null;
+                btn.innerText = "❄️ Karı Aç"; snowActive = false;
                 document.querySelectorAll('.snowflake').forEach(s => s.remove());
             } else {
-                snowActive = true;
-                snowInterval = setInterval(createSnow, 150);
+                snowActive = true; snowInterval = setInterval(createSnow, 150);
                 btn.innerText = "❄️ Karı Kapat";
             }
         }
@@ -144,7 +131,6 @@
             sarkiIndex = (sarkiIndex + 1) % sarkiListesi.length;
             source.src = sarkiListesi[sarkiIndex].dosya;
             songNameDisplay.innerText = sarkiListesi[sarkiIndex].isim;
-            // O küçük kapak resmini de güncelliyoruz
             songImgDisplay.src = sarkiListesi[sarkiIndex].kapak;
             music.load();
             music.play();

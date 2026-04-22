@@ -3,40 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seni Seviyorum ❤️</title>
+    <title>Seni Seviyorum ZEYNEP ❤️</title>
     <style>
-        body { margin: 0; background: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: sans-serif; }
-        #text { font-size: 28px; font-weight: bold; margin-bottom: 20px; text-shadow: 0 0 15px #ff3333; color: #ff4d4d; text-align: center; width: 90%; }
-        #gallery { position: relative; width: 85vw; height: 120vw; max-width: 320px; max-height: 450px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 40px rgba(255, 51, 85, 0.3); background: #111; }
-        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease-in-out; }
+        body { margin: 0; background: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; position: relative; }
+        #text { font-size: 24px; font-weight: bold; margin-bottom: 15px; text-shadow: 0 0 15px #ff3333; color: #ff4d4d; z-index: 10; }
+        
+        /* Fotoğraf Galerisi */
+        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(255,255,255,0.1); background: #111; z-index: 10; border: 2px solid #222; }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
         .active { opacity: 1; }
-        #startBtn { margin-top: 30px; padding: 15px 40px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 1000; }
+
+        /* Müzik Çalar Paneli */
+        #musicPlayer { margin-top: 20px; background: rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 20px; display: none; align-items: center; gap: 15px; width: 300px; z-index: 20; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        #songImg { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
+        #songInfo { flex-grow: 1; }
+        #songName { font-size: 14px; font-weight: bold; color: #fff; margin: 0; }
+        #nextBtn { background: #ff0055; border: none; color: white; padding: 10px; border-radius: 50%; cursor: pointer; font-size: 18px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        #nextBtn:hover { transform: scale(1.1); background: #ff3377; }
+
+        #startBtn { margin-top: 30px; padding: 15px 45px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; box-shadow: 0 5px 20px rgba(255,0,85,0.4); }
+
+        .snowflake { position: fixed; top: -10px; color: white; font-size: 1em; user-select: none; z-index: 5; pointer-events: none; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(105vh); } }
     </style>
 </head>
 <body>
+
     <div id="text">Seni Seviyorum ZEYNEP ❤️</div>
-    <div id="gallery" id="slidesContainer"></div>
+
+    <div id="gallery">
+        <script>
+            const gal = document.getElementById('gallery');
+            for(let i=1; i<=22; i++) {
+                document.write(`<img src="resim${i}.jpeg.jpeg" class="slide ${i===1?'active':''}">`);
+            }
+        </script>
+    </div>
+
+    <div id="musicPlayer">
+        <img id="songImg" src="kapak1.jpeg.jpeg" onerror="this.src='https://cdn-icons-png.flaticon.com/512/461/461238.png'">
+        <div id="songInfo">
+            <p id="songName">Şarkı 1</p>
+        </div>
+        <button id="nextBtn" onclick="sonrakiSarki()">⏭</button>
+    </div>
+
     <button id="startBtn" onclick="baslat()">Sürprizi Başlat ✨</button>
-    <audio id="bgMusic" loop><source src="müzik.mp3" type="audio/mpeg"><source src="müzik.mp3.mp3" type="audio/mpeg"></audio>
+
+    <audio id="bgMusic">
+        <source id="musicSource" src="müzik.mp3.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        const container = document.getElementById('gallery');
-        // Hem tek hem çift uzantıyı otomatik deniyoruz
-        for(let i=1; i<=14; i++) {
-            let img = document.createElement('img');
-            img.src = `resim${i}.jpeg`; 
-            img.className = 'slide';
-            if(i === 1) img.classList.add('active');
-            // Hata verirse çift uzantıyı dene
-            img.onerror = function() { this.src = `resim${i}.jpeg.jpeg`; };
-            container.appendChild(img);
+        // Şarkı ve Kapak Bilgileri
+        const sarkiListesi = [
+            { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3", kapak: "kapak1.jpeg.jpeg" },
+            { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg.jpeg" },
+            { isim: "CAMBAZ", dosya: "müzik3.mp3.mp3", kapak: "kapak3.jpeg.jpeg" }
+        ];
+
+        let sarkiIndex = 0;
+        const music = document.getElementById("bgMusic");
+        const source = document.getElementById("musicSource");
+        const songNameDisplay = document.getElementById("songName");
+        const songImgDisplay = document.getElementById("songImg");
+
+        function sonrakiSarki() {
+            sarkiIndex = (sarkiIndex + 1) % sarkiListesi.length;
+            guncelleSarki();
         }
 
-        let current = 0;
+        function guncelleSarki() {
+            source.src = sarkiListesi[sarkiIndex].dosya;
+            songNameDisplay.innerText = sarkiListesi[sarkiIndex].isim;
+            songImgDisplay.src = sarkiListesi[sarkiIndex].kapak;
+            music.load();
+            music.play();
+        }
+
+        music.onended = sonrakiSarki;
+
+        function createSnowflake() {
+            const snowflake = document.createElement('div');
+            snowflake.innerHTML = '❄';
+            snowflake.classList.add('snowflake');
+            snowflake.style.left = Math.random() * 100 + 'vw';
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + 's';
+            snowflake.style.opacity = Math.random();
+            document.body.appendChild(snowflake);
+            setTimeout(() => { snowflake.remove(); }, 5000);
+        }
+
         function baslat() {
-            const music = document.getElementById("bgMusic");
-            music.play().catch(e => console.log("Müzik hatası"));
+            music.play();
             document.getElementById("startBtn").style.display = "none";
+            document.getElementById("musicPlayer").style.display = "flex";
+            setInterval(createSnowflake, 100);
+            
+            let current = 0;
             const slides = document.querySelectorAll('.slide');
             setInterval(() => {
                 slides[current].classList.remove('active');

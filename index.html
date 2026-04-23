@@ -37,7 +37,7 @@
 
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
         #musicPlayer { background: rgba(0, 0, 0, 0.75); padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 12px; width: 310px; border: 1px solid rgba(255,255,255,0.2); }
-        #songImg { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
+        #songImg { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; background: #222; }
         #songInfo { flex-grow: 1; text-align: left; }
         #songName { font-size: 11px; font-weight: bold; color: #fff; margin: 0; }
         #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 35px; height: 35px; }
@@ -68,7 +68,7 @@
         </div>
         
         <div id="musicPlayer">
-            <img id="songImg" src="kapak2.jpeg.png">
+            <img id="songImg" src="">
             <div id="songInfo">
                 <p style="font-size: 9px; color: #aaa; margin: 0;">ŞU AN ÇALIYOR:</p>
                 <p id="songName">SONSUZ OL</p>
@@ -80,20 +80,20 @@
     <button id="startBtn" onclick="baslat()">Sürprizi Başlat ✨</button>
 
     <audio id="bgMusic">
-        <source id="musicSource" src="müzik2.mp3.mp3" type="audio/mpeg">
+        <source id="musicSource" src="müzik.mp3.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // ZEYNEPİM en sona (8. şarkı) alındı, liste klasöründeki isimlere göre dizildi
+        // Senin listene göre tam eşleşme
         const sarkiListesi = [
-            { isim: "SONSUZ OL", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg.png" },
-            { isim: "KAR BEYAZ", dosya: "müzik3.mp3.mp3", kapak: "kapak3.jpeg.png" },
-            { isim: "CAMBAZ", dosya: "müzik4.mp3.mp3", kapak: "kapak4.jpeg.png" },
-            { isim: "AŞK DURDUKÇA", dosya: "müzik5.mp3.mp3", kapak: "kapak5.jpeg.png" },
-            { isim: "HARD CORE MELANKOLİ", dosya: "müzik6.mp3.mp3", kapak: "kapak6.jpeg.png" },
-            { isim: "TUTAMIYORUM ZAMANI", dosya: "müzik7.mp3..mp3", kapak: "kapak7.jpeg.png" },
-            { isim: "ARNAVUT KALDIRIMI", dosya: "müzik8.mp3.mp3", kapak: "kapak2.jpeg.png" },
-            { isim: "ZEYNEPİM", dosya: "müzik.mp3.mp3", kapak: "kapak3.jpeg.png" }
+            { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3", kapak: "" }, // Kapak konmayacak
+            { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg.png" },
+            { isim: "CAMBAZ", dosya: "müzik3.mp3.mp3", kapak: "kapak3.jpeg.png" },
+            { isim: "AŞK DURDUKÇA", dosya: "müzik4.mp3.mp3", kapak: "kapak4.jpeg.png" },
+            { isim: "HARD CORE MELANKOLİ", dosya: "müzik5.mp3.mp3", kapak: "kapak5.jpeg.png" },
+            { isim: "TUTAMIYORUM ZAMANI", dosya: "müzik6.mp3.mp3", kapak: "kapak6.jpeg.png" },
+            { isim: "ARNAVUT KALDIRIMI", dosya: "müzik7.mp3..mp3", kapak: "kapak7.jpeg.png" },
+            { isim: "ZEYNEPİM♥", dosya: "müzik8.mp3.mp3", kapak: "kapak8.jpeg.png" }
         ];
 
         let sarkiIndex = 0;
@@ -131,6 +131,8 @@
             source.src = sarkiListesi[sarkiIndex].dosya;
             songNameDisplay.innerText = sarkiListesi[sarkiIndex].isim;
             songImgDisplay.src = sarkiListesi[sarkiIndex].kapak;
+            // Kapak yoksa alanı gizle veya şeffaf yap
+            songImgDisplay.style.display = sarkiListesi[sarkiIndex].kapak === "" ? "none" : "block";
             music.load(); music.play();
         }
 
@@ -151,6 +153,9 @@
             document.getElementById("controls").style.display = "flex";
             if(snowActive && !snowInterval) snowInterval = setInterval(createSnow, 150);
             
+            // Başlangıçta kapak kontrolü
+            songImgDisplay.style.display = sarkiListesi[0].kapak === "" ? "none" : "block";
+
             let current = 0;
             const slides = document.querySelectorAll('.slide');
             setInterval(() => {

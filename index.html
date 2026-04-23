@@ -55,7 +55,6 @@
 
     <div id="gallery">
         <script>
-            // Resimler klasördeki resim1.jpeg.jpeg formatına göre ayarlandı
             for(let i=1; i<=14; i++) {
                 document.write(`<img src="resim${i}.jpeg.jpeg" class="slide ${i===1?'active':''}">`);
             }
@@ -72,7 +71,7 @@
             <img id="songImg" src="kapak2.jpeg.png">
             <div id="songInfo">
                 <p style="font-size: 9px; color: #aaa; margin: 0;">ŞU AN ÇALIYOR:</p>
-                <p id="songName">ZEYNEPİM</p>
+                <p id="songName">SONSUZ OL</p>
             </div>
             <button id="nextBtn" onclick="sonrakiSarki()">⏭</button>
         </div>
@@ -81,20 +80,20 @@
     <button id="startBtn" onclick="baslat()">Sürprizi Başlat ✨</button>
 
     <audio id="bgMusic">
-        <source id="musicSource" src="müzik.mp3.mp3" type="audio/mpeg">
+        <source id="musicSource" src="müzik2.mp3.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Liste tam 8 şarkı olacak şekilde düzeltildi
+        // ZEYNEPİM en sona (8. şarkı) alındı, liste klasöründeki isimlere göre dizildi
         const sarkiListesi = [
-            { isim: "ZEYNEPİM", dosya: "müzik.mp3.mp3", kapak: "kapak2.jpeg.png" },
-            { isim: "SONSUZ OL", dosya: "müzik2.mp3.mp3", kapak: "kapak3.jpeg.png" },
-            { isim: "KAR BEYAZ", dosya: "müzik3.mp3.mp3", kapak: "kapak4.jpeg.png" },
-            { isim: "CAMBAZ", dosya: "müzik4.mp3.mp3", kapak: "kapak5.jpeg.png" },
-            { isim: "AŞK DURDUKÇA", dosya: "müzik5.mp3.mp3", kapak: "kapak6.jpeg.png" },
-            { isim: "HARD CORE MELANKOLİ", dosya: "müzik6.mp3.mp3", kapak: "kapak7.jpeg.png" },
-            { isim: "TUTAMIYORUM ZAMANI", dosya: "müzik7.mp3..mp3", kapak: "kapak2.jpeg.png" },
-            { isim: "ARNAVUT KALDIRIMI", dosya: "müzik8.mp3.mp3", kapak: "kapak3.jpeg.png" }
+            { isim: "SONSUZ OL", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg.png" },
+            { isim: "KAR BEYAZ", dosya: "müzik3.mp3.mp3", kapak: "kapak3.jpeg.png" },
+            { isim: "CAMBAZ", dosya: "müzik4.mp3.mp3", kapak: "kapak4.jpeg.png" },
+            { isim: "AŞK DURDUKÇA", dosya: "müzik5.mp3.mp3", kapak: "kapak5.jpeg.png" },
+            { isim: "HARD CORE MELANKOLİ", dosya: "müzik6.mp3.mp3", kapak: "kapak6.jpeg.png" },
+            { isim: "TUTAMIYORUM ZAMANI", dosya: "müzik7.mp3..mp3", kapak: "kapak7.jpeg.png" },
+            { isim: "ARNAVUT KALDIRIMI", dosya: "müzik8.mp3.mp3", kapak: "kapak2.jpeg.png" },
+            { isim: "ZEYNEPİM", dosya: "müzik.mp3.mp3", kapak: "kapak3.jpeg.png" }
         ];
 
         let sarkiIndex = 0;
@@ -112,7 +111,6 @@
             
             if(bgMode === 1) document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
             if(bgMode === 2) document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
-            // Özel jfif arka planı
             if(bgMode === 3) document.body.style.backgroundImage = "url('39800145-e763-41d3-a9ad-0ce382fb698e.jfif')";
         }
 

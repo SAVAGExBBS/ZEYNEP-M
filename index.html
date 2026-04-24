@@ -6,22 +6,11 @@
     <title>Seni Seviyorum Zeynep ❤️</title>
     <style>
         body { 
-            margin: 0; 
-            background-image: url('arka-plan.gif.gif'); 
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-color: #000;
-            color: white; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            overflow: hidden; 
-            font-family: 'Segoe UI', sans-serif; 
-            transition: background-image 0.5s ease;
+            margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover;
+            background-position: center; background-repeat: no-repeat; background-attachment: fixed;
+            background-color: #000; color: white; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; height: 100vh; overflow: hidden; 
+            font-family: 'Segoe UI', sans-serif; transition: background-image 0.5s ease;
         }
 
         #text { font-size: 26px; font-weight: bold; margin-bottom: 20px; z-index: 10; animation: pulseColor 4s ease-in-out infinite; }
@@ -36,29 +25,23 @@
         .active { opacity: 1; }
 
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
+        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
         
-        /* Buton Grubu */
-        .btn-group { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 5px; }
-        .control-btn { background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 18px; border-radius: 25px; cursor: pointer; font-size: 12px; backdrop-filter: blur(5px); display: flex; align-items: center; gap: 5px; }
+        .control-btn { background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 18px; border-radius: 25px; cursor: pointer; font-size: 12px; backdrop-filter: blur(5px); }
         .ani-main-btn { background: #ff0055 !important; border: none !important; font-weight: bold; }
 
-        /* Müzik Player Alanı */
         #musicPlayer { background: rgba(15, 20, 15, 0.9); padding: 12px; border-radius: 25px; display: flex; align-items: center; gap: 12px; width: 320px; border: 1px solid rgba(255,255,255,0.1); }
         #songImg { width: 55px; height: 55px; border-radius: 10px; object-fit: cover; background: #222; }
-        #songInfo { flex-grow: 1; text-align: left; }
-        #songName { font-size: 13px; font-weight: bold; color: #fff; margin: 0; text-transform: uppercase; }
-        #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        #songName { font-size: 13px; font-weight: bold; color: #fff; margin: 0; }
+        #nextBtn { background: #ff0055; border: none; color: white; border-radius: 50%; cursor: pointer; width: 40px; height: 40px; font-size: 18px; }
 
-        /* Anı Seçme Paneli (Pop-up) */
-        #aniPanel { display: none; position: fixed; bottom: 100px; background: rgba(0,0,0,0.9); padding: 20px; border-radius: 20px; z-index: 100; width: 85%; max-width: 350px; border: 2px solid #ff0055; box-shadow: 0 0 20px #ff0055; }
+        #aniPanel { display: none; position: fixed; bottom: 110px; background: rgba(0,0,0,0.9); padding: 20px; border-radius: 20px; z-index: 100; width: 85%; max-width: 350px; border: 2px solid #ff0055; }
         .ani-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 15px; }
-        .ani-btn { background: #222; border: 1px solid #444; color: white; padding: 10px 5px; border-radius: 10px; cursor: pointer; font-size: 11px; transition: 0.3s; }
-        .ani-btn:hover { background: #ff0055; border-color: white; }
+        .ani-btn { background: #222; border: 1px solid #444; color: white; padding: 10px 5px; border-radius: 10px; cursor: pointer; font-size: 10px; }
 
-        /* Video Katmanı */
         #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #videoPlayer { width: 95%; max-width: 500px; border-radius: 10px; }
-        .close-video { margin-top: 25px; padding: 12px 30px; background: #ff0055; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        .close-video { margin-top: 25px; padding: 12px 30px; background: #ff0055; color: white; border: none; border-radius: 25px; cursor: pointer; }
 
         #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; }
         .snowflake { position: fixed; top: -10px; color: white; z-index: 5; pointer-events: none; animation: fall linear infinite; }
@@ -105,7 +88,7 @@
             <button class="ani-btn" onclick="videoOynat(6)">Anı 6</button>
             <button class="ani-btn" onclick="videoOynat(7)" style="background: #ff0055;">Anı 7</button>
         </div>
-        <button onclick="toggleAniPanel()" style="width:100%; margin-top:15px; background:none; border:none; color:#777; cursor:pointer; font-size:11px;">Vazgeç</button>
+        <button onclick="toggleAniPanel()" style="width:100%; margin-top:15px; background:none; border:none; color:#777; cursor:pointer;">Vazgeç</button>
     </div>
 
     <div id="videoOverlay">
@@ -131,10 +114,7 @@
             { isim: "ZEYNEPİM♥", dosya: "müzik8.mp3.mp3", kapak: "kapak8.jpeg.png" }
         ];
 
-        let sarkiIndex = 0;
-        let bgMode = 1;
-        let snowActive = true;
-        let snowInterval = null;
+        let sarkiIndex = 0; let bgMode = 1; let snowActive = true; let snowInterval = null;
         const music = document.getElementById("bgMusic");
         const source = document.getElementById("musicSource");
         const songNameDisplay = document.getElementById("songName");
@@ -147,26 +127,24 @@
             aniPanel.style.display = (aniPanel.style.display === "block") ? "none" : "block";
         }
 
+        // BURASI DÜZELTİLDİ: GitHub'daki .mp4.mp4 dosyalarına göre ayarlandı
         function videoOynat(no) {
-            music.pause(); // Video açılınca müzik durur
-            videoPlayer.src = `anilar${no}.mp4`;
+            music.pause();
+            videoPlayer.src = `anilar${no}.mp4.mp4`; 
             videoOverlay.style.display = "flex";
             aniPanel.style.display = "none";
-            videoPlayer.play();
+            videoPlayer.load();
+            videoPlayer.play().catch(e => console.log("Hata: Video dosyası bulunamadı."));
         }
 
         function videoKapat() {
             videoPlayer.pause();
             videoOverlay.style.display = "none";
+            if(music.paused) music.play(); // Video kapanınca müzik devam eder
         }
 
-        videoPlayer.onended = function() {
-            videoKapat();
-        };
-
         function changeBG() {
-            bgMode++;
-            if(bgMode > 3) bgMode = 1;
+            bgMode++; if(bgMode > 3) bgMode = 1;
             if(bgMode === 1) document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
             if(bgMode === 2) document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
             if(bgMode === 3) document.body.style.backgroundImage = "url('39800145-e763-41d3-a9ad-0ce382fb698e.jfif')";
@@ -196,8 +174,7 @@
         function createSnow() {
             if(!snowActive) return;
             const snow = document.createElement('div');
-            snow.innerHTML = '❄';
-            snow.className = 'snowflake';
+            snow.innerHTML = '❄'; snow.className = 'snowflake';
             snow.style.left = Math.random() * 100 + 'vw';
             snow.style.animationDuration = Math.random() * 3 + 2 + 's';
             document.body.appendChild(snow);
@@ -211,8 +188,7 @@
             if(snowActive && !snowInterval) snowInterval = setInterval(createSnow, 150);
             songImgDisplay.style.display = sarkiListesi[0].kapak === "" ? "none" : "block";
 
-            let current = 0;
-            const slides = document.querySelectorAll('.slide');
+            let current = 0; const slides = document.querySelectorAll('.slide');
             setInterval(() => {
                 slides[current].classList.remove('active');
                 current = (current + 1) % slides.length;

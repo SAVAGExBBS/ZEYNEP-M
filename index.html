@@ -111,7 +111,8 @@
             { isim: "HARD CORE MELANKOLİ", dosya: "müzik5.mp3.mp3", kapak: "kapak5.jpeg.png" },
             { isim: "TUTAMIYORUM ZAMANI", dosya: "müzik6.mp3.mp3", kapak: "kapak6.jpeg.png" },
             { isim: "ARNAVUT KALDIRIMI", dosya: "müzik7.mp3..mp3", kapak: "kapak7.jpeg.png" },
-            { isim: "ZEYNEPİM♥", dosya: "müzik8.mp3.mp3", kapak: "kapak8.jpeg.png" }
+            // DÜZELTİLDİ: Kapak resmi GitHub'daki isme (kapak8.jpeg.jpeg) göre ayarlandı
+            { isim: "ZEYNEPİM♥", dosya: "müzik8.mp3.mp3", kapak: "kapak8.jpeg.jpeg" }
         ];
 
         let sarkiIndex = 0; let bgMode = 1; let snowActive = true; let snowInterval = null;
@@ -127,20 +128,20 @@
             aniPanel.style.display = (aniPanel.style.display === "block") ? "none" : "block";
         }
 
-        // BURASI DÜZELTİLDİ: GitHub'daki .mp4.mp4 dosyalarına göre ayarlandı
         function videoOynat(no) {
             music.pause();
+            // Videolar için çift uzantı uyumu sağlandı
             videoPlayer.src = `anilar${no}.mp4.mp4`; 
             videoOverlay.style.display = "flex";
             aniPanel.style.display = "none";
             videoPlayer.load();
-            videoPlayer.play().catch(e => console.log("Hata: Video dosyası bulunamadı."));
+            videoPlayer.play();
         }
 
         function videoKapat() {
             videoPlayer.pause();
             videoOverlay.style.display = "none";
-            if(music.paused) music.play(); // Video kapanınca müzik devam eder
+            music.play();
         }
 
         function changeBG() {

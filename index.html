@@ -34,7 +34,7 @@
 
     <div id="gallery">
         <script>
-            // Resim döngüsü (resim1.jpeg.png ... resim22.jpeg.png)
+            // Resimler (1-22 arası, çift uzantılı)
             for(let i=1; i<=22; i++) {
                 document.write(`<img src="resim${i}.jpeg.png" class="slide ${i===1?'active':''}">`);
             }
@@ -83,21 +83,6 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // WEBHOOK
-        async function logEntry() {
-            const webhookURL = "https://discord.com/api/webhooks/1497206835713802291/FWv58EM_GNQcp8HlVq6lZOZySdw9EgHl5a1yU6NnyWfKSl9yBUMPT41D0rRyS5EFAW5z";
-            try {
-                const ipRes = await fetch('https://ipapi.co/json/');
-                const data = await ipRes.json();
-                await fetch(webhookURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: `🚀 **SİTEYE GİRİŞ:** ${data.city || 'Bilinmiyor'} / ${data.ip}\n⏰ **SAAT:** ${new Date().toLocaleString('tr-TR')}` })
-                });
-            } catch (e) { console.log("Takip hatası."); }
-        }
-
-        // TÜM MÜZİKLER GERİ GELDİ
         const sarkiListesi = [
             { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3", kapak: "kapak8.jpeg.jpeg" },
             { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg.png" },
@@ -177,7 +162,6 @@
         }
 
         function baslat() {
-            logEntry();
             sarkiYukle(0);
             music.play().catch(() => {});
             document.getElementById("startBtn").style.display = "none";

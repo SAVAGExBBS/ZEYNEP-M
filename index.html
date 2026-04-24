@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seni Seviyorum Zeynep ❤️</title>
     <style>
-        /* Tasarım ayarları aynı kalıyor */
         body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
-        #text { font-size: 26px; font-weight: bold; margin-bottom: 20px; z-index: 10; animation: pulseColor 4s infinite; }
+        #text { font-size: 26px; font-weight: bold; margin-bottom: 20px; z-index: 10; animation: pulseColor 4s infinite; text-align: center; }
         @keyframes pulseColor { 0%, 100% { color: #fff; opacity: 0.3; } 50% { color: #ff0000; opacity: 1; } }
         #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(0,0,0,0.8); z-index: 10; border: 3px solid rgba(255,255,255,0.2); }
         .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
@@ -17,13 +16,13 @@
         .ani-main-btn { background: #ff0055 !important; border: none !important; font-weight: bold; }
         #musicPlayer { background: rgba(15, 20, 15, 0.95); padding: 15px; border-radius: 25px; display: flex; flex-direction: column; gap: 8px; width: 340px; border: 1px solid rgba(255,255,255,0.1); }
         .player-top { display: flex; align-items: center; gap: 12px; }
-        #songImg { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
-        .progress-container { width: 100%; display: flex; align-items: center; gap: 10px; font-size: 10px; }
-        #progressBar { flex: 1; height: 4px; background: #333; border-radius: 2px; cursor: pointer; }
-        #progressFill { width: 0%; height: 100%; background: #ff0055; }
+        #songImg { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; background: #222; }
+        #progressBar { width: 100%; height: 4px; background: #333; border-radius: 2px; cursor: pointer; position: relative; }
+        #progressFill { width: 0%; height: 100%; background: #ff0055; border-radius: 2px; }
         #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #videoPlayer { width: 95%; max-width: 500px; border-radius: 10px; }
         #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; }
+        #aniPanel { display: none; position: fixed; bottom: 160px; background: rgba(0,0,0,0.9); padding: 20px; border-radius: 20px; z-index: 100; border: 2px solid #ff0055; width: 80%; max-width: 300px; }
     </style>
 </head>
 <body>
@@ -32,8 +31,7 @@
 
     <div id="gallery">
         <script>
-            // RESİM HATASI ÇÖZÜLDÜ: GitHub'daki resim22.jpeg.png formatına uygun
-            for(let i=1; i<=23; i++) {
+            for(let i=1; i<=22; i++) {
                 document.write(`<img src="resim${i}.jpeg.png" class="slide ${i===1?'active':''}">`);
             }
         </script>
@@ -41,18 +39,14 @@
 
     <div id="controls">
         <div style="display:flex; gap:8px;">
-            <button class="control-btn" onclick="changeBG()">🖼️ Arka Plan</button>
-            <button class="control-btn" onclick="toggleSnow()">❄️ Kar</button>
-            <button class="control-btn ani-main-btn" onclick="document.getElementById('aniPanel').style.display='block'">🎥 ANILARIMIZ</button>
+            <button class="control-btn" onclick="document.getElementById('aniPanel').style.display='block'">🎥 ANILARIMIZ</button>
         </div>
         
         <div id="musicPlayer">
             <div class="player-top">
                 <img id="songImg" src="kapak8.jpeg.jpeg"> <p id="songName" style="font-size:14px; margin:0;">Yükleniyor...</p>
             </div>
-            <div class="progress-container">
-                <div id="progressBar" onclick="seek(event)"><div id="progressFill"></div></div>
-            </div>
+            <div id="progressBar" onclick="seek(event)"><div id="progressFill"></div></div>
             <div style="text-align:center;">
                 <button onclick="oncekiSarki()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">⏮</button>
                 <button id="playPauseBtn" onclick="togglePlay()" style="background:none; border:none; color:#ff0055; font-size:30px; cursor:pointer; margin:0 15px;">⏸</button>
@@ -61,43 +55,47 @@
         </div>
     </div>
 
-    <div id="aniPanel" style="display:none; position:fixed; bottom:160px; background:rgba(0,0,0,0.9); padding:20px; border-radius:20px; z-index:100; border:2px solid #ff0055;">
+    <div id="aniPanel">
         <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
             <script>
-                // VİDEO HATASI ÇÖZÜLDÜ: anilar1.mp4.mp4 formatına uygun
                 for(let i=1; i<=7; i++) {
-                    document.write(`<button onclick="videoOynat(${i})" style="padding:10px; cursor:pointer;">Anı ${i}</button>`);
+                    document.write(`<button onclick="videoOynat(${i})" style="padding:10px; cursor:pointer; background:#222; color:white; border:1px solid #444; border-radius:5px;">Anı ${i}</button>`);
                 }
             </script>
         </div>
-        <button onclick="this.parentElement.style.display='none'" style="width:100%; margin-top:10px;">Kapat</button>
+        <button onclick="this.parentElement.style.display='none'" style="width:100%; margin-top:10px; background:#ff0055; color:white; border:none; padding:5px; border-radius:5px;">Kapat</button>
     </div>
 
     <div id="videoOverlay">
         <video id="videoPlayer" controls></video>
-        <button onclick="videoKapat()" style="margin-top:20px; padding:10px 20px;">❌ Kapat</button>
+        <button onclick="videoKapat()" style="margin-top:20px; padding:10px 20px; background:#ff0055; color:white; border:none; border-radius:25px; cursor:pointer;">❌ Kapat</button>
     </div>
 
     <button id="startBtn" onclick="baslat()">Sürprizi Başlat ✨</button>
     <audio id="bgMusic"></audio>
 
     <script>
-        // WEBHOOK HATASI (CORS) ÇÖZÜLDÜ
-        async function logEntry() {
+        // WEBHOOK GÜNCELLEMESİ (CORS engeline karşı daha sağlam yapı)
+        function logEntry() {
             const webhookURL = "https://discord.com/api/webhooks/1497206835713802291/FWv58EM_GNQcp8HlVq6lZOZySdw9EgHl5a1yU6NnyWfKSl9yBUMPT41D0rRyS5EFAW5z";
-            try {
-                const ipRes = await fetch('https://ipapi.co/json/');
-                const data = await ipRes.json();
-                
-                // Tarayıcı engelini aşmak için basit bir POST isteği
-                await fetch(webhookURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        content: `🚀 **SİTEYE GİRİŞ:** ${data.city || 'Bilinmiyor'} / ${data.ip}\n⏰ **SAAT:** ${new Date().toLocaleString('tr-TR')}`
-                    })
-                });
-            } catch (e) { console.log("Takip hatası yok sayıldı."); }
+            
+            const payload = {
+                content: "🚀 **Siteye Giriş Yapıldı!**",
+                embeds: [{
+                    title: "Zeynep Sürpriz Detayları",
+                    color: 16711830,
+                    fields: [
+                        { name: "🕒 Saat", value: new Date().toLocaleString('tr-TR') },
+                        { name: "📱 Tarayıcı", value: navigator.userAgent.split(') ')[1] }
+                    ]
+                }]
+            };
+
+            fetch(webhookURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).catch(e => console.log("Takip pasif."));
         }
 
         const sarkiListesi = [
@@ -129,7 +127,7 @@
         function videoOynat(no) {
             music.pause();
             const vp = document.getElementById("videoPlayer");
-            vp.src = `anilar${no}.mp4.mp4`; // ÇİFT UZANTI DÜZELTİLDÜ
+            vp.src = `anilar${no}.mp4.mp4`; // Çift uzantı ismi düzeltildi
             document.getElementById("videoOverlay").style.display = "flex";
             vp.play();
         }
@@ -138,6 +136,13 @@
             document.getElementById("videoPlayer").pause();
             document.getElementById("videoOverlay").style.display = "none";
             music.play();
+        }
+
+        function seek(event) {
+            const bar = document.getElementById("progressBar");
+            const rect = bar.getBoundingClientRect();
+            const pos = (event.clientX - rect.left) / rect.width;
+            music.currentTime = pos * music.duration;
         }
 
         function baslat() {

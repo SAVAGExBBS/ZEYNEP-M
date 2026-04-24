@@ -34,7 +34,7 @@
 
     <div id="gallery">
         <script>
-            // RESİM HATASI DÜZELTİLDİ: resim1.jpeg.png formatına %100 uyum.
+            // Resim döngüsü (resim1.jpeg.png ... resim22.jpeg.png)
             for(let i=1; i<=22; i++) {
                 document.write(`<img src="resim${i}.jpeg.png" class="slide ${i===1?'active':''}">`);
             }
@@ -51,7 +51,7 @@
         <div id="musicPlayer">
             <div class="player-top">
                 <img id="songImg" src="kapak8.jpeg.jpeg"> 
-                <p id="songName" style="font-size:14px; margin:0; flex:1; overflow:hidden; white-space:nowrap;">Hazırlanıyor...</p>
+                <p id="songName" style="font-size:14px; margin:0; flex:1; overflow:hidden; white-space:nowrap;">Müzikler yükleniyor...</p>
             </div>
             <div id="progressBar" onclick="seek(event)"><div id="progressFill"></div></div>
             <div style="text-align:center;">
@@ -65,7 +65,7 @@
     <div id="aniPanel">
         <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
             <script>
-                // VİDEO HATASI DÜZELTİLDİ: anilar1.mp4.mp4 formatına %100 uyum.
+                // Videolar (anilar1.mp4.mp4 ... anilar7.mp4.mp4)
                 for(let i=1; i<=7; i++) {
                     document.write(`<button onclick="videoOynat(${i})" style="padding:10px; cursor:pointer; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">Anı ${i}</button>`);
                 }
@@ -83,7 +83,7 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // WEBHOOK (Discord Takip)
+        // WEBHOOK
         async function logEntry() {
             const webhookURL = "https://discord.com/api/webhooks/1497206835713802291/FWv58EM_GNQcp8HlVq6lZOZySdw9EgHl5a1yU6NnyWfKSl9yBUMPT41D0rRyS5EFAW5z";
             try {
@@ -94,12 +94,17 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ content: `🚀 **SİTEYE GİRİŞ:** ${data.city || 'Bilinmiyor'} / ${data.ip}\n⏰ **SAAT:** ${new Date().toLocaleString('tr-TR')}` })
                 });
-            } catch (e) { console.log("Log hatası."); }
+            } catch (e) { console.log("Takip hatası."); }
         }
 
+        // TÜM MÜZİKLER GERİ GELDİ
         const sarkiListesi = [
             { isim: "SONSUZ OL", dosya: "müzik.mp3.mp3", kapak: "kapak8.jpeg.jpeg" },
             { isim: "KAR BEYAZ", dosya: "müzik2.mp3.mp3", kapak: "kapak2.jpeg.png" },
+            { isim: "CAMBAZ", dosya: "müzik3.mp3.mp3", kapak: "kapak3.jpeg.png" },
+            { isim: "AŞK DURDUKÇA", dosya: "müzik4.mp3.mp3", kapak: "kapak4.jpeg.png" },
+            { isim: "HARD CORE MELANKOLİ", dosya: "müzik5.mp3.mp3", kapak: "kapak5.jpeg.png" },
+            { isim: "TUTAMIYORUM ZAMANI", dosya: "müzik6.mp3.mp3", kapak: "kapak6.jpeg.png" },
             { isim: "ARNAVUT KALDIRIMI", dosya: "müzik7.mp3..mp3", kapak: "kapak7.jpeg.png" },
             { isim: "ZEYNEPİM♥", dosya: "müzik8.mp3.mp3", kapak: "kapak8.jpeg.jpeg" } 
         ];

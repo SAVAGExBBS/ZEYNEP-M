@@ -5,14 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seni Seviyorum Zeynep ❤️</title>
     <style>
-        body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
+        body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; transition: background-image 0.5s ease; }
         #text { font-size: 26px; font-weight: bold; margin-bottom: 20px; z-index: 10; animation: pulseColor 4s infinite; text-align: center; }
         @keyframes pulseColor { 0%, 100% { color: #fff; opacity: 0.3; } 50% { color: #ff0000; opacity: 1; } }
-        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(0,0,0,0.8); z-index: 10; border: 3px solid rgba(255,255,255,0.2); }
+        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(0,0,0,0.8); z-index: 10; border: 3px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); }
         .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
         .active { opacity: 1; }
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
-        .control-btn { background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 18px; border-radius: 25px; cursor: pointer; font-size: 12px; }
+        .btn-group { display: flex; gap: 8px; margin-bottom: 5px; }
+        .control-btn { background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 18px; border-radius: 25px; cursor: pointer; font-size: 12px; backdrop-filter: blur(5px); }
         .ani-main-btn { background: #ff0055 !important; border: none !important; font-weight: bold; }
         #musicPlayer { background: rgba(15, 20, 15, 0.95); padding: 15px; border-radius: 25px; display: flex; flex-direction: column; gap: 8px; width: 340px; border: 1px solid rgba(255,255,255,0.1); }
         .player-top { display: flex; align-items: center; gap: 12px; }
@@ -23,6 +24,8 @@
         #videoPlayer { width: 95%; max-width: 500px; border-radius: 10px; }
         #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; }
         #aniPanel { display: none; position: fixed; bottom: 160px; background: rgba(0,0,0,0.9); padding: 20px; border-radius: 20px; z-index: 100; border: 2px solid #ff0055; width: 80%; max-width: 300px; }
+        .snowflake { position: fixed; top: -10px; color: white; z-index: 5; pointer-events: none; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(105vh); } }
     </style>
 </head>
 <body>
@@ -31,6 +34,7 @@
 
     <div id="gallery">
         <script>
+            // 1'den 22'ye kadar resimler (resim22.jpeg.png)
             for(let i=1; i<=22; i++) {
                 document.write(`<img src="resim${i}.jpeg.png" class="slide ${i===1?'active':''}">`);
             }
@@ -38,13 +42,15 @@
     </div>
 
     <div id="controls">
-        <div style="display:flex; gap:8px;">
-            <button class="control-btn" onclick="document.getElementById('aniPanel').style.display='block'">🎥 ANILARIMIZ</button>
+        <div class="btn-group">
+            <button class="control-btn" onclick="changeBG()">🖼️ Manzara Değiştir</button>
+            <button class="control-btn" id="snowToggle" onclick="toggleSnow()">❄️ Karı Durdur</button>
+            <button class="control-btn ani-main-btn" onclick="document.getElementById('aniPanel').style.display='block'">🎥 ANILARIMIZ</button>
         </div>
         
         <div id="musicPlayer">
             <div class="player-top">
-                <img id="songImg" src="kapak8.jpeg.jpeg"> <p id="songName" style="font-size:14px; margin:0;">Yükleniyor...</p>
+                <img id="songImg" src="kapak8.jpeg.jpeg"> <p id="songName" style="font-size:14px; margin:0; flex:1; overflow:hidden; white-space:nowrap;">Yükleniyor...</p>
             </div>
             <div id="progressBar" onclick="seek(event)"><div id="progressFill"></div></div>
             <div style="text-align:center;">
@@ -59,11 +65,11 @@
         <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
             <script>
                 for(let i=1; i<=7; i++) {
-                    document.write(`<button onclick="videoOynat(${i})" style="padding:10px; cursor:pointer; background:#222; color:white; border:1px solid #444; border-radius:5px;">Anı ${i}</button>`);
+                    document.write(`<button onclick="videoOynat(${i})" style="padding:10px; cursor:pointer; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">Anı ${i}</button>`);
                 }
             </script>
         </div>
-        <button onclick="this.parentElement.style.display='none'" style="width:100%; margin-top:10px; background:#ff0055; color:white; border:none; padding:5px; border-radius:5px;">Kapat</button>
+        <button onclick="this.parentElement.style.display='none'" style="width:100%; margin-top:10px; background:#ff0055; color:white; border:none; padding:8px; border-radius:5px; cursor:pointer;">Kapat</button>
     </div>
 
     <div id="videoOverlay">
@@ -75,27 +81,18 @@
     <audio id="bgMusic"></audio>
 
     <script>
-        // WEBHOOK GÜNCELLEMESİ (CORS engeline karşı daha sağlam yapı)
-        function logEntry() {
+        // WEBHOOK (Discord)
+        async function logEntry() {
             const webhookURL = "https://discord.com/api/webhooks/1497206835713802291/FWv58EM_GNQcp8HlVq6lZOZySdw9EgHl5a1yU6NnyWfKSl9yBUMPT41D0rRyS5EFAW5z";
-            
-            const payload = {
-                content: "🚀 **Siteye Giriş Yapıldı!**",
-                embeds: [{
-                    title: "Zeynep Sürpriz Detayları",
-                    color: 16711830,
-                    fields: [
-                        { name: "🕒 Saat", value: new Date().toLocaleString('tr-TR') },
-                        { name: "📱 Tarayıcı", value: navigator.userAgent.split(') ')[1] }
-                    ]
-                }]
-            };
-
-            fetch(webhookURL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).catch(e => console.log("Takip pasif."));
+            try {
+                const ipRes = await fetch('https://ipapi.co/json/');
+                const data = await ipRes.json();
+                await fetch(webhookURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ content: `🚀 **SİTEYE GİRİŞ:** ${data.city || 'Bilinmiyor'} / ${data.ip}\n⏰ **SAAT:** ${new Date().toLocaleString('tr-TR')}` })
+                });
+            } catch (e) { console.log("Takip hatası."); }
         }
 
         const sarkiListesi = [
@@ -105,7 +102,7 @@
             { isim: "ZEYNEPİM♥", dosya: "müzik8.mp3.mp3", kapak: "kapak8.jpeg.jpeg" } 
         ];
 
-        let sarkiIndex = 0;
+        let sarkiIndex = 0; let bgMode = 1; let snowActive = true; let snowInterval = null;
         const music = document.getElementById("bgMusic");
 
         function sarkiYukle(index) {
@@ -124,10 +121,37 @@
         function sonrakiSarki() { sarkiIndex = (sarkiIndex + 1) % sarkiListesi.length; sarkiYukle(sarkiIndex); music.play(); }
         function oncekiSarki() { sarkiIndex = (sarkiIndex - 1 + sarkiListesi.length) % sarkiListesi.length; sarkiYukle(sarkiIndex); music.play(); }
 
+        function changeBG() {
+            bgMode++; if(bgMode > 3) bgMode = 1;
+            const urls = ['arka-plan.gif.gif', 'arka-plan2.gif.gif', '39800145-e763-41d3-a9ad-0ce382fb698e.jfif'];
+            document.body.style.backgroundImage = `url('${urls[bgMode-1]}')`;
+        }
+
+        function toggleSnow() {
+            const btn = document.getElementById("snowToggle");
+            if(snowActive) {
+                clearInterval(snowInterval); snowInterval = null;
+                btn.innerText = "❄️ Karı Aç"; snowActive = false;
+                document.querySelectorAll('.snowflake').forEach(s => s.remove());
+            } else {
+                snowActive = true; snowInterval = setInterval(createSnow, 150);
+                btn.innerText = "❄️ Karı Durdur";
+            }
+        }
+
+        function createSnow() {
+            const snow = document.createElement('div');
+            snow.innerHTML = '❄'; snow.className = 'snowflake';
+            snow.style.left = Math.random() * 100 + 'vw';
+            snow.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(snow);
+            setTimeout(() => snow.remove(), 5000);
+        }
+
         function videoOynat(no) {
-            music.pause();
+            music.pause(); document.getElementById("playPauseBtn").innerText = "▶";
             const vp = document.getElementById("videoPlayer");
-            vp.src = `anilar${no}.mp4.mp4`; // Çift uzantı ismi düzeltildi
+            vp.src = `anilar${no}.mp4.mp4`; //
             document.getElementById("videoOverlay").style.display = "flex";
             vp.play();
         }
@@ -135,7 +159,7 @@
         function videoKapat() {
             document.getElementById("videoPlayer").pause();
             document.getElementById("videoOverlay").style.display = "none";
-            music.play();
+            music.play(); document.getElementById("playPauseBtn").innerText = "⏸";
         }
 
         function seek(event) {
@@ -151,6 +175,7 @@
             music.play().catch(() => {});
             document.getElementById("startBtn").style.display = "none";
             document.getElementById("controls").style.display = "flex";
+            if(snowActive) snowInterval = setInterval(createSnow, 150);
             
             let current = 0;
             const slides = document.querySelectorAll('.slide');
@@ -165,7 +190,6 @@
             const prog = (music.currentTime / music.duration) * 100;
             document.getElementById("progressFill").style.width = (prog || 0) + "%";
         };
-        
         music.onended = sonrakiSarki;
     </script>
 </body>

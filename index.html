@@ -3,29 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seni Seviyorum Zeynep ❤️</title>
+    <title>Zeynep ❤️</title>
     <style>
-        body { margin: 0; background-image: url('./arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; transition: background-image 0.5s ease; }
-        #text { font-size: 26px; font-weight: bold; margin-bottom: 20px; z-index: 10; animation: pulseColor 4s infinite; text-align: center; }
-        @keyframes pulseColor { 0%, 100% { color: #fff; opacity: 0.3; } 50% { color: #ff0000; opacity: 1; } }
-        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 30px rgba(0,0,0,0.8); z-index: 10; border: 3px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.4); }
-        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; }
+        body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
+        #text { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-align: center; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; color: #ff0055; } }
+        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 25px rgba(255,0,85,0.3); border: 2px solid rgba(255,255,255,0.1); }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
         .active { opacity: 1; }
-        #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
-        .btn-group { display: flex; gap: 8px; margin-bottom: 5px; }
-        .control-btn { background: rgba(40, 40, 40, 0.8); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px 18px; border-radius: 25px; cursor: pointer; font-size: 12px; backdrop-filter: blur(5px); }
-        .ani-main-btn { background: #ff0055 !important; border: none !important; font-weight: bold; }
-        #musicPlayer { background: rgba(15, 20, 15, 0.95); padding: 15px; border-radius: 25px; display: flex; flex-direction: column; gap: 8px; width: 340px; border: 1px solid rgba(255,255,255,0.1); }
-        .player-top { display: flex; align-items: center; gap: 12px; }
-        #songImg { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; background: #222; }
-        #progressBar { width: 100%; height: 4px; background: #333; border-radius: 2px; cursor: pointer; position: relative; }
-        #progressFill { width: 0%; height: 100%; background: #ff0055; border-radius: 2px; }
-        #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
-        #videoPlayer { width: 95%; max-width: 500px; border-radius: 10px; }
-        #startBtn { margin-top: 35px; padding: 18px 50px; font-size: 18px; font-weight: bold; background: linear-gradient(45deg, #ff0055, #ff5500); color: white; border: none; border-radius: 50px; cursor: pointer; z-index: 30; }
-        #aniPanel { display: none; position: fixed; bottom: 160px; background: rgba(0,0,0,0.9); padding: 20px; border-radius: 20px; z-index: 100; border: 2px solid #ff0055; width: 80%; max-width: 300px; }
-        .snowflake { position: fixed; top: -10px; color: white; z-index: 5; pointer-events: none; animation: fall linear infinite; }
-        @keyframes fall { to { transform: translateY(105vh); } }
+        #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; }
+        .btn-group { display: flex; gap: 5px; }
+        .control-btn { background: rgba(30, 30, 30, 0.9); border: 1px solid #444; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 11px; }
+        .ani-btn { background: #ff0055 !important; border: none; font-weight: bold; }
+        #musicPlayer { background: rgba(20, 20, 20, 0.9); padding: 12px; border-radius: 20px; width: 320px; border: 1px solid #333; }
+        .player-info { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        #songImg { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; }
+        #progressBar { width: 100%; height: 5px; background: #333; border-radius: 3px; cursor: pointer; }
+        #progressFill { width: 0%; height: 100%; background: #ff0055; border-radius: 3px; }
+        #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
+        #videoPlayer { width: 90%; max-width: 450px; border-radius: 10px; }
+        #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; }
+        #aniPanel { display: none; position: fixed; bottom: 150px; background: rgba(10,10,10,0.95); padding: 15px; border-radius: 15px; border: 1px solid #ff0055; z-index: 50; width: 280px; }
+        .snowflake { position: fixed; top: -10px; color: white; pointer-events: none; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(110vh); } }
     </style>
 </head>
 <body>
@@ -34,153 +34,144 @@
 
     <div id="gallery">
         <script>
-            // GitHub için "./" ile başlayan güvenli yollar
+            // Resim döngüsü - Hata veren :1 gibi ekler temizlendi
             for(let i=1; i<=22; i++) {
-                document.write(`<img src="./resim${i}.jpeg.png" class="slide ${i===1?'active':''}">`);
+                document.write(`<img src="resim${i}.jpeg.png" class="slide ${i===1?'active':''}">`);
             }
         </script>
     </div>
 
     <div id="controls">
         <div class="btn-group">
-            <button class="control-btn" onclick="changeBG()">🖼️ Manzara Değiştir</button>
+            <button class="control-btn" onclick="changeBG()">🖼️ Manzara</button>
             <button class="control-btn" id="snowToggle" onclick="toggleSnow()">❄️ Karı Durdur</button>
-            <button class="control-btn ani-main-btn" onclick="document.getElementById('aniPanel').style.display='block'">🎥 ANILARIMIZ</button>
+            <button class="control-btn ani-btn" onclick="openAni()">🎥 ANILARIMIZ</button>
         </div>
         
         <div id="musicPlayer">
-            <div class="player-top">
-                <img id="songImg" src="./kapak8.jpeg.jpeg"> 
-                <p id="songName" style="font-size:14px; margin:0; flex:1; overflow:hidden; white-space:nowrap;">Müzikler yükleniyor...</p>
+            <div class="player-info">
+                <img id="songImg" src="kapak8.jpeg.jpeg">
+                <div style="font-size: 13px; overflow: hidden; white-space: nowrap;" id="songName">Yükleniyor...</div>
             </div>
             <div id="progressBar" onclick="seek(event)"><div id="progressFill"></div></div>
-            <div style="text-align:center;">
-                <button onclick="oncekiSarki()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">⏮</button>
-                <button id="playPauseBtn" onclick="togglePlay()" style="background:none; border:none; color:#ff0055; font-size:30px; cursor:pointer; margin:0 15px;">⏸</button>
-                <button onclick="sonrakiSarki()" style="background:none; border:none; color:white; font-size:20px; cursor:pointer;">⏭</button>
+            <div style="text-align: center; margin-top: 10px;">
+                <button onclick="prev()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">⏮</button>
+                <button id="pBtn" onclick="pPause()" style="background:none; border:none; color:#ff0055; font-size:25px; cursor:pointer; margin: 0 15px;">⏸</button>
+                <button onclick="next()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">⏭</button>
             </div>
         </div>
     </div>
 
     <div id="aniPanel">
-        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:10px;">
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
             <script>
                 for(let i=1; i<=7; i++) {
-                    document.write(`<button onclick="videoOynat(${i})" style="padding:10px; cursor:pointer; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">Anı ${i}</button>`);
+                    document.write(`<button onclick="playVid(${i})" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">${i}</button>`);
                 }
             </script>
         </div>
-        <button onclick="this.parentElement.style.display='none'" style="width:100%; margin-top:10px; background:#ff0055; color:white; border:none; padding:8px; border-radius:5px; cursor:pointer;">Kapat</button>
+        <button onclick="closeAni()" style="width:100%; margin-top:10px; background:#ff0055; color:white; border:none; padding:5px; border-radius:5px;">Kapat</button>
     </div>
 
     <div id="videoOverlay">
         <video id="videoPlayer" controls></video>
-        <button onclick="videoKapat()" style="margin-top:20px; padding:10px 20px; background:#ff0055; color:white; border:none; border-radius:25px; cursor:pointer;">❌ Kapat</button>
+        <button onclick="closeVid()" style="margin-top:15px; padding:8px 20px; background:#ff0055; color:white; border:none; border-radius:20px;">Kapat</button>
     </div>
 
-    <button id="startBtn" onclick="baslat()">Sürprizi Başlat ✨</button>
-    <audio id="bgMusic"></audio>
+    <button id="startBtn" onclick="start()">Sürprizi Başlat ✨</button>
+    <audio id="audio"></audio>
 
     <script>
-        const sarkiListesi = [
-            { isim: "SONSUZ OL", dosya: "./müzik.mp3.mp3", kapak: "./kapak8.jpeg.jpeg" },
-            { isim: "KAR BEYAZ", dosya: "./müzik2.mp3.mp3", kapak: "./kapak2.jpeg.png" },
-            { isim: "CAMBAZ", dosya: "./müzik3.mp3.mp3", kapak: "./kapak3.jpeg.png" },
-            { isim: "AŞK DURDUKÇA", dosya: "./müzik4.mp3.mp3", kapak: "./kapak4.jpeg.png" },
-            { isim: "HARD CORE MELANKOLİ", dosya: "./müzik5.mp3.mp3", kapak: "./kapak5.jpeg.png" },
-            { isim: "TUTAMIYORUM ZAMANI", dosya: "./müzik6.mp3.mp3", kapak: "./kapak6.jpeg.png" },
-            { isim: "ARNAVUT KALDIRIMI", dosya: "./müzik7.mp3..mp3", kapak: "./kapak7.jpeg.png" },
-            { isim: "ZEYNEPİM♥", dosya: "./müzik8.mp3.mp3", kapak: "./kapak8.jpeg.jpeg" } 
+        // Müzik listesi - Türkçe karakter hataları temizlendi
+        const list = [
+            { n: "SONSUZ OL", f: "muzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
+            { n: "KAR BEYAZ", f: "muzik2.mp3.mp3", i: "kapak2.jpeg.png" },
+            { n: "CAMBAZ", f: "muzik3.mp3.mp3", i: "kapak3.jpeg.png" },
+            { n: "ASK DURDUKCA", f: "muzik4.mp3.mp3", i: "kapak4.jpeg.png" },
+            { n: "MELANKOLI", f: "muzik5.mp3.mp3", i: "kapak5.jpeg.png" },
+            { n: "ZAMANI TUT", f: "muzik6.mp3.mp3", i: "kapak6.jpeg.png" },
+            { n: "KALDIRIM", f: "muzik7.mp3..mp3", i: "kapak7.jpeg.png" },
+            { n: "ZEYNEPIM", f: "muzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
         ];
 
-        let sarkiIndex = 0; let bgMode = 1; let snowActive = true; let snowInterval = null;
-        const music = document.getElementById("bgMusic");
+        let idx = 0; let sActive = true; let sInt = null;
+        const aud = document.getElementById("audio");
 
-        function sarkiYukle(index) {
-            const sarki = sarkiListesi[index];
-            music.src = sarki.dosya;
-            document.getElementById("songName").innerText = sarki.isim;
-            document.getElementById("songImg").src = sarki.kapak;
-            music.load();
+        function loadS(i) {
+            aud.src = list[i].f;
+            document.getElementById("songName").innerText = list[i].n;
+            document.getElementById("songImg").src = list[i].i;
         }
 
-        function togglePlay() { 
-            if (music.paused) { music.play(); document.getElementById("playPauseBtn").innerText = "⏸"; }
-            else { music.pause(); document.getElementById("playPauseBtn").innerText = "▶"; }
+        function pPause() {
+            if(aud.paused) { aud.play(); document.getElementById("pBtn").innerText="⏸"; }
+            else { aud.pause(); document.getElementById("pBtn").innerText="▶"; }
         }
 
-        function sonrakiSarki() { sarkiIndex = (sarkiIndex + 1) % sarkiListesi.length; sarkiYukle(sarkiIndex); music.play(); }
-        function oncekiSarki() { sarkiIndex = (sarkiIndex - 1 + sarkiListesi.length) % sarkiListesi.length; sarkiYukle(sarkiIndex); music.play(); }
+        function next() { idx = (idx+1)%list.length; loadS(idx); aud.play(); }
+        function prev() { idx = (idx-1+list.length)%list.length; loadS(idx); aud.play(); }
 
         function changeBG() {
-            bgMode++; if(bgMode > 3) bgMode = 1;
-            const urls = ['./arka-plan.gif.gif', './arka-plan2.gif.gif', './39800145-e763-41d3-a9ad-0ce382fb698e.jfif'];
-            document.body.style.backgroundImage = `url('${urls[bgMode-1]}')`;
+            const bgs = ['arka-plan.gif.gif', 'arka-plan2.gif.gif', '39800145-e763-41d3-a9ad-0ce382fb698e.jfif'];
+            document.body.style.backgroundImage = `url('${bgs[Math.floor(Math.random()*bgs.length)]}')`;
         }
 
         function toggleSnow() {
-            const btn = document.getElementById("snowToggle");
-            if(snowActive) {
-                clearInterval(snowInterval); snowInterval = null;
-                btn.innerText = "❄️ Karı Aç"; snowActive = false;
-                document.querySelectorAll('.snowflake').forEach(s => s.remove());
-            } else {
-                snowActive = true; snowInterval = setInterval(createSnow, 150);
-                btn.innerText = "❄️ Karı Durdur";
-            }
+            sActive = !sActive;
+            if(!sActive) { clearInterval(sInt); document.querySelectorAll('.snowflake').forEach(n=>n.remove()); }
+            else { sInt = setInterval(snow, 150); }
+            document.getElementById("snowToggle").innerText = sActive ? "❄️ Karı Durdur" : "❄️ Karı Aç";
         }
 
-        function createSnow() {
-            const snow = document.createElement('div');
-            snow.innerHTML = '❄'; snow.className = 'snowflake';
-            snow.style.left = Math.random() * 100 + 'vw';
-            snow.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.body.appendChild(snow);
-            setTimeout(() => snow.remove(), 5000);
+        function snow() {
+            const s = document.createElement('div');
+            s.innerHTML = '❄'; s.className = 'snowflake';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.animationDuration = Math.random() * 3 + 2 + 's';
+            s.style.opacity = Math.random();
+            document.body.appendChild(s);
+            setTimeout(() => s.remove(), 5000);
         }
 
-        function videoOynat(no) {
-            music.pause(); document.getElementById("playPauseBtn").innerText = "▶";
-            const vp = document.getElementById("videoPlayer");
-            vp.src = `./anilar${no}.mp4.mp4`; 
-            document.getElementById("videoOverlay").style.display = "flex";
-            vp.play();
+        function openAni() { document.getElementById('aniPanel').style.display='block'; }
+        function closeAni() { document.getElementById('aniPanel').style.display='none'; }
+
+        function playVid(n) {
+            aud.pause();
+            const v = document.getElementById('videoPlayer');
+            v.src = `anilar${n}.mp4.mp4`;
+            document.getElementById('videoOverlay').style.display='flex';
+            v.play();
         }
 
-        function videoKapat() {
-            document.getElementById("videoPlayer").pause();
-            document.getElementById("videoOverlay").style.display = "none";
-            music.play(); document.getElementById("playPauseBtn").innerText = "⏸";
+        function closeVid() {
+            document.getElementById('videoPlayer').pause();
+            document.getElementById('videoOverlay').style.display='none';
+            aud.play();
         }
 
-        function seek(event) {
-            const bar = document.getElementById("progressBar");
-            const rect = bar.getBoundingClientRect();
-            const pos = (event.clientX - rect.left) / rect.width;
-            music.currentTime = pos * music.duration;
-        }
-
-        function baslat() {
-            sarkiYukle(0);
-            music.play().catch(() => {});
-            document.getElementById("startBtn").style.display = "none";
-            document.getElementById("controls").style.display = "flex";
-            if(snowActive) snowInterval = setInterval(createSnow, 150);
-            
-            let current = 0;
-            const slides = document.querySelectorAll('.slide');
+        function start() {
+            loadS(0); aud.play();
+            document.getElementById('startBtn').style.display='none';
+            document.getElementById('controls').style.display='flex';
+            sInt = setInterval(snow, 150);
+            let c = 0; const s = document.querySelectorAll('.slide');
             setInterval(() => {
-                slides[current].classList.remove('active');
-                current = (current + 1) % slides.length;
-                slides[current].classList.add('active');
+                s[c].classList.remove('active');
+                c = (c+1)%s.length;
+                s[c].classList.add('active');
             }, 3000);
         }
 
-        music.ontimeupdate = () => {
-            const prog = (music.currentTime / music.duration) * 100;
-            document.getElementById("progressFill").style.width = (prog || 0) + "%";
+        aud.ontimeupdate = () => {
+            document.getElementById("progressFill").style.width = (aud.currentTime/aud.duration)*100 + "%";
         };
-        music.onended = sonrakiSarki;
+        aud.onended = next;
+
+        function seek(e) {
+            const r = document.getElementById("progressBar").getBoundingClientRect();
+            aud.currentTime = ((e.clientX - r.left) / r.width) * aud.duration;
+        }
     </script>
 </body>
 </html>

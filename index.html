@@ -8,10 +8,10 @@
         body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
         #text { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-align: center; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; color: #ff0055; } }
-        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 25px rgba(255,0,85,0.3); border: 2px solid rgba(255,255,255,0.1); }
+        #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 25px rgba(255,0,85,0.3); border: 2px solid rgba(255,255,255,0.1); background: #111; }
         .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
         .active { opacity: 1; }
-        #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; }
+        #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
         .btn-group { display: flex; gap: 5px; }
         .control-btn { background: rgba(30, 30, 30, 0.9); border: 1px solid #444; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 11px; }
         .ani-btn { background: #ff0055 !important; border: none; font-weight: bold; }
@@ -24,7 +24,7 @@
         #videoPlayer { width: 90%; max-width: 450px; border-radius: 10px; }
         #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; }
         #aniPanel { display: none; position: fixed; bottom: 150px; background: rgba(10,10,10,0.95); padding: 15px; border-radius: 15px; border: 1px solid #ff0055; z-index: 50; width: 280px; }
-        .snowflake { position: fixed; top: -10px; color: white; pointer-events: none; animation: fall linear infinite; }
+        .snowflake { position: fixed; top: -10px; color: white; pointer-events: none; animation: fall linear infinite; z-index: 5; }
         @keyframes fall { to { transform: translateY(110vh); } }
     </style>
 </head>
@@ -33,12 +33,26 @@
     <div id="text">SENİ SEVİYORUM ZEYNEP ❤️</div>
 
     <div id="gallery">
-        <script>
-            // Resim döngüsü - Hata veren :1 gibi ekler temizlendi
-            for(let i=1; i<=22; i++) {
-                document.write(`<img src="resim${i}.jpeg.png" class="slide ${i===1?'active':''}">`);
-            }
-        </script>
+        <img src="resim1.jpeg.png" class="slide active">
+        <img src="resim2.jpeg.png" class="slide">
+        <img src="resim3.jpeg.png" class="slide">
+        <img src="resim4.jpeg.png" class="slide">
+        <img src="resim5.jpeg.png" class="slide">
+        <img src="resim6.jpeg.png" class="slide">
+        <img src="resim7.jpeg.png" class="slide">
+        <img src="resim8.jpeg.png" class="slide">
+        <img src="resim9.jpeg.png" class="slide">
+        <img src="resim10.jpeg.png" class="slide">
+        <img src="resim11.jpeg.png" class="slide">
+        <img src="resim12.jpeg.png" class="slide">
+        <img src="resim13.jpeg.jpeg" class="slide"> <img src="resim14.jpeg.png" class="slide">
+        <img src="resim15.jpeg.png" class="slide">
+        <img src="resim16.jpeg.png" class="slide">
+        <img src="resim17.jpeg.png" class="slide"> <img src="resim18.jpeg.png" class="slide">
+        <img src="resim19.jpeg.png" class="slide">
+        <img src="resim20.jpeg.png" class="slide">
+        <img src="resim21.jpeg.png" class="slide">
+        <img src="resim22.jpeg.png" class="slide">
     </div>
 
     <div id="controls">
@@ -64,11 +78,13 @@
 
     <div id="aniPanel">
         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
-            <script>
-                for(let i=1; i<=7; i++) {
-                    document.write(`<button onclick="playVid(${i})" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">${i}</button>`);
-                }
-            </script>
+            <button onclick="playVid(1)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">1</button>
+            <button onclick="playVid(2)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">2</button>
+            <button onclick="playVid(3)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">3</button>
+            <button onclick="playVid(4)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">4</button>
+            <button onclick="playVid(5)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">5</button>
+            <button onclick="playVid(6)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">6</button>
+            <button onclick="playVid(7)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">7</button>
         </div>
         <button onclick="closeAni()" style="width:100%; margin-top:10px; background:#ff0055; color:white; border:none; padding:5px; border-radius:5px;">Kapat</button>
     </div>
@@ -82,7 +98,6 @@
     <audio id="audio"></audio>
 
     <script>
-        // Müzik listesi - Türkçe karakter hataları temizlendi
         const list = [
             { n: "SONSUZ OL", f: "muzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
             { n: "KAR BEYAZ", f: "muzik2.mp3.mp3", i: "kapak2.jpeg.png" },
@@ -128,7 +143,6 @@
             s.innerHTML = '❄'; s.className = 'snowflake';
             s.style.left = Math.random() * 100 + 'vw';
             s.style.animationDuration = Math.random() * 3 + 2 + 's';
-            s.style.opacity = Math.random();
             document.body.appendChild(s);
             setTimeout(() => s.remove(), 5000);
         }

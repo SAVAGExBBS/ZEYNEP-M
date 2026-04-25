@@ -6,7 +6,7 @@
     <title>Zeynep ❤️</title>
     <style>
         body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
-        #text { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-align: center; animation: pulse 2s infinite; }
+        #text { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-align: center; animation: pulse 2s infinite; z-index: 10; }
         @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; color: #ff0055; } }
         #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 25px rgba(255,0,85,0.3); border: 2px solid rgba(255,255,255,0.1); background: #111; }
         .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
@@ -22,7 +22,7 @@
         #progressFill { width: 0%; height: 100%; background: #ff0055; border-radius: 3px; }
         #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
         #videoPlayer { width: 90%; max-width: 450px; border-radius: 10px; }
-        #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; }
+        #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 30; }
         #aniPanel { display: none; position: fixed; bottom: 150px; background: rgba(10,10,10,0.95); padding: 15px; border-radius: 15px; border: 1px solid #ff0055; z-index: 50; width: 280px; }
         .snowflake { position: fixed; top: -10px; color: white; pointer-events: none; animation: fall linear infinite; z-index: 5; }
         @keyframes fall { to { transform: translateY(110vh); } }
@@ -33,26 +33,29 @@
     <div id="text">SENİ SEVİYORUM ZEYNEP ❤️</div>
 
     <div id="gallery">
-        <img src="resim1.jpeg.png" class="slide active">
-        <img src="resim2.jpeg.png" class="slide">
-        <img src="resim3.jpeg.png" class="slide">
-        <img src="resim4.jpeg.png" class="slide">
-        <img src="resim5.jpeg.png" class="slide">
-        <img src="resim6.jpeg.png" class="slide">
-        <img src="resim7.jpeg.png" class="slide">
-        <img src="resim8.jpeg.png" class="slide">
-        <img src="resim9.jpeg.png" class="slide">
-        <img src="resim10.jpeg.png" class="slide">
-        <img src="resim11.jpeg.png" class="slide">
-        <img src="resim12.jpeg.png" class="slide">
-        <img src="resim13.jpeg.jpeg" class="slide"> <img src="resim14.jpeg.png" class="slide">
-        <img src="resim15.jpeg.png" class="slide">
-        <img src="resim16.jpeg.png" class="slide">
-        <img src="resim17.jpeg.png" class="slide"> <img src="resim18.jpeg.png" class="slide">
-        <img src="resim19.jpeg.png" class="slide">
-        <img src="resim20.jpeg.png" class="slide">
-        <img src="resim21.jpeg.png" class="slide">
-        <img src="resim22.jpeg.png" class="slide">
+        <img src="resim1.....jpeg" class="slide active">
+        <img src="resim2.....jpeg" class="slide">
+        <img src="resim3.....jpeg" class="slide">
+        <img src="resim4.....jpeg" class="slide">
+        <img src="resim5.....jpeg" class="slide">
+        <img src="resim6.....jpeg" class="slide">
+        <img src="resim7.....jpeg" class="slide">
+        <img src="resim8.....jpeg" class="slide">
+        <img src="resim9.....jpeg" class="slide">
+        <img src="resim10....jpeg" class="slide">
+        <img src="resim11....jpeg" class="slide">
+        <img src="resim12....jpeg" class="slide">
+        <img src="resim13....jpeg" class="slide">
+        <img src="resim14....jpeg" class="slide">
+        <img src="resim15.....png" class="slide">
+        <img src="resim16.....png" class="slide">
+        <img src="resim17.....png" class="slide">
+        <img src="resim18.....png" class="slide">
+        <img src="resim19.....png" class="slide">
+        <img src="resim20.....png" class="slide">
+        <img src="resim21.....png" class="slide">
+        <img src="resim22.....png" class="slide">
+        <img src="resim23....jpeg" class="slide">
     </div>
 
     <div id="controls">
@@ -65,7 +68,7 @@
         <div id="musicPlayer">
             <div class="player-info">
                 <img id="songImg" src="kapak8.jpeg.jpeg">
-                <div style="font-size: 13px; overflow: hidden; white-space: nowrap;" id="songName">Yükleniyor...</div>
+                <div id="songName" style="font-size: 13px; overflow: hidden; white-space: nowrap;">Yükleniyor...</div>
             </div>
             <div id="progressBar" onclick="seek(event)"><div id="progressFill"></div></div>
             <div style="text-align: center; margin-top: 10px;">
@@ -99,14 +102,14 @@
 
     <script>
         const list = [
-            { n: "SONSUZ OL", f: "muzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
-            { n: "KAR BEYAZ", f: "muzik2.mp3.mp3", i: "kapak2.jpeg.png" },
-            { n: "CAMBAZ", f: "muzik3.mp3.mp3", i: "kapak3.jpeg.png" },
-            { n: "ASK DURDUKCA", f: "muzik4.mp3.mp3", i: "kapak4.jpeg.png" },
-            { n: "MELANKOLI", f: "muzik5.mp3.mp3", i: "kapak5.jpeg.png" },
-            { n: "ZAMANI TUT", f: "muzik6.mp3.mp3", i: "kapak6.jpeg.png" },
-            { n: "KALDIRIM", f: "muzik7.mp3..mp3", i: "kapak7.jpeg.png" },
-            { n: "ZEYNEPIM", f: "muzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
+            { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
+            { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" },
+            { n: "CAMBAZ", f: "müzik3.mp3.mp3", i: "kapak3.jpeg.png" },
+            { n: "AŞK DURDUKÇA", f: "müzik4.mp3.mp3", i: "kapak4.jpeg.png" },
+            { n: "MELANKOLİ", f: "müzik5.mp3.mp3", i: "kapak5.jpeg.png" },
+            { n: "ZAMANI TUT", f: "müzik6.mp3.mp3", i: "kapak6.jpeg.png" },
+            { n: "KALDIRIM", f: "müzik7.mp3..mp3", i: "kapak7.jpeg.png" },
+            { n: "ZEYNEPİM", f: "müzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
         ];
 
         let idx = 0; let sActive = true; let sInt = null;
@@ -170,11 +173,13 @@
             document.getElementById('controls').style.display='flex';
             sInt = setInterval(snow, 150);
             let c = 0; const s = document.querySelectorAll('.slide');
-            setInterval(() => {
-                s[c].classList.remove('active');
-                c = (c+1)%s.length;
-                s[c].classList.add('active');
-            }, 3000);
+            if(s.length > 0) {
+                setInterval(() => {
+                    s[c].classList.remove('active');
+                    c = (c+1)%s.length;
+                    s[c].classList.add('active');
+                }, 3000);
+            }
         }
 
         aud.ontimeupdate = () => {

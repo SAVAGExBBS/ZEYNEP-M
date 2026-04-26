@@ -9,8 +9,8 @@
         #text { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-align: center; animation: pulse 2s infinite; z-index: 10; }
         @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; color: #ff0055; } }
         #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 25px rgba(255,0,85,0.3); border: 2px solid rgba(255,255,255,0.1); background: #111; }
-        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
-        .active { opacity: 1; }
+        .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; display: none; }
+        .active { opacity: 1; display: block; }
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
         .btn-group { display: flex; gap: 5px; }
         .control-btn { background: rgba(30, 30, 30, 0.9); border: 1px solid #444; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 11px; }
@@ -20,55 +20,46 @@
         #songImg { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; }
         #progressBar { width: 100%; height: 5px; background: #333; border-radius: 3px; cursor: pointer; }
         #progressFill { width: 0%; height: 100%; background: #ff0055; border-radius: 3px; }
+        
+        /* Yağmur Efektleri Stilleri */
+        .snowflake { position: fixed; top: -50px; pointer-events: none; animation: fall linear infinite; z-index: 5; color: white; }
+        
+        .kitty-rain { 
+            position: fixed; 
+            top: -60px; /* Resim boyutu kadar yukarıda başlasın */
+            pointer-events: none; 
+            animation: fall linear infinite; 
+            z-index: 5; 
+            width: 50px; /* Kitty resimlerinin boyutu */
+            height: auto;
+        }
+
+        @keyframes fall { 
+            to { transform: translateY(110vh) rotate(360deg); } 
+        }
+
+        #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 30; }
         #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
         #videoPlayer { width: 90%; max-width: 450px; border-radius: 10px; }
-        #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 30; }
-        #aniPanel { display: none; position: fixed; bottom: 150px; background: rgba(10,10,10,0.95); padding: 15px; border-radius: 15px; border: 1px solid #ff0055; z-index: 50; width: 280px; }
-        .snowflake { position: fixed; top: -10px; color: white; pointer-events: none; animation: fall linear infinite; z-index: 5; }
-        @keyframes fall { to { transform: translateY(110vh); } }
     </style>
 </head>
 <body>
 
     <div id="text">SENİ SEVİYORUM ZEYNEP ❤️</div>
 
-    <div id="gallery">
-        <img src="resim1.jpeg.jpeg" class="slide active">
-        <img src="resim2.jpeg.jpeg" class="slide">
-        <img src="resim3.jpeg.jpeg" class="slide">
-        <img src="resim4.jpeg.jpeg" class="slide">
-        <img src="resim5.jpeg.jpeg" class="slide">
-        <img src="resim6.jpeg.jpeg" class="slide">
-        <img src="resim7.jpeg.jpeg" class="slide">
-        <img src="resim8.jpeg.jpeg" class="slide">
-        <img src="resim9.jpeg.jpeg" class="slide">
-        <img src="resim10.jpeg.jpeg" class="slide">
-        <img src="resim11.jpeg.jpeg" class="slide">
-        <img src="resim12.jpeg.jpeg" class="slide">
-        <img src="resim13.jpeg.jpeg" class="slide">
-        <img src="resim14.jpeg.jpeg" class="slide">
-        <img src="resim15.jpeg.png" class="slide">
-        <img src="resim16.jpeg.png" class="slide">
-        <img src="resim17.jpeg.png" class="slide">
-        <img src="resim18.jpeg.png" class="slide">
-        <img src="resim19.jpeg.png" class="slide">
-        <img src="resim20.jpeg.png" class="slide">
-        <img src="resim21.jpeg.png" class="slide">
-        <img src="resim22.jpeg.png" class="slide">
-        <img src="resim23.jpeg.jpeg" class="slide">
-    </div>
+    <div id="gallery"></div>
 
     <div id="controls">
         <div class="btn-group">
             <button class="control-btn" onclick="changeBG()">🖼️ Manzara</button>
-            <button class="control-btn" id="snowToggle" onclick="toggleSnow()">❄️ Karı Durdur</button>
+            <button class="control-btn" id="modeToggle" onclick="toggleRain()">🎀 Kitty Modu</button>
             <button class="control-btn ani-btn" onclick="openAni()">🎥 ANILARIMIZ</button>
         </div>
         
         <div id="musicPlayer">
             <div class="player-info">
                 <img id="songImg" src="kapak8.jpeg.jpeg">
-                <div id="songName" style="font-size: 13px; overflow: hidden; white-space: nowrap;">Yükleniyor...</div>
+                <div id="songName" style="font-size: 13px;">Yükleniyor...</div>
             </div>
             <div id="progressBar" onclick="seek(event)"><div id="progressFill"></div></div>
             <div style="text-align: center; margin-top: 10px;">
@@ -79,118 +70,106 @@
         </div>
     </div>
 
-    <div id="aniPanel">
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
-            <button onclick="playVid(1)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">1</button>
-            <button onclick="playVid(2)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">2</button>
-            <button onclick="playVid(3)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">3</button>
-            <button onclick="playVid(4)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">4</button>
-            <button onclick="playVid(5)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">5</button>
-            <button onclick="playVid(6)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">6</button>
-            <button onclick="playVid(7)" style="padding:8px; background:#222; color:white; border:1px solid #444; border-radius:5px; font-size:10px;">7</button>
-        </div>
-        <button onclick="closeAni()" style="width:100%; margin-top:10px; background:#ff0055; color:white; border:none; padding:5px; border-radius:5px;">Kapat</button>
-    </div>
-
-    <div id="videoOverlay">
-        <video id="videoPlayer" controls></video>
-        <button onclick="closeVid()" style="margin-top:15px; padding:8px 20px; background:#ff0055; color:white; border:none; border-radius:20px;">Kapat</button>
-    </div>
-
     <button id="startBtn" onclick="start()">Sürprizi Başlat ✨</button>
     <audio id="audio"></audio>
 
     <script>
-        const list = [
-            { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
-            { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" },
-            { n: "CAMBAZ", f: "müzik3.mp3.mp3", i: "kapak3.jpeg.png" },
-            { n: "AŞK DURDUKÇA", f: "müzik4.mp3.mp3", i: "kapak4.jpeg.png" },
-            { n: "MELANKOLİ", f: "müzik5.mp3.mp3", i: "kapak5.jpeg.png" },
-            { n: "ZAMANI TUT", f: "müzik6.mp3.mp3", i: "kapak6.jpeg.png" },
-            { n: "KALDIRIM", f: "müzik7.mp3..mp3", i: "kapak7.jpeg.png" },
-            { n: "ZEYNEPİM", f: "müzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
+        // Senin o efsane çift uzantılı dosya isimlerin
+        const resimListesi = [
+            "resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg",
+            "resim6.jpeg.jpeg", "resim7.jpeg.jpeg", "resim8.jpeg.jpeg", "resim9.jpeg.jpeg", "resim10.jpeg.jpeg",
+            "resim11.jpeg.jpeg", "resim12.jpeg.jpeg", "resim13.jpeg.jpeg", "resim14.jpeg.jpeg",
+            "resim15.jpeg.png", "resim16.jpeg.png", "resim17.jpeg.png", "resim18.jpeg.png", "resim19.jpeg.png",
+            "resim20.jpeg.png", "resim21.jpeg.png", "resim22.jpeg.png", "resim23.jpeg.jpeg"
         ];
 
-        let idx = 0; let sActive = true; let sInt = null;
+        const list = [
+            { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
+            { n: "ZEYNEPIM", f: "müzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
+        ];
+
+        let idx = 0; 
+        let rainMode = 'snow'; // 'snow' veya 'kitty'
+        let rainInt = null;
         const aud = document.getElementById("audio");
 
-        function loadS(i) {
-            aud.src = list[i].f;
-            document.getElementById("songName").innerText = list[i].n;
-            document.getElementById("songImg").src = list[i].i;
+        // Resimleri galeriye yükle
+        resimListesi.forEach((src, i) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.className = 'slide' + (i === 0 ? ' active' : '');
+            img.onerror = function() { this.remove(); };
+            document.getElementById("gallery").appendChild(img);
+        });
+
+        // Yağmur oluşturma fonksiyonu (Kar veya Kitty)
+        function createRain() {
+            if(rainMode === 'snow') {
+                const el = document.createElement('div');
+                el.innerHTML = '❄';
+                el.className = 'snowflake';
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = Math.random() * 3 + 2 + 's';
+                el.style.opacity = Math.random();
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 5000);
+            } else {
+                // Attığın iki resmi karışık yağdır
+                const kittyImg = document.createElement('img');
+                const randomKitty = Math.random() < 0.5 ? 'kitty1.png' : 'kitty2.png';
+                kittyImg.src = randomKitty;
+                kittyImg.className = 'kitty-rain';
+                kittyImg.style.left = Math.random() * 100 + 'vw';
+                // Rastgele hız ve hafif şeffaflık
+                kittyImg.style.animationDuration = Math.random() * 4 + 3 + 's';
+                kittyImg.style.opacity = Math.random() * 0.5 + 0.5; // 0.5 ile 1 arası şeffaflık
+                document.body.appendChild(kittyImg);
+                setTimeout(() => kittyImg.remove(), 6000); // Kitty'ler biraz daha geç silinsin
+            }
         }
 
-        function pPause() {
-            if(aud.paused) { aud.play(); document.getElementById("pBtn").innerText="⏸"; }
-            else { aud.pause(); document.getElementById("pBtn").innerText="▶"; }
-        }
-
-        function next() { idx = (idx+1)%list.length; loadS(idx); aud.play(); }
-        function prev() { idx = (idx-1+list.length)%list.length; loadS(idx); aud.play(); }
-
-        function changeBG() {
-            const bgs = ['arka-plan.gif.gif', 'arka-plan2.gif.gif', '39800145-e763-41d3-a9ad-0ce382fb698e.jfif'];
-            document.body.style.backgroundImage = `url('${bgs[Math.floor(Math.random()*bgs.length)]}')`;
-        }
-
-        function toggleSnow() {
-            sActive = !sActive;
-            if(!sActive) { clearInterval(sInt); document.querySelectorAll('.snowflake').forEach(n=>n.remove()); }
-            else { sInt = setInterval(snow, 150); }
-            document.getElementById("snowToggle").innerText = sActive ? "❄️ Karı Durdur" : "❄️ Karı Aç";
-        }
-
-        function snow() {
-            const s = document.createElement('div');
-            s.innerHTML = '❄'; s.className = 'snowflake';
-            s.style.left = Math.random() * 100 + 'vw';
-            s.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.body.appendChild(s);
-            setTimeout(() => s.remove(), 5000);
-        }
-
-        function openAni() { document.getElementById('aniPanel').style.display='block'; }
-        function closeAni() { document.getElementById('aniPanel').style.display='none'; }
-
-        function playVid(n) {
-            aud.pause();
-            const v = document.getElementById('videoPlayer');
-            v.src = `anilar${n}.mp4.mp4`;
-            document.getElementById('videoOverlay').style.display='flex';
-            v.play();
-        }
-
-        function closeVid() {
-            document.getElementById('videoPlayer').pause();
-            document.getElementById('videoOverlay').style.display='none';
-            aud.play();
+        // Mod değiştirme fonksiyonu
+        function toggleRain() {
+            clearInterval(rainInt);
+            // Ekrandaki tüm eski yağmurları temizle
+            document.querySelectorAll('.snowflake, .kitty-rain').forEach(n => n.remove());
+            
+            if(rainMode === 'snow') {
+                rainMode = 'kitty';
+                // Kitty modu: Resimler daha büyük olduğu için aralığı biraz açalım (200ms)
+                rainInt = setInterval(createRain, 200);
+                document.getElementById("modeToggle").innerText = "❄️ Kar Modu";
+            } else {
+                rainMode = 'snow';
+                // Kar modu: Daha sık yağsın (150ms)
+                rainInt = setInterval(createRain, 150);
+                document.getElementById("modeToggle").innerText = "🎀 Kitty Modu";
+            }
         }
 
         function start() {
             loadS(0); aud.play();
-            document.getElementById('startBtn').style.display='none';
-            document.getElementById('controls').style.display='flex';
-            sInt = setInterval(snow, 150);
-            let c = 0; const s = document.querySelectorAll('.slide');
-            if(s.length > 0) {
-                setInterval(() => {
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('controls').style.display = 'flex';
+            // Kar modu ile başla
+            rainInt = setInterval(createRain, 150);
+            
+            let c = 0;
+            setInterval(() => {
+                const s = document.querySelectorAll('.slide');
+                if(s.length > 0) {
                     s[c].classList.remove('active');
-                    c = (c+1)%s.length;
+                    c = (c + 1) % s.length;
                     s[c].classList.add('active');
-                }, 3000);
-            }
+                }
+            }, 3000);
         }
 
-        aud.ontimeupdate = () => {
-            document.getElementById("progressFill").style.width = (aud.currentTime/aud.duration)*100 + "%";
-        };
-        aud.onended = next;
-
-        function seek(e) {
-            const r = document.getElementById("progressBar").getBoundingClientRect();
-            aud.currentTime = ((e.clientX - r.left) / r.width) * aud.duration;
-        }
+        // Müzik kontrolleri
+        function pPause() { aud.paused ? aud.play() : aud.pause(); }
+        function loadS(i) { aud.src = list[i].f; aud.play(); }
+        function next() { idx = (idx+1)%list.length; loadS(idx); }
+        function prev() { idx = (idx-1+list.length)%list.length; loadS(idx); }
     </script>
 </body>
 </html>

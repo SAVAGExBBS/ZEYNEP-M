@@ -28,19 +28,9 @@
         .kitty-rain { width: 45px; height: auto; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 
-        /* ASİSTAN KITTY STİLİ */
-        #kittyAsistan {
-            position: fixed; width: 90px; height: 90px; cursor: pointer; z-index: 100;
-            transition: all 2.5s linear; bottom: 50px; right: 50px;
-        }
+        #kittyAsistan { position: fixed; width: 90px; height: 90px; cursor: pointer; z-index: 100; transition: all 2.5s linear; bottom: 50px; right: 50px; }
         #kittyAsistan img { width: 100%; height: auto; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); }
-        
-        #kittyBubble {
-            position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%);
-            background: white; color: #333; padding: 12px 18px; border-radius: 20px;
-            font-size: 13px; font-weight: bold; width: 140px; text-align: center;
-            display: none; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 2px solid #ffb6c1;
-        }
+        #kittyBubble { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); background: white; color: #333; padding: 12px 18px; border-radius: 20px; font-size: 13px; font-weight: bold; width: 140px; text-align: center; display: none; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 2px solid #ffb6c1; }
 
         #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 30; }
         #aniPanel { display: none; position: fixed; bottom: 150px; background: rgba(10,10,10,0.95); padding: 15px; border-radius: 15px; border: 1px solid #ff0055; z-index: 50; width: 280px; }
@@ -121,11 +111,11 @@
             "Enes seni çok seviyor! ❤️",
             "Bu şarkı senin için çalıyor! 🎶",
             "Resimlere bakarken gülümse! 😊",
-            "Enes'in bir tanesisin! 🎀"
-            "Çok ösledim karamellisütümü 😖"
-            "Ben çok tatlı olabilirim çünkü HelloKittyim ben ama sen daha tatlısın ZEYNEP"
-             "Bu siteyi açan yakışıklı cocugun insta nerde???"
-              "SENİ SEVİYORUM😻😻😻"
+            "Enes'in bir tanesisin! 🎀",
+            "Çok ösledim karamellisütümü 😖",
+            "Ben çok tatlı olabilirim çünkü HelloKittyim ben ama sen daha tatlısın ZEYNEP",
+            "Bu siteyi açan yakışıklı cocugun insta nerde???",
+            "SENİ SEVİYORUM😻😻😻"
         ];
 
         const kittySabitResim = "kitty-sabit.png.png.png"; 
@@ -144,7 +134,10 @@
         function createRain() {
             const el = document.createElement(rainMode === 'snow' ? 'div' : 'img');
             if(rainMode === 'snow') { el.innerHTML = '❄'; el.className = 'snowflake'; }
-            else { el.src = "hellokitty.png.png"; el.className = 'kitty-rain'; }
+            else { 
+                el.src = Math.random() < 0.5 ? 'hellokitty.png.png' : 'hellokitty2.png.png';
+                el.className = 'kitty-rain'; 
+            }
             el.style.left = Math.random() * 100 + 'vw';
             el.style.animationDuration = Math.random() * 3 + 2 + 's';
             document.body.appendChild(el);
@@ -186,7 +179,7 @@
             asistanImg.style.transform = x > currentX ? "scaleX(1)" : "scaleX(-1)";
             asistan.style.left = x + 'px';
             asistan.style.top = y + 'px';
-            setTimeout(() => { asistanImg.src = kittySabitResim; }, 2500);
+            setTimeout(() => { if(!iltifatAktif) asistanImg.src = kittySabitResim; }, 2500);
         }
 
         function start() {

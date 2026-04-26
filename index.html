@@ -93,11 +93,11 @@
             { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
             { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" },
             { n: "CAMBAZ", f: "müzik3.mp3.mp3", i: "kapak3.jpeg.png" },
-            { n: "ASK DURDUKCA", f: "müzik4.mp3.mp3", i: "kapak4.jpeg.png" },
-            { n: "MELANKOLI", f: "müzik5.mp3.mp3", i: "kapak5.jpeg.png" },
-            { n: "ZAMANI TUT", f: "müzik6.mp3.mp3", i: "kapak6.jpeg.png" },
-            { n: "KALDIRIM", f: "müzik7.mp3..mp3", i: "kapak7.jpeg.png" },
-            { n: "ZEYNEPIM", f: "müzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
+            { n: "ASK DURDUKÇA", f: "müzik4.mp3.mp3", i: "kapak4.jpeg.png" },
+            { n: "HARD CORE MELANKOLI", f: "müzik5.mp3.mp3", i: "kapak5.jpeg.png" },
+            { n: "TUTAMIYORUM ZAMANI", f: "müzik6.mp3.mp3", i: "kapak6.jpeg.png" },
+            { n: "ARNAVUT KALDIRIMLARI", f: "müzik7.mp3..mp3", i: "kapak7.jpeg.png" },
+            { n: "ZEYNEPİM ♥", f: "müzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
         ];
 
         let idx = 0; let rainMode = 'snow'; let rainInt = null;
@@ -111,18 +111,20 @@
         });
 
         function createRain() {
-            const el = document.createElement(rainMode === 'snow' ? 'div' : 'img');
-            if(rainMode === 'snow') {
-                el.innerHTML = '❄'; el.className = 'snowflake';
-            } else {
-                el.src = Math.random() < 0.5 ? 'hellokitty.png.png' : 'hellokitty2.png.png';
-                el.className = 'kitty-rain';
-            }
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.animationDuration = Math.random() * 3 + 2 + 's';
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 5000);
-        }
+           const el = document.createElement(rainMode === 'snow' ? 'div' : 'img');
+    if(rainMode === 'snow') {
+        el.innerHTML = '❄'; el.className = 'snowflake';
+    } else {
+        // Senin klasöründe 'png.png' şeklinde göründüğü için böyle yazdım:
+        el.src = Math.random() < 0.5 ? 'hellokitty.png.png' : 'hellokitty2.png.png';
+        el.className = 'kitty-rain';
+    }
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = Math.random() * 3 + 2 + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 5000);
+}
+        
 
         function toggleRain() {
             clearInterval(rainInt);

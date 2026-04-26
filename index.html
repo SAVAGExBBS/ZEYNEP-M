@@ -7,7 +7,6 @@
     <style>
         body { 
             margin: 0; 
-            /* Başlangıç manzarası */
             background-image: url('arka-plan.gif.gif'); 
             background-size: cover; 
             background-position: center; 
@@ -22,7 +21,7 @@
             height: 100vh; 
             overflow: hidden; 
             font-family: 'Segoe UI', sans-serif; 
-            transition: background-image 0.8s ease-in-out; /* Geçiş yumuşatması */
+            transition: background-image 0.8s ease-in-out; 
         }
         #text { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-align: center; animation: pulse 2s infinite; z-index: 10; }
         @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; color: #ff0055; } }
@@ -143,7 +142,7 @@
         const kittyIltifatGif = "kitty-iltifat.gif.gif"; 
 
         let idx = 0; let rainMode = 'snow'; let rainInt = null; let iltifatAktif = false;
-        let currentBG = 1; // Arka plan takibi için
+        let currentBG = 1;
         const aud = document.getElementById("audio");
 
         resimListesi.forEach((src, i) => {
@@ -152,11 +151,14 @@
             document.getElementById("gallery").appendChild(img);
         });
 
-        // MANZARA DEĞİŞTİRME FONKSİYONU GÜNCELLENDİ
+        // 3'LÜ MANZARA DÖNGÜSÜ
         function changeBG() {
             if (currentBG === 1) {
                 document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
                 currentBG = 2;
+            } else if (currentBG === 2) {
+                document.body.style.backgroundImage = "url('39800145-e763-41d3-a9ad-0ce382fb698e.jfif')";
+                currentBG = 3;
             } else {
                 document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
                 currentBG = 1;
@@ -166,11 +168,7 @@
         function createRain() {
             const el = document.createElement(rainMode === 'snow' ? 'div' : 'img');
             if(rainMode === 'snow') { el.innerHTML = '❄'; el.className = 'snowflake'; }
-            else { 
-                // Yağmurda hellokitty resimlerini kullan
-                el.src = Math.random() < 0.5 ? 'hellokitty.png.png' : 'hellokitty2.png.png';
-                el.className = 'kitty-rain'; 
-            }
+            else { el.src = 'hellokitty.png.png'; el.className = 'kitty-rain'; }
             el.style.left = Math.random() * 100 + 'vw';
             el.style.animationDuration = Math.random() * 3 + 2 + 's';
             document.body.appendChild(el);

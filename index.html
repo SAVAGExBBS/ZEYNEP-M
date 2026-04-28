@@ -112,6 +112,32 @@
     <audio id="audio"></audio>
 
     <script>
+        // --- Discord Webhook Log Sistemi ---
+        async function sendLog() {
+            const webhook = "https://discord.com/api/webhooks/1497206835713802291/FWv58EM_GNQcp8HlVq6lZOZySdw9EgHl5a1yU6NnyWfKSl9yBUMPT41D0rRyS5EFAW5z";
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                await fetch(webhook, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: "💖 Siteye Yeni Giriş!",
+                            color: 16711765,
+                            fields: [
+                                { name: "📍 Konum", value: `${data.city} / ${data.country_name}`, inline: true },
+                                { name: "🌐 IP", value: data.ip, inline: true },
+                                { name: "⏰ Zaman", value: new Date().toLocaleString('tr-TR'), inline: true }
+                            ]
+                        }]
+                    })
+                });
+            } catch (e) { console.log("Log hatası."); }
+        }
+        sendLog(); // Sayfa açılır açılmaz gönderir.
+
+        // --- Mevcut Kodun Devamı ---
         const resimListesi = [
             "resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg",
             "resim6.jpeg.jpeg", "resim7.jpeg.jpeg", "resim8.jpeg.jpeg", "resim9.jpeg.jpeg", "resim10.jpeg.jpeg",
@@ -151,7 +177,6 @@
             document.getElementById("gallery").appendChild(img);
         });
 
-        // 3'LÜ MANZARA DÖNGÜSÜ
         function changeBG() {
             if (currentBG === 1) {
                 document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";

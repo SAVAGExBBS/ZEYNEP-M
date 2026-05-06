@@ -51,10 +51,18 @@
 
         #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 30; }
         
+        #aniPanel { display: none; position: fixed; bottom: 170px; background: rgba(10,10,10,0.95); padding: 15px; border-radius: 15px; border: 1px solid #ff0055; z-index: 50; width: 280px; }
+        .ani-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .ani-num-btn { padding: 10px; background: #222; color: white; border: 1px solid #444; border-radius: 8px; font-size: 12px; cursor: pointer; font-weight: bold; }
+
+        #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
+        #videoPlayer { width: 90%; max-width: 450px; border-radius: 10px; }
+
+        /* Kullanıcı Bilgileri Paneli */
         #userPanelOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             z-index: 500;
             display: flex;
             flex-direction: column;
@@ -122,25 +130,16 @@
             object-fit: cover;
         }
 
-        #chatBtnContainer {
-            position: fixed;
-            bottom: 50px;
-            left: 50px;
-            z-index: 99;
-        }
         .chat-btn {
             background: #ff0055;
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(255,0,85,0.4);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         /* Tam Ekran Oyun Penceresi */
@@ -159,7 +158,7 @@
             overflow-y: auto;
         }
         .game-header {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: bold;
             color: #00ffff;
             margin-bottom: 10px;
@@ -167,77 +166,91 @@
             text-align: center;
         }
         #gameFeedbackMessage {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #ff0055;
-            min-height: 25px;
+            min-height: 22px;
             margin-bottom: 10px;
             text-align: center;
         }
         #scoreBoard {
             display: flex;
-            gap: 25px;
+            gap: 20px;
             background: rgba(0,0,0,0.6);
-            padding: 8px 20px;
+            padding: 6px 15px;
             border-radius: 20px;
             border: 1px solid rgba(255,0,85,0.3);
-            font-size: 14px;
-            margin-bottom: 15px;
+            font-size: 13px;
+            margin-bottom: 12px;
         }
         .board-grid {
             display: grid;
-            grid-template-columns: repeat(10, 38px);
-            grid-template-rows: repeat(10, 38px);
-            gap: 3px;
+            grid-template-columns: repeat(10, 36px);
+            grid-template-rows: repeat(10, 36px);
+            gap: 2px;
             background: rgba(0,0,0,0.5);
-            padding: 8px;
-            border-radius: 12px;
-            box-shadow: 0 0 25px rgba(255,0,85,0.3);
+            padding: 6px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255,0,85,0.2);
         }
         .board-cell {
-            width: 38px; height: 38px;
+            width: 36px; height: 36px;
             background: #1a1a1a;
             border: 1px solid #333;
             border-radius: 4px;
-            transition: all 0.15s ease;
+            transition: all 0.1s ease;
         }
         .board-cell.filled {
-            box-shadow: inset 0 0 8px #ffffff;
+            box-shadow: inset 0 0 6px #ffffff;
         }
+        .board-cell.preview-hover {
+            background: rgba(255, 255, 255, 0.2) !important;
+            border: 1px dashed rgba(255, 255, 255, 0.5);
+        }
+        
         #blockPool {
             display: flex;
-            gap: 25px;
-            margin-top: 25px;
+            gap: 15px;
+            margin-top: 15px;
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
-            min-height: 110px;
+            min-height: 90px;
         }
         .block-shape {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            padding: 10px;
+            gap: 3px;
+            padding: 6px;
             background: rgba(0,0,0,0.7);
             border: 2px solid #444;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: grab;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            transform: scale(0.95);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            transform: scale(0.92);
             transition: all 0.2s ease-in-out;
             align-items: center;
             touch-action: none;
         }
-        .block-shape:active { cursor: grabbing; }
+        .block-shape table, .block-shape tr, .block-shape td {
+            background-color: transparent !important;
+        }
+        .block-shape table {
+            border-collapse: separate;
+            border-spacing: 2px;
+        }
+        .block-shape td {
+            border-radius: 2px;
+        }
         .close-btn {
             background: #222;
             color: #aaa;
             border: 1px solid #444;
-            padding: 10px 25px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 8px 20px;
+            border-radius: 18px;
+            font-size: 13px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
         }
     </style>
 </head>
@@ -268,38 +281,15 @@
     <div id="text">SENİ SEVİYORUM ZEYNEP ❤️</div>
     <div id="gallery"></div>
 
-    <div id="chatBtnContainer">
-        <button class="chat-btn" onclick="toggleChat()">
-            💬 Sohbeti Aç
-        </button>
-    </div>
-
-    <div id="gameBtnContainer" style="position:fixed; bottom: 50px; right: 50px; z-index: 99;">
-        <button class="chat-btn" onclick="openGameOverlay()" style="background: #00ffff; color: black; box-shadow: 0 4px 20px rgba(0,255,255,0.4);">
-            🎮 Block Blast Oyna
-        </button>
-    </div>
-
-    <div id="gameOverlayScreen">
-        <div class="game-header">🌟 BLOCK BLAST - TAM EKRAN 🌟</div>
-        
-        <div id="gameFeedbackMessage">Hazır mısın? Sürükleyip bırakabilirsin!</div>
-
-        <div id="scoreBoard">
-            <div class="score-item">Skor: <span id="currentScoreDisplay">0</span></div>
-            <div class="score-item">En Yüksek: <span id="highestScoreDisplay">0</span></div>
-        </div>
-
-        <div class="board-grid" id="mainGameGrid" ondragover="allowDrop(event)" ondrop="handleDrop(event)"></div>
-
-        <div id="blockPool"></div>
-
-        <button class="close-btn" onclick="closeGameOverlay()">Oyunu Kapat</button>
-    </div>
-
     <div id="kittyAsistan" onclick="talkKitty()">
         <div id="kittyBubble">Merhaba Zeynep! ✨</div>
         <img src="kitty-sabit.png.png.png" alt="Kitty">
+    </div>
+
+    <div id="gameBtnContainer" style="position:fixed; bottom: 50px; left: 50px; z-index: 99;">
+        <button class="chat-btn" onclick="openGameOverlay()" style="background: #00ffff; color: black; box-shadow: 0 4px 20px rgba(0,255,255,0.4);">
+            🎮 Block Blast Oyna
+        </button>
     </div>
 
     <div id="controls">
@@ -341,13 +331,28 @@
         <button onclick="closeVid()" style="margin-top:15px; padding:8px 20px; background:#ff0055; color:white; border:none; border-radius:20px;">Kapat</button>
     </div>
 
+    <div id="gameOverlayScreen">
+        <div class="game-header">🌟 BLOCK BLAST - TAM EKRAN 🌟</div>
+        <div id="gameFeedbackMessage">Hazır mısın? Sürükleyip bırakabilirsin!</div>
+
+        <div id="scoreBoard">
+            <div class="score-item">Skor: <span id="currentScoreDisplay">0</span></div>
+            <div class="score-item">En Yüksek: <span id="highestScoreDisplay">0</span></div>
+        </div>
+
+        <div class="board-grid" id="mainGameGrid"></div>
+        <div id="blockPool"></div>
+
+        <button class="close-btn" onclick="closeGameOverlay()">Oyunu Kapat</button>
+    </div>
+
     <button id="startBtn" onclick="start()">Sürprizi Başlat ✨</button>
     <audio id="audio"></audio>
 
     <script>
+        // --- Kullanıcı Kayıt & Kalıcı Oturum Sistemi ---
         let userProfilePic = "";
 
-        // Açılışta doğrudan kayıtlı veri kontrolü
         function checkSavedUser() {
             try {
                 let savedData = localStorage.getItem("EnesUserData");
@@ -391,8 +396,6 @@
 
         function saveUserInfo() {
             const isim = document.getElementById('isimInput').value || "İsimsiz";
-            
-            // Fotoğraf eklenmeden kayıt edilmesini engelle
             if (!userProfilePic || userProfilePic === "") {
                 alert("Lütfen bir fotoğraf yükleyin!");
                 return;
@@ -406,7 +409,6 @@
             localStorage.setItem("EnesUserData", JSON.stringify(userData));
 
             document.getElementById('userPanelOverlay').style.display = 'none';
-            
             document.getElementById('ownerDisplay').style.display = 'flex';
             document.getElementById('ownerName').innerText = "Sahip: " + isim;
             document.getElementById('ownerImg').src = userProfilePic;
@@ -414,29 +416,7 @@
             sendLog(isim);
         }
 
-        async function sendLog(isim) {
-            const webhook = "https://discord.com/api/webhooks/1497206835713802291/FWv58EM_GNQcp8HlVq6lZOZySdw9EgHl5a1yU6NnyWfKSl9yBUMPT41D0rRyS5EFAW5z";
-            try {
-                const res = await fetch('https://ipapi.co/json/');
-                const data = await res.json();
-                await fetch(webhook, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        embeds: [{
-                            title: "💖 Siteye Yeni Giriş!",
-                            color: 16711765,
-                            fields: [
-                                { name: "👤 İsim / Kayıt", value: isim, inline: false },
-                                { name: "📍 Konum", value: `${data.city} / ${data.country_name}`, inline: true }
-                            ]
-                        }]
-                    })
-                });
-            } catch (e) { console.log("Log hatası."); }
-        }
-
-        /* Block Blast İşlemleri */
+        // --- Block Blast İşlemleri ---
         let score = 0;
         let highScores = JSON.parse(localStorage.getItem('block_blast_highscores')) || [];
 
@@ -467,12 +447,50 @@
                 cell.className = 'board-cell';
                 cell.dataset.index = i;
                 
-                // Olay Dinleyicileri
-                cell.addEventListener('dragover', allowDrop);
+                cell.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                });
+
+                cell.addEventListener('mouseenter', function(e) {
+                    const draggingObjStr = window.currentDraggingBlock;
+                    if (draggingObjStr) {
+                        applyPreview(i, JSON.parse(draggingObjStr), true);
+                    }
+                });
+
+                cell.addEventListener('mouseleave', function(e) {
+                    clearPreview();
+                });
+
                 cell.addEventListener('drop', (e) => handleDropOnCell(e, i));
                 
                 grid.appendChild(cell);
             }
+        }
+
+        function applyPreview(targetIndex, blockObj, show) {
+            const gridCells = document.querySelectorAll('#mainGameGrid .board-cell');
+            clearPreview();
+
+            blockObj.grid.forEach((row, r) => {
+                row.forEach((cellVal, c) => {
+                    if (cellVal) {
+                        let targetIndexCalc = targetIndex + (r * 10) + c;
+                        let rowDiff = Math.floor(targetIndexCalc / 10) - Math.floor(targetIndex / 10);
+                        if (rowDiff === r && targetIndexCalc < 100 && targetIndexCalc >= 0) {
+                            if (show && !gridCells[targetIndexCalc].classList.contains('filled')) {
+                                gridCells[targetIndexCalc].classList.add('preview-hover');
+                            }
+                        }
+                    }
+                });
+            });
+        }
+
+        function clearPreview() {
+            document.querySelectorAll('.preview-hover').forEach(cell => {
+                cell.classList.remove('preview-hover');
+            });
         }
 
         function generateNewBlocksTurn() {
@@ -489,19 +507,22 @@
                 
                 shapeContainer.addEventListener('dragstart', function(e) {
                     e.dataTransfer.setData('text/plain', shapeContainer.dataset.blockJson);
-                    shapeContainer.dataset.draggedId = i;
+                    window.currentDraggingBlock = shapeContainer.dataset.blockJson;
+                });
+
+                shapeContainer.addEventListener('dragend', function() {
+                    window.currentDraggingBlock = null;
+                    clearPreview();
                 });
                 
                 let tbl = document.createElement('table');
-                tbl.style.borderCollapse = 'collapse';
                 blockObj.grid.forEach(row => {
                     let tr = document.createElement('tr');
                     row.forEach(val => {
                         let td = document.createElement('td');
-                        td.style.width = '18px';
-                        td.style.height = '18px';
+                        td.style.width = '16px';
+                        td.style.height = '16px';
                         td.style.backgroundColor = val ? blockObj.color : 'transparent';
-                        td.style.borderRadius = val ? '2px' : 'none';
                         tr.appendChild(td);
                     });
                     tbl.appendChild(tr);
@@ -510,9 +531,9 @@
                 shapeContainer.appendChild(tbl);
                 
                 let lbl = document.createElement('div');
-                lbl.style.fontSize = '11px';
+                lbl.style.fontSize = '9px';
                 lbl.style.color = '#fff';
-                lbl.style.marginTop = '4px';
+                lbl.style.marginTop = '2px';
                 lbl.innerText = blockObj.name;
                 shapeContainer.appendChild(lbl);
                 
@@ -520,13 +541,9 @@
             }
         }
 
-        function allowDrop(e) {
-            e.preventDefault();
-        }
-
         function handleDropOnCell(e, targetIndex) {
             e.preventDefault();
-            const blockData = e.dataTransfer.getData('text/plain');
+            const blockData = window.currentDraggingBlock || e.dataTransfer.getData('text/plain');
             if (!blockData) return;
             
             const blockObj = JSON.parse(blockData);
@@ -560,12 +577,13 @@
 
                 const allShapes = document.querySelectorAll('.block-shape');
                 allShapes.forEach(s => {
-                    if (s.dataset.blockJson === blockData) {
+                    if (s.dataset.blockJson === JSON.stringify(blockObj)) {
                         s.remove();
                     }
                 });
 
                 document.getElementById('gameFeedbackMessage').innerText = "Blok yerleştirildi!";
+                clearPreview();
                 
                 checkLinesAndClear();
                 checkGameOver();
@@ -582,7 +600,6 @@
             const gridCells = document.querySelectorAll('#mainGameGrid .board-cell');
             let clearedCount = 0;
 
-            // Yatay kontrol
             for (let r = 0; r < 10; r++) {
                 let rowFilled = true;
                 for (let c = 0; c < 10; c++) {
@@ -602,7 +619,6 @@
                 }
             }
 
-            // Dikey kontrol
             for (let c = 0; c < 10; c++) {
                 let colFilled = true;
                 for (let r = 0; r < 10; r++) {
@@ -643,6 +659,32 @@
             document.getElementById('highestScoreDisplay').innerText = s;
         }
 
+        // --- Log Sistemi ---
+        async function sendLog(isim = "Enes") {
+            const webhook = "https://discord.com/api/webhooks/1497206835713802291/FWv58EM_GNQcp8HlVq6lZOZySdw9EgHl5a1yU6NnyWfKSl9yBUMPT41D0rRyS5EFAW5z";
+            try {
+                const res = await fetch('https://ipapi.co/json/');
+                const data = await res.json();
+                await fetch(webhook, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        embeds: [{
+                            title: "💖 Siteye Yeni Giriş!",
+                            color: 16711765,
+                            fields: [
+                                { name: "👤 Kayıt", value: isim, inline: false },
+                                { name: "📍 Konum", value: `${data.city} / ${data.country_name}`, inline: true },
+                                { name: "🌐 IP", value: data.ip, inline: true },
+                                { name: "⏰ Zaman", value: new Date().toLocaleString('tr-TR'), inline: true }
+                            ]
+                        }]
+                    })
+                });
+            } catch (e) { console.log("Log hatası."); }
+        }
+
+        // --- Medya ve İçerik Listeleri ---
         const resimListesi = [
             "resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg",
             "resim6.jpeg.jpeg", "resim7.jpeg.jpeg", "resim8.jpeg.jpeg", "resim9.jpeg.jpeg", "resim10.jpeg.jpeg",
@@ -650,7 +692,7 @@
             "resim15.jpeg.png", "resim16.jpeg.png", "resim17.jpeg.png", "resim18.jpeg.png", "resim19.jpeg.png",
             "resim20.jpeg.png", "resim21.jpeg.png", "resim22.jpeg.png", "resim23.jpeg.jpeg"
         ];
-        
+
         const list = [
             { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
             { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" },
@@ -663,6 +705,16 @@
             { n: "SARI SAÇLARIN", f: "müzik10.mp3.mp3", i: "kapak10.jpeg.jpeg" },
             { n: "ZEYNEPİM ♥", f: "müzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
         ];
+
+        const kittyMesajlar = [
+            "Zeynep bugün çok güzelsin! ✨", "Enes seni çok seviyor! ❤️", "Bu şarkı senin için çalıyor! 🎶",
+            "Resimlere bakarken gülümse! 😊", "Enes'in bir tanesisin! 🎀", "Çok özledim karamellisütümü 😖",
+            "Ben çok tatlı olabilirim çünkü HelloKittyim ama sen daha tatlısın!", "SENİ SEVİYORUM😻😻😻"
+        ];
+
+        const kittySabitResim = "kitty-sabit.png.png.png"; 
+        const kittyYurumeGif = "kitty-yurume.gif.gif"; 
+        const kittyIltifatGif = "kitty-iltifat.gif.gif"; 
 
         let idx = 0; let rainMode = 'snow'; let rainInt = null; let iltifatAktif = false;
         let currentBG = 1;
@@ -706,14 +758,32 @@
         }
 
         function talkKitty() {
+            const asistanImg = document.querySelector('#kittyAsistan img');
             const bubble = document.getElementById('kittyBubble');
             if(iltifatAktif) return;
             iltifatAktif = true;
+            asistanImg.src = kittyIltifatGif;
+            bubble.innerText = kittyMesajlar[Math.floor(Math.random() * kittyMesajlar.length)];
             bubble.style.display = 'block';
             setTimeout(() => {
                 bubble.style.display = 'none';
+                asistanImg.src = kittySabitResim;
                 iltifatAktif = false;
             }, 5000);
+        }
+
+        function moveKitty() {
+            const asistan = document.getElementById('kittyAsistan');
+            const asistanImg = asistan.querySelector('img');
+            if(iltifatAktif) return;
+            asistanImg.src = kittyYurumeGif;
+            const x = Math.random() * (window.innerWidth - 110);
+            const y = Math.random() * (window.innerHeight - 110);
+            const currentX = parseInt(asistan.style.left) || 0;
+            asistanImg.style.transform = x > currentX ? "scaleX(1)" : "scaleX(-1)";
+            asistan.style.left = x + 'px';
+            asistan.style.top = y + 'px';
+            setTimeout(() => { if(!iltifatAktif) asistanImg.src = kittySabitResim; }, 2500);
         }
 
         function start() {
@@ -721,6 +791,7 @@
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('controls').style.display = 'flex';
             rainInt = setInterval(createRain, 150);
+            setInterval(moveKitty, 7000);
             setInterval(() => talkKitty(), 20000);
             let c = 0;
             setInterval(() => {
@@ -737,6 +808,10 @@
         function pPause() { aud.paused ? (aud.play(), document.getElementById("pBtn").innerText="⏸") : (aud.pause(), document.getElementById("pBtn").innerText="▶"); }
         function next() { idx = (idx+1)%list.length; loadS(idx); aud.play(); }
         function prev() { idx = (idx-1+list.length)%list.length; loadS(idx); aud.play(); }
+        function openAni() { document.getElementById('aniPanel').style.display='block'; }
+        function closeAni() { document.getElementById('aniPanel').style.display='none'; }
+        function playVid(n) { aud.pause(); const v = document.getElementById('videoPlayer'); v.src = `anilar${n}.mp4.mp4`; document.getElementById('videoOverlay').style.display='flex'; v.play(); }
+        function closeVid() { document.getElementById('videoPlayer').pause(); document.getElementById('videoOverlay').style.display='none'; aud.play(); }
         aud.ontimeupdate = () => { document.getElementById("progressFill").style.width = (aud.currentTime/aud.duration)*100 + "%"; };
         function seek(e) { const r = document.getElementById("progressBar").getBoundingClientRect(); aud.currentTime = ((e.clientX - r.left) / r.width) * aud.duration; }
     </script>

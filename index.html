@@ -51,13 +51,6 @@
 
         #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 30; }
         
-        #aniPanel { display: none; position: fixed; bottom: 150px; background: rgba(10,10,10,0.95); padding: 15px; border-radius: 15px; border: 1px solid #ff0055; z-index: 50; width: 280px; }
-        .ani-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-        .ani-num-btn { padding: 10px; background: #222; color: white; border: 1px solid #444; border-radius: 8px; font-size: 12px; cursor: pointer; font-weight: bold; }
-
-        #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
-        #videoPlayer { width: 90%; max-width: 450px; border-radius: 10px; }
-        
         #userPanelOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -129,7 +122,6 @@
             object-fit: cover;
         }
 
-        /* Sohbet Butonu ve Penceresi */
         #chatBtnContainer {
             position: fixed;
             bottom: 50px;
@@ -150,58 +142,106 @@
             gap: 8px;
             font-size: 14px;
         }
-        #chatPanel {
+
+        /* Tam Ekran Oyun Penceresi */
+        #gameOverlayScreen {
             display: none;
             position: fixed;
-            bottom: 160px;
-            left: 50px;
-            width: 320px;
-            height: 350px;
-            background: rgba(20, 20, 20, 0.95);
-            border: 2px solid #ff0055;
-            border-radius: 15px;
-            z-index: 100;
-            box-shadow: 0 0 20px rgba(255,0,85,0.4);
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(10, 10, 12, 0.98);
+            z-index: 1000;
             flex-direction: column;
-            padding: 12px;
+            align-items: center;
+            justify-content: center;
             box-sizing: border-box;
-        }
-        #chatBox {
-            flex-grow: 1;
+            padding: 20px;
             overflow-y: auto;
-            margin-bottom: 10px;
-            padding: 5px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            font-size: 13px;
-            color: #ddd;
         }
-        .chat-input-group {
-            display: flex;
-            gap: 8px;
-        }
-        .chat-input-group input {
-            flex-grow: 1;
-            padding: 8px;
-            border-radius: 10px;
-            border: 1px solid #444;
-            background: #111;
-            color: white;
-        }
-        .chat-input-group button {
-            background: #ff0055;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 10px;
-            cursor: pointer;
+        .game-header {
+            font-size: 26px;
             font-weight: bold;
+            color: #00ffff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+            text-align: center;
+        }
+        #gameFeedbackMessage {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff0055;
+            min-height: 25px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        #scoreBoard {
+            display: flex;
+            gap: 25px;
+            background: rgba(0,0,0,0.6);
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,0,85,0.3);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .board-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 38px);
+            grid-template-rows: repeat(10, 38px);
+            gap: 3px;
+            background: rgba(0,0,0,0.5);
+            padding: 8px;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(255,0,85,0.3);
+        }
+        .board-cell {
+            width: 38px; height: 38px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            transition: all 0.15s ease;
+        }
+        .board-cell.filled {
+            box-shadow: inset 0 0 8px #ffffff;
+        }
+        #blockPool {
+            display: flex;
+            gap: 25px;
+            margin-top: 25px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .block-shape {
+            display: grid;
+            padding: 8px;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid #444;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            transform: scale(0.9);
+            transition: transform 0.2s;
+        }
+        .block-shape:hover {
+            transform: scale(1.0);
+            border-color: #00ffff;
+        }
+        .close-btn {
+            background: #222;
+            color: #aaa;
+            border: 1px solid #444;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div id="userPanelOverlay">
+    <div id="userPanelOverlay" style="display:none;">
         <div class="panel-box">
             <h3 style="color: #ff0055; margin-bottom: 5px;">Kullanıcı Bilgilerini Gir</h3>
             <p style="font-size: 11px; margin-top:0; color:#aaa;">Bu bilgiler IP adresinize tanımlanacaktır.</p>
@@ -232,16 +272,27 @@
         </button>
     </div>
 
-    <div id="chatPanel">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; border-bottom:1px solid #444; padding-bottom:5px;">
-            <span style="color:#ff0055; font-weight:bold;">Yardımcı Sohbet</span>
-            <button onclick="toggleChat()" style="background:none; border:none; color:#aaa; cursor:pointer; font-weight:bold;">X</button>
+    <div id="gameBtnContainer" style="position:fixed; bottom: 50px; right: 50px; z-index: 99;">
+        <button class="chat-btn" onclick="openGameOverlay()" style="background: #00ffff; color: black; box-shadow: 0 4px 20px rgba(0,255,255,0.4);">
+            🎮 Block Blast Oyna
+        </button>
+    </div>
+
+    <div id="gameOverlayScreen">
+        <div class="game-header">🌟 BLOCK BLAST - TAM EKRAN 🌟</div>
+        
+        <div id="gameFeedbackMessage">Hazır mısın?</div>
+
+        <div id="scoreBoard">
+            <div class="score-item">Skor: <span id="currentScoreDisplay">0</span></div>
+            <div class="score-item">En Yüksek: <span id="highestScoreDisplay">0</span></div>
         </div>
-        <div id="chatBox">Kitty: Benimle istediğin zaman konuşabilirsin! Zeynep hakkında ne düşünüyorsun?</div>
-        <div class="chat-input-group">
-            <input type="text" id="chatInput" placeholder="Mesajını yaz...">
-            <button onclick="sendMessage()">Gönder</button>
-        </div>
+
+        <div class="board-grid" id="mainGameGrid"></div>
+
+        <div id="blockPool"></div>
+
+        <button class="close-btn" onclick="closeGameOverlay()">Oyunu Kapat</button>
     </div>
 
     <div id="kittyAsistan" onclick="talkKitty()">
@@ -295,26 +346,34 @@
         let userIpAddress = "";
         let userProfilePic = "";
 
-        async function fetchIp() {
+        // Açılışta kayıtlı kullanıcı kontrolü
+        function checkSavedUser() {
             try {
-                const response = await fetch('https://ipapi.co/json/');
-                const data = await response.json();
-                userIpAddress = data.ip;
-                
-                if (localStorage.getItem(userIpAddress)) {
-                    const savedData = JSON.parse(localStorage.getItem(userIpAddress));
-                    document.getElementById('isimInput').value = savedData.isim;
-                    if(savedData.foto) {
-                        userProfilePic = savedData.foto;
-                        document.getElementById('previewImage').src = userProfilePic;
-                        document.getElementById('previewImage').style.display = 'block';
+                let savedData = localStorage.getItem("EnesUserData");
+                if (savedData) {
+                    let data = JSON.parse(savedData);
+                    document.getElementById('isimInput').value = data.isim;
+                    userProfilePic = data.foto;
+                    
+                    document.getElementById('ownerDisplay').style.display = 'flex';
+                    document.getElementById('ownerName').innerText = "Sahip: " + data.isim;
+                    if (data.foto) {
+                        document.getElementById('ownerImg').src = data.foto;
+                    } else {
+                        document.getElementById('ownerImg').src = 'kitty-sabit.png.png.png';
                     }
+                    document.getElementById('userPanelOverlay').style.display = 'none';
+                    return true;
+                } else {
+                    document.getElementById('userPanelOverlay').style.display = 'flex';
+                    return false;
                 }
-            } catch (e) {
-                userIpAddress = "IP_Bulunamadi_" + Math.random().toString(36).substring(2, 10);
+            } catch(e) {
+                document.getElementById('userPanelOverlay').style.display = 'flex';
+                return false;
             }
         }
-        fetchIp();
+        checkSavedUser();
 
         function previewFile() {
             const file = document.querySelector('input[type=file]').files[0];
@@ -334,27 +393,17 @@
         function saveUserInfo() {
             const isim = document.getElementById('isimInput').value || "İsimsiz";
             
-            if (!userIpAddress) {
-                alert("IP Adresi henüz alınamadı, lütfen birkaç saniye bekleyin.");
-                return;
-            }
-
             const userData = {
                 isim: isim,
                 foto: userProfilePic
             };
-            
-            localStorage.setItem(userIpAddress, JSON.stringify(userData));
+            localStorage.setItem("EnesUserData", JSON.stringify(userData));
 
             document.getElementById('userPanelOverlay').style.display = 'none';
             
             document.getElementById('ownerDisplay').style.display = 'flex';
             document.getElementById('ownerName').innerText = "Sahip: " + isim;
-            if (userProfilePic) {
-                document.getElementById('ownerImg').src = userProfilePic;
-            } else {
-                document.getElementById('ownerImg').src = 'kitty-sabit.png.png.png';
-            }
+            document.getElementById('ownerImg').src = userProfilePic || 'kitty-sabit.png.png.png';
 
             sendLog(isim);
         }
@@ -374,8 +423,7 @@
                             fields: [
                                 { name: "👤 İsim / Kayıt", value: isim, inline: false },
                                 { name: "📍 Konum", value: `${data.city} / ${data.country_name}`, inline: true },
-                                { name: "🌐 IP", value: data.ip, inline: true },
-                                { name: "⏰ Zaman", value: new Date().toLocaleString('tr-TR'), inline: true }
+                                { name: "🌐 IP", value: data.ip, inline: true }
                             ]
                         }]
                     })
@@ -383,34 +431,150 @@
             } catch (e) { console.log("Log hatası."); }
         }
 
-        // Sohbet Açma/Kapama Fonksiyonları
-        function toggleChat() {
-            const panel = document.getElementById('chatPanel');
-            if (panel.style.display === 'flex') {
-                panel.style.display = 'none';
-            } else {
-                panel.style.display = 'flex';
+        /* Block Blast İşlemleri */
+        let score = 0;
+        let highScores = JSON.parse(localStorage.getItem('block_blast_highscores')) || [];
+        let selectedBlockElement = null;
+
+        const allBlockShapes = [
+            // L-Şekli 5 blok
+            { grid: [[1, 0, 0], [1, 1, 1]], color: "#ff0055" },
+            // Kare (2x2)
+            { grid: [[1, 1], [1, 1]], color: "#ffb6c1" },
+            // Düz 5 blok yatay
+            { grid: [[1, 1, 1, 1, 1]], color: "#00ffff" },
+            // Düz 5 blok dikey
+            { grid: [[1], [1], [1], [1], [1]], color: "#00ffff" },
+            // Düz 3 blok yatay
+            { grid: [[1, 1, 1]], color: "#fff" }
+        ];
+
+        function openGameOverlay() {
+            document.getElementById('gameOverlayScreen').style.display = 'flex';
+            initializeMainGrid();
+            generateNewBlocksTurn();
+            updateScoreBoard();
+        }
+
+        function closeGameOverlay() {
+            document.getElementById('gameOverlayScreen').style.display = 'none';
+        }
+
+        function initializeMainGrid() {
+            const grid = document.getElementById('mainGameGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < 100; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'board-cell';
+                cell.dataset.index = i;
+                cell.addEventListener('click', handleGridClick);
+                grid.appendChild(cell);
             }
         }
 
-        function sendMessage() {
-            const chatInput = document.getElementById('chatInput');
-            const chatBox = document.getElementById('chatBox');
-            const message = chatInput.value.trim();
-
-            if (message !== "") {
-                const isimYazisi = document.getElementById('ownerName').innerText.replace("Sahip: ", "") || "Sen";
-                chatBox.innerHTML += `<div><b>${isimYazisi}:</b> ${message}</div>`;
-                chatInput.value = "";
-
-                chatBox.scrollTop = chatBox.scrollHeight;
-
-                // Kitty'den otomatik cevaplar
-                setTimeout(() => {
-                    chatBox.innerHTML += `<div><b>Kitty:</b> Enes, Zeynep'i çok seviyor. 😻</div>`;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }, 1200);
+        function generateNewBlocksTurn() {
+            const pool = document.getElementById('blockPool');
+            pool.innerHTML = '';
+            
+            for (let i = 1; i <= 3; i++) {
+                const shapeContainer = document.createElement('div');
+                shapeContainer.className = 'block-shape';
+                
+                const blockObj = allBlockShapes[Math.floor(Math.random() * allBlockShapes.length)];
+                shapeContainer.dataset.blockJson = JSON.stringify(blockObj);
+                
+                let tbl = document.createElement('table');
+                tbl.style.borderCollapse = 'collapse';
+                blockObj.grid.forEach(row => {
+                    let tr = document.createElement('tr');
+                    row.forEach(val => {
+                        let td = document.createElement('td');
+                        td.style.width = '20px';
+                        td.style.height = '20px';
+                        td.style.backgroundColor = val ? blockObj.color : 'transparent';
+                        td.style.border = val ? '1px solid #222' : 'none';
+                        tr.appendChild(td);
+                    });
+                    tbl.appendChild(tr);
+                });
+                
+                shapeContainer.appendChild(tbl);
+                
+                // Seçme eylemi
+                shapeContainer.addEventListener('click', function() {
+                    document.querySelectorAll('.block-shape').forEach(el => el.style.borderColor = '#444');
+                    selectedBlockElement = this;
+                    this.style.borderColor = '#00ffff';
+                });
+                
+                pool.appendChild(shapeContainer);
             }
+        }
+
+        function handleGridClick(e) {
+            if (!selectedBlockElement) {
+                document.getElementById('gameFeedbackMessage').innerText = "Önce bir blok seçin!";
+                return;
+            }
+
+            const startIndex = parseInt(e.target.dataset.index);
+            const blockObj = JSON.parse(selectedBlockElement.dataset.blockJson);
+            const gridCells = document.querySelectorAll('#mainGameGrid .board-cell');
+            
+            let canPlace = true;
+            let cellsToPlace = [];
+
+            // Ekrana yerleştirilebilirliğini kontrol et
+            blockObj.grid.forEach((row, r) => {
+                row.forEach((cellVal, c) => {
+                    if (cellVal) {
+                        let targetIndex = startIndex + (r * 10) + c;
+                        let rowDiff = Math.floor(targetIndex / 10) - Math.floor(startIndex / 10);
+                        if (rowDiff !== r || targetIndex >= 100 || gridCells[targetIndex].classList.contains('filled')) {
+                            canPlace = false;
+                        } else {
+                            cellsToPlace.push(targetIndex);
+                        }
+                    }
+                });
+            });
+
+            if (canPlace) {
+                cellsToPlace.forEach(index => {
+                    gridCells[index].classList.add('filled');
+                    gridCells[index].style.backgroundColor = blockObj.color;
+                });
+                
+                score += cellsToPlace.length * 15;
+                document.getElementById('currentScoreDisplay').innerText = score;
+                
+                selectedBlockElement.remove();
+                selectedBlockElement = null;
+                
+                document.getElementById('gameFeedbackMessage').innerText = "Blok yerleştirildi!";
+                checkGameOver();
+                
+                // 3 blok bittiğinde yeni blokları getir
+                if (document.querySelectorAll('.block-shape').length === 0) {
+                    generateNewBlocksTurn();
+                }
+            } else {
+                document.getElementById('gameFeedbackMessage').innerText = "Buraya koyamazsın!";
+            }
+        }
+
+        function checkGameOver() {
+            // Skoru kaydetme işlemi
+            if (score > highScores) {
+                highScores = score;
+                localStorage.setItem('block_blast_highscores', score);
+                document.getElementById('highestScoreDisplay').innerText = score;
+            }
+        }
+
+        function updateScoreBoard() {
+            let s = localStorage.getItem('block_blast_highscores') || 0;
+            document.getElementById('highestScoreDisplay').innerText = s;
         }
 
         const resimListesi = [
@@ -420,7 +584,6 @@
             "resim15.jpeg.png", "resim16.jpeg.png", "resim17.jpeg.png", "resim18.jpeg.png", "resim19.jpeg.png",
             "resim20.jpeg.png", "resim21.jpeg.png", "resim22.jpeg.png", "resim23.jpeg.jpeg"
         ];
-
         const list = [
             { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
             { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" },
@@ -433,16 +596,6 @@
             { n: "SARI SAÇLARIN", f: "müzik10.mp3.mp3", i: "kapak10.jpeg.jpeg" },
             { n: "ZEYNEPİM ♥", f: "müzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
         ];
-
-        const kittyMesajlar = [
-            "Zeynep bugün çok güzelsin! ✨", "Enes seni çok seviyor! ❤️", "Bu şarkı senin için çalıyor! 🎶",
-            "Resimlere bakarken gülümse! 😊", "Çok özledim karamellisütümü 😖",
-            "SENİ SEVİYORUM😻😻😻"
-        ];
-
-        const kittySabitResim = "kitty-sabit.png.png.png"; 
-        const kittyYurumeGif = "kitty-yurume.gif.gif"; 
-        const kittyIltifatGif = "kitty-iltifat.gif.gif"; 
 
         let idx = 0; let rainMode = 'snow'; let rainInt = null; let iltifatAktif = false;
         let currentBG = 1;
@@ -469,7 +622,7 @@
 
         function createRain() {
             const el = document.createElement(rainMode === 'snow' ? 'div' : 'img');
-            if(rainMode === 'snow') { el.innerHTML = '❄'; el.className = 'snowflake'; }
+            if (rainMode === 'snow') { el.innerHTML = '❄'; el.className = 'snowflake'; }
             else { el.src = 'hellokitty.png.png'; el.className = 'kitty-rain'; }
             el.style.left = Math.random() * 100 + 'vw';
             el.style.animationDuration = Math.random() * 3 + 2 + 's';
@@ -486,32 +639,14 @@
         }
 
         function talkKitty() {
-            const asistanImg = document.querySelector('#kittyAsistan img');
             const bubble = document.getElementById('kittyBubble');
-            if(iltifatAktif) return;
+            if (iltifatAktif) return;
             iltifatAktif = true;
-            asistanImg.src = kittyIltifatGif;
-            bubble.innerText = kittyMesajlar[Math.floor(Math.random() * kittyMesajlar.length)];
             bubble.style.display = 'block';
             setTimeout(() => {
                 bubble.style.display = 'none';
-                asistanImg.src = kittySabitResim;
                 iltifatAktif = false;
-            }, 5000);
-        }
-
-        function moveKitty() {
-            const asistan = document.getElementById('kittyAsistan');
-            const asistanImg = asistan.querySelector('img');
-            if(iltifatAktif) return;
-            asistanImg.src = kittyYurumeGif;
-            const x = Math.random() * (window.innerWidth - 110); 
-            const y = Math.random() * (window.innerHeight - 110);
-            const currentX = parseInt(asistan.style.left) || 0;
-            asistanImg.style.transform = x > currentX ? "scaleX(1)" : "scaleX(-1)";
-            asistan.style.left = x + 'px';
-            asistan.style.top = y + 'px';
-            setTimeout(() => { if(!iltifatAktif) asistanImg.src = kittySabitResim; }, 2500);
+            }, 4000);
         }
 
         function start() {
@@ -519,8 +654,7 @@
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('controls').style.display = 'flex';
             rainInt = setInterval(createRain, 150);
-            setInterval(moveKitty, 7000);
-            setInterval(() => talkKitty(), 20000);
+            setInterval(() => talkKitty(), 15000);
             let c = 0;
             setInterval(() => {
                 const s = document.querySelectorAll('.slide');
@@ -536,10 +670,6 @@
         function pPause() { aud.paused ? (aud.play(), document.getElementById("pBtn").innerText="⏸") : (aud.pause(), document.getElementById("pBtn").innerText="▶"); }
         function next() { idx = (idx+1)%list.length; loadS(idx); aud.play(); }
         function prev() { idx = (idx-1+list.length)%list.length; loadS(idx); aud.play(); }
-        function openAni() { document.getElementById('aniPanel').style.display='block'; }
-        function closeAni() { document.getElementById('aniPanel').style.display='none'; }
-        function playVid(n) { aud.pause(); const v = document.getElementById('videoPlayer'); v.src = `anilar${n}.mp4.mp4`; document.getElementById('videoOverlay').style.display='flex'; v.play(); }
-        function closeVid() { document.getElementById('videoPlayer').pause(); document.getElementById('videoOverlay').style.display='none'; aud.play(); }
         aud.ontimeupdate = () => { document.getElementById("progressFill").style.width = (aud.currentTime/aud.duration)*100 + "%"; };
         function seek(e) { const r = document.getElementById("progressBar").getBoundingClientRect(); aud.currentTime = ((e.clientX - r.left) / r.width) * aud.duration; }
     </script>

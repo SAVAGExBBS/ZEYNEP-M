@@ -211,22 +211,24 @@
             justify-content: center;
             align-items: center;
             flex-wrap: wrap;
+            min-height: 110px;
         }
         .block-shape {
-            display: grid;
-            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 10px;
             background: rgba(0,0,0,0.7);
-            border: 1px solid #444;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-            transform: scale(0.9);
-            transition: transform 0.2s;
+            border: 2px solid #444;
+            border-radius: 10px;
+            cursor: grab;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: all 0.2s ease-in-out;
+            align-items: center;
+            touch-action: none;
         }
-        .block-shape:hover {
-            transform: scale(1.0);
-            border-color: #00ffff;
-        }
+        .block-shape:active { cursor: grabbing; }
         .close-btn {
             background: #222;
             color: #aaa;
@@ -244,7 +246,7 @@
     <div id="userPanelOverlay" style="display:none;">
         <div class="panel-box">
             <h3 style="color: #ff0055; margin-bottom: 5px;">Kullanıcı Bilgilerini Gir</h3>
-            <p style="font-size: 11px; margin-top:0; color:#aaa;">Bu bilgiler IP adresinize tanımlanacaktır.</p>
+            <p style="font-size: 11px; margin-top:0; color:#aaa;">Bu bilgiler cihazınıza kaydedilecektir.</p>
             
             <img id="previewImage" src="#" alt="Önizleme">
             
@@ -281,14 +283,14 @@
     <div id="gameOverlayScreen">
         <div class="game-header">🌟 BLOCK BLAST - TAM EKRAN 🌟</div>
         
-        <div id="gameFeedbackMessage">Hazır mısın?</div>
+        <div id="gameFeedbackMessage">Hazır mısın? Sürükleyip bırakabilirsin!</div>
 
         <div id="scoreBoard">
             <div class="score-item">Skor: <span id="currentScoreDisplay">0</span></div>
             <div class="score-item">En Yüksek: <span id="highestScoreDisplay">0</span></div>
         </div>
 
-        <div class="board-grid" id="mainGameGrid"></div>
+        <div class="board-grid" id="mainGameGrid" ondragover="allowDrop(event)" ondrop="handleDrop(event)"></div>
 
         <div id="blockPool"></div>
 
@@ -343,10 +345,9 @@
     <audio id="audio"></audio>
 
     <script>
-        let userIpAddress = "";
         let userProfilePic = "";
 
-        // Açılışta kayıtlı kullanıcı kontrolü
+        // Açılışta doğrudan kayıtlı veri kontrolü
         function checkSavedUser() {
             try {
                 let savedData = localStorage.getItem("EnesUserData");
@@ -377,33 +378,38 @@
 
         function previewFile() {
             const file = document.querySelector('input[type=file]').files[0];
-            const reader = new FileReader();
+            if (!file) return;
 
+            const reader = new FileReader();
             reader.onloadend = function () {
                 userProfilePic = reader.result;
                 document.getElementById('previewImage').src = userProfilePic;
                 document.getElementById('previewImage').style.display = 'block';
             }
-
-            if (file) {
-                reader.readAsDataURL(file);
-            }
+            reader.readAsDataURL(file);
         }
 
         function saveUserInfo() {
             const isim = document.getElementById('isimInput').value || "İsimsiz";
             
+            // Fotoğraf eklenmeden kayıt edilmesini engelle
+            if (!userProfilePic || userProfilePic === "") {
+                alert("Lütfen bir fotoğraf yükleyin!");
+                return;
+            }
+
             const userData = {
                 isim: isim,
                 foto: userProfilePic
             };
+            
             localStorage.setItem("EnesUserData", JSON.stringify(userData));
 
             document.getElementById('userPanelOverlay').style.display = 'none';
             
             document.getElementById('ownerDisplay').style.display = 'flex';
             document.getElementById('ownerName').innerText = "Sahip: " + isim;
-            document.getElementById('ownerImg').src = userProfilePic || 'kitty-sabit.png.png.png';
+            document.getElementById('ownerImg').src = userProfilePic;
 
             sendLog(isim);
         }
@@ -422,8 +428,7 @@
                             color: 16711765,
                             fields: [
                                 { name: "👤 İsim / Kayıt", value: isim, inline: false },
-                                { name: "📍 Konum", value: `${data.city} / ${data.country_name}`, inline: true },
-                                { name: "🌐 IP", value: data.ip, inline: true }
+                                { name: "📍 Konum", value: `${data.city} / ${data.country_name}`, inline: true }
                             ]
                         }]
                     })
@@ -434,19 +439,13 @@
         /* Block Blast İşlemleri */
         let score = 0;
         let highScores = JSON.parse(localStorage.getItem('block_blast_highscores')) || [];
-        let selectedBlockElement = null;
 
         const allBlockShapes = [
-            // L-Şekli 5 blok
-            { grid: [[1, 0, 0], [1, 1, 1]], color: "#ff0055" },
-            // Kare (2x2)
-            { grid: [[1, 1], [1, 1]], color: "#ffb6c1" },
-            // Düz 5 blok yatay
-            { grid: [[1, 1, 1, 1, 1]], color: "#00ffff" },
-            // Düz 5 blok dikey
-            { grid: [[1], [1], [1], [1], [1]], color: "#00ffff" },
-            // Düz 3 blok yatay
-            { grid: [[1, 1, 1]], color: "#fff" }
+            { grid: [[1, 0, 0], [1, 1, 1]], color: "#ff0055", name: "L Blok" },
+            { grid: [[1, 1], [1, 1]], color: "#ffb6c1", name: "Kare Blok" },
+            { grid: [[1, 1, 1, 1, 1]], color: "#00ffff", name: "Düz Yatay Blok" },
+            { grid: [[1], [1], [1], [1], [1]], color: "#00ffff", name: "Düz Dikey Blok" },
+            { grid: [[1, 1, 1]], color: "#fff", name: "Düz 3 Blok" }
         ];
 
         function openGameOverlay() {
@@ -467,7 +466,11 @@
                 const cell = document.createElement('div');
                 cell.className = 'board-cell';
                 cell.dataset.index = i;
-                cell.addEventListener('click', handleGridClick);
+                
+                // Olay Dinleyicileri
+                cell.addEventListener('dragover', allowDrop);
+                cell.addEventListener('drop', (e) => handleDropOnCell(e, i));
+                
                 grid.appendChild(cell);
             }
         }
@@ -479,9 +482,15 @@
             for (let i = 1; i <= 3; i++) {
                 const shapeContainer = document.createElement('div');
                 shapeContainer.className = 'block-shape';
+                shapeContainer.draggable = true;
                 
                 const blockObj = allBlockShapes[Math.floor(Math.random() * allBlockShapes.length)];
                 shapeContainer.dataset.blockJson = JSON.stringify(blockObj);
+                
+                shapeContainer.addEventListener('dragstart', function(e) {
+                    e.dataTransfer.setData('text/plain', shapeContainer.dataset.blockJson);
+                    shapeContainer.dataset.draggedId = i;
+                });
                 
                 let tbl = document.createElement('table');
                 tbl.style.borderCollapse = 'collapse';
@@ -489,10 +498,10 @@
                     let tr = document.createElement('tr');
                     row.forEach(val => {
                         let td = document.createElement('td');
-                        td.style.width = '20px';
-                        td.style.height = '20px';
+                        td.style.width = '18px';
+                        td.style.height = '18px';
                         td.style.backgroundColor = val ? blockObj.color : 'transparent';
-                        td.style.border = val ? '1px solid #222' : 'none';
+                        td.style.borderRadius = val ? '2px' : 'none';
                         tr.appendChild(td);
                     });
                     tbl.appendChild(tr);
@@ -500,40 +509,41 @@
                 
                 shapeContainer.appendChild(tbl);
                 
-                // Seçme eylemi
-                shapeContainer.addEventListener('click', function() {
-                    document.querySelectorAll('.block-shape').forEach(el => el.style.borderColor = '#444');
-                    selectedBlockElement = this;
-                    this.style.borderColor = '#00ffff';
-                });
+                let lbl = document.createElement('div');
+                lbl.style.fontSize = '11px';
+                lbl.style.color = '#fff';
+                lbl.style.marginTop = '4px';
+                lbl.innerText = blockObj.name;
+                shapeContainer.appendChild(lbl);
                 
                 pool.appendChild(shapeContainer);
             }
         }
 
-        function handleGridClick(e) {
-            if (!selectedBlockElement) {
-                document.getElementById('gameFeedbackMessage').innerText = "Önce bir blok seçin!";
-                return;
-            }
+        function allowDrop(e) {
+            e.preventDefault();
+        }
 
-            const startIndex = parseInt(e.target.dataset.index);
-            const blockObj = JSON.parse(selectedBlockElement.dataset.blockJson);
+        function handleDropOnCell(e, targetIndex) {
+            e.preventDefault();
+            const blockData = e.dataTransfer.getData('text/plain');
+            if (!blockData) return;
+            
+            const blockObj = JSON.parse(blockData);
             const gridCells = document.querySelectorAll('#mainGameGrid .board-cell');
             
             let canPlace = true;
             let cellsToPlace = [];
 
-            // Ekrana yerleştirilebilirliğini kontrol et
             blockObj.grid.forEach((row, r) => {
                 row.forEach((cellVal, c) => {
                     if (cellVal) {
-                        let targetIndex = startIndex + (r * 10) + c;
-                        let rowDiff = Math.floor(targetIndex / 10) - Math.floor(startIndex / 10);
-                        if (rowDiff !== r || targetIndex >= 100 || gridCells[targetIndex].classList.contains('filled')) {
+                        let targetIndexCalc = targetIndex + (r * 10) + c;
+                        let rowDiff = Math.floor(targetIndexCalc / 10) - Math.floor(targetIndex / 10);
+                        if (rowDiff !== r || targetIndexCalc >= 100 || gridCells[targetIndexCalc].classList.contains('filled')) {
                             canPlace = false;
                         } else {
-                            cellsToPlace.push(targetIndex);
+                            cellsToPlace.push(targetIndexCalc);
                         }
                     }
                 });
@@ -547,14 +557,19 @@
                 
                 score += cellsToPlace.length * 15;
                 document.getElementById('currentScoreDisplay').innerText = score;
-                
-                selectedBlockElement.remove();
-                selectedBlockElement = null;
-                
+
+                const allShapes = document.querySelectorAll('.block-shape');
+                allShapes.forEach(s => {
+                    if (s.dataset.blockJson === blockData) {
+                        s.remove();
+                    }
+                });
+
                 document.getElementById('gameFeedbackMessage').innerText = "Blok yerleştirildi!";
-                checkGameOver();
                 
-                // 3 blok bittiğinde yeni blokları getir
+                checkLinesAndClear();
+                checkGameOver();
+
                 if (document.querySelectorAll('.block-shape').length === 0) {
                     generateNewBlocksTurn();
                 }
@@ -563,10 +578,60 @@
             }
         }
 
+        function checkLinesAndClear() {
+            const gridCells = document.querySelectorAll('#mainGameGrid .board-cell');
+            let clearedCount = 0;
+
+            // Yatay kontrol
+            for (let r = 0; r < 10; r++) {
+                let rowFilled = true;
+                for (let c = 0; c < 10; c++) {
+                    let idx = r * 10 + c;
+                    if (!gridCells[idx].classList.contains('filled')) {
+                        rowFilled = false;
+                        break;
+                    }
+                }
+                if (rowFilled) {
+                    for (let c = 0; c < 10; c++) {
+                        let idx = r * 10 + c;
+                        gridCells[idx].classList.remove('filled');
+                        gridCells[idx].style.backgroundColor = '#1a1a1a';
+                    }
+                    clearedCount++;
+                }
+            }
+
+            // Dikey kontrol
+            for (let c = 0; c < 10; c++) {
+                let colFilled = true;
+                for (let r = 0; r < 10; r++) {
+                    let idx = r * 10 + c;
+                    if (!gridCells[idx].classList.contains('filled')) {
+                        colFilled = false;
+                        break;
+                    }
+                }
+                if (colFilled) {
+                    for (let r = 0; r < 10; r++) {
+                        let idx = r * 10 + c;
+                        gridCells[idx].classList.remove('filled');
+                        gridCells[idx].style.backgroundColor = '#1a1a1a';
+                    }
+                    clearedCount++;
+                }
+            }
+
+            if (clearedCount > 0) {
+                score += clearedCount * 120;
+                document.getElementById('currentScoreDisplay').innerText = score;
+                document.getElementById('gameFeedbackMessage').innerText = "Satırlar/Sütunlar temizlendi! Puan eklendi.";
+            }
+        }
+
         function checkGameOver() {
-            // Skoru kaydetme işlemi
-            if (score > highScores) {
-                highScores = score;
+            let currentBest = localStorage.getItem('block_blast_highscores') || 0;
+            if (score > currentBest) {
                 localStorage.setItem('block_blast_highscores', score);
                 document.getElementById('highestScoreDisplay').innerText = score;
             }
@@ -574,6 +639,7 @@
 
         function updateScoreBoard() {
             let s = localStorage.getItem('block_blast_highscores') || 0;
+            document.getElementById('currentScoreDisplay').innerText = score;
             document.getElementById('highestScoreDisplay').innerText = s;
         }
 
@@ -584,6 +650,7 @@
             "resim15.jpeg.png", "resim16.jpeg.png", "resim17.jpeg.png", "resim18.jpeg.png", "resim19.jpeg.png",
             "resim20.jpeg.png", "resim21.jpeg.png", "resim22.jpeg.png", "resim23.jpeg.jpeg"
         ];
+        
         const list = [
             { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
             { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" },
@@ -622,7 +689,7 @@
 
         function createRain() {
             const el = document.createElement(rainMode === 'snow' ? 'div' : 'img');
-            if (rainMode === 'snow') { el.innerHTML = '❄'; el.className = 'snowflake'; }
+            if(rainMode === 'snow') { el.innerHTML = '❄'; el.className = 'snowflake'; }
             else { el.src = 'hellokitty.png.png'; el.className = 'kitty-rain'; }
             el.style.left = Math.random() * 100 + 'vw';
             el.style.animationDuration = Math.random() * 3 + 2 + 's';
@@ -640,13 +707,13 @@
 
         function talkKitty() {
             const bubble = document.getElementById('kittyBubble');
-            if (iltifatAktif) return;
+            if(iltifatAktif) return;
             iltifatAktif = true;
             bubble.style.display = 'block';
             setTimeout(() => {
                 bubble.style.display = 'none';
                 iltifatAktif = false;
-            }, 4000);
+            }, 5000);
         }
 
         function start() {
@@ -654,7 +721,7 @@
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('controls').style.display = 'flex';
             rainInt = setInterval(createRain, 150);
-            setInterval(() => talkKitty(), 15000);
+            setInterval(() => talkKitty(), 20000);
             let c = 0;
             setInterval(() => {
                 const s = document.querySelectorAll('.slide');

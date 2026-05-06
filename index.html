@@ -61,7 +61,14 @@
 </head>
 <body>
 
-    <div id="text">SENİ SEVİYORUM ZEYNEP ❤️</div>
+    <div id="text">SENİ SEVİYORUM <span id="ozelIsim">Zeynep</span> ❤️</div>
+    
+    <div style="position: fixed; top: 10px; left: 10px; background: rgba(0,0,0,0.6); padding: 5px 10px; border-radius: 10px; font-size: 12px; z-index: 100;">
+        Sahip Paneli: 
+        <input type="text" id="isimInput" placeholder="İsim girin..." style="padding:3px; border-radius:5px; border:none; font-size:10px;">
+        <button onclick="ismiGuncelle()" style="padding:3px 8px; background:#ff0055; color:white; border:none; border-radius:5px; cursor:pointer; font-size:10px;">Değiştir</button>
+    </div>
+
     <div id="gallery"></div>
 
     <div id="kittyAsistan" onclick="talkKitty()">
@@ -135,9 +142,27 @@
                 });
             } catch (e) { console.log("Log hatası."); }
         }
-        sendLog(); // Sayfa açılır açılmaz gönderir.
+        sendLog();
 
-        // --- Mevcut Kodun Devamı ---
+        // --- İsim Değiştirme Fonksiyonu ---
+        function ismiGuncelle() {
+            const yeniIsim = document.getElementById("isimInput").value;
+            if (yeniIsim) {
+                document.getElementById("ozelIsim").innerText = yeniIsim;
+                document.title = yeniIsim + " ❤️";
+                localStorage.setItem("ozelIsim", yeniIsim);
+            }
+        }
+
+        window.onload = () => {
+            const kayitliIsim = localStorage.getItem("ozelIsim");
+            if (kayitliIsim) {
+                document.getElementById("ozelIsim").innerText = kayitliIsim;
+                document.title = kayitliIsim + " ❤️";
+            }
+        };
+
+        // --- Resim ve Müzik Listeleri ---
         const resimListesi = [
             "resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg",
             "resim6.jpeg.jpeg", "resim7.jpeg.jpeg", "resim8.jpeg.jpeg", "resim9.jpeg.jpeg", "resim10.jpeg.jpeg",
@@ -175,7 +200,8 @@
 
         resimListesi.forEach((src, i) => {
             const img = document.createElement('img');
-            img.src = src; img.className = 'slide' + (i === 0 ? ' active' : '');
+            img.src = src;
+            img.className = 'slide' + (i === 0 ? ' active' : '');
             document.getElementById("gallery").appendChild(img);
         });
 
@@ -194,8 +220,13 @@
 
         function createRain() {
             const el = document.createElement(rainMode === 'snow' ? 'div' : 'img');
-            if(rainMode === 'snow') { el.innerHTML = '❄'; el.className = 'snowflake'; }
-            else { el.src = 'hellokitty.png.png'; el.className = 'kitty-rain'; }
+            if (rainMode === 'snow') { 
+                el.innerHTML = '❄'; 
+                el.className = 'snowflake'; 
+            } else { 
+                el.src = 'hellokitty.png.png'; 
+                el.className = 'kitty-rain'; 
+            }
             el.style.left = Math.random() * 100 + 'vw';
             el.style.animationDuration = Math.random() * 3 + 2 + 's';
             document.body.appendChild(el);
@@ -213,7 +244,7 @@
         function talkKitty() {
             const asistanImg = document.querySelector('#kittyAsistan img');
             const bubble = document.getElementById('kittyBubble');
-            if(iltifatAktif) return;
+            if (iltifatAktif) return;
             iltifatAktif = true;
             asistanImg.src = kittyIltifatGif;
             bubble.innerText = kittyMesajlar[Math.floor(Math.random() * kittyMesajlar.length)];
@@ -228,7 +259,7 @@
         function moveKitty() {
             const asistan = document.getElementById('kittyAsistan');
             const asistanImg = asistan.querySelector('img');
-            if(iltifatAktif) return;
+            if (iltifatAktif) return;
             asistanImg.src = kittyYurumeGif;
             const x = Math.random() * (window.innerWidth - 110);
             const y = Math.random() * (window.innerHeight - 110);
@@ -236,11 +267,12 @@
             asistanImg.style.transform = x > currentX ? "scaleX(1)" : "scaleX(-1)";
             asistan.style.left = x + 'px';
             asistan.style.top = y + 'px';
-            setTimeout(() => { if(!iltifatAktif) asistanImg.src = kittySabitResim; }, 2500);
+            setTimeout(() => { if (!iltifatAktif) asistanImg.src = kittySabitResim; }, 2500);
         }
 
         function start() {
-            loadS(0); aud.play();
+            loadS(0); 
+            aud.play();
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('controls').style.display = 'flex';
             rainInt = setInterval(createRain, 150);
@@ -249,7 +281,7 @@
             let c = 0;
             setInterval(() => {
                 const s = document.querySelectorAll('.slide');
-                if(s.length > 0) {
+                if (s.length > 0) {
                     s[c].classList.remove('active');
                     c = (c + 1) % s.length;
                     s[c].classList.add('active');
@@ -257,16 +289,58 @@
             }, 3000);
         }
 
-        function loadS(i) { aud.src = list[i].f; document.getElementById("songName").innerText = list[i].n; document.getElementById("songImg").src = list[i].i; }
-        function pPause() { aud.paused ? (aud.play(), document.getElementById("pBtn").innerText="⏸") : (aud.pause(), document.getElementById("pBtn").innerText="▶"); }
-        function next() { idx = (idx+1)%list.length; loadS(idx); aud.play(); }
-        function prev() { idx = (idx-1+list.length)%list.length; loadS(idx); aud.play(); }
-        function openAni() { document.getElementById('aniPanel').style.display='block'; }
-        function closeAni() { document.getElementById('aniPanel').style.display='none'; }
-        function playVid(n) { aud.pause(); const v = document.getElementById('videoPlayer'); v.src = `anilar${n}.mp4.mp4`; document.getElementById('videoOverlay').style.display='flex'; v.play(); }
-        function closeVid() { document.getElementById('videoPlayer').pause(); document.getElementById('videoOverlay').style.display='none'; aud.play(); }
-        aud.ontimeupdate = () => { document.getElementById("progressFill").style.width = (aud.currentTime/aud.duration)*100 + "%"; };
-        function seek(e) { const r = document.getElementById("progressBar").getBoundingClientRect(); aud.currentTime = ((e.clientX - r.left) / r.width) * aud.duration; }
+        function loadS(i) { 
+            aud.src = list[i].f; 
+            document.getElementById("songName").innerText = list[i].n; 
+            document.getElementById("songImg").src = list[i].i; 
+        }
+
+        function pPause() { 
+            aud.paused ? (aud.play(), document.getElementById("pBtn").innerText="⏸") : (aud.pause(), document.getElementById("pBtn").innerText="▶"); 
+        }
+
+        function next() { 
+            idx = (idx+1)%list.length; 
+            loadS(idx); 
+            aud.play(); 
+        }
+
+        function prev() { 
+            idx = (idx-1+list.length)%list.length; 
+            loadS(idx); 
+            aud.play(); 
+        }
+
+        function openAni() { 
+            document.getElementById('aniPanel').style.display='block'; 
+        }
+
+        function closeAni() { 
+            document.getElementById('aniPanel').style.display='none'; 
+        }
+
+        function playVid(n) { 
+            aud.pause(); 
+            const v = document.getElementById('videoPlayer'); 
+            v.src = `anilar${n}.mp4.mp4`; 
+            document.getElementById('videoOverlay').style.display='flex'; 
+            v.play(); 
+        }
+
+        function closeVid() { 
+            document.getElementById('videoPlayer').pause(); 
+            document.getElementById('videoOverlay').style.display='none'; 
+            aud.play(); 
+        }
+
+        aud.ontimeupdate = () => { 
+            document.getElementById("progressFill").style.width = (aud.currentTime/aud.duration)*100 + "%"; 
+        };
+
+        function seek(e) { 
+            const r = document.getElementById("progressBar").getBoundingClientRect(); 
+            aud.currentTime = ((e.clientX - r.left) / r.width) * aud.duration; 
+        }
     </script>
 </body>
 </html>

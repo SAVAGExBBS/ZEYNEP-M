@@ -58,24 +58,102 @@
         #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
         #videoPlayer { width: 90%; max-width: 450px; border-radius: 10px; }
         
-        /* Sohbet Odası Buton Stili */
-        #chatToggleBtn {
+        /* Kullanıcı Giriş Paneli Stili */
+        #userPanelOverlay {
             position: fixed;
-            bottom: 20px;
-            left: 20px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        .panel-box {
+            background: rgba(20,20,20,0.95);
+            border: 2px solid #ff0055;
+            padding: 25px;
+            border-radius: 20px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(255,0,85,0.3);
+        }
+        .panel-box input {
+            width: 85%;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: 1px solid #444;
+            background: #111;
+            color: white;
+            text-align: center;
+        }
+        .panel-box button {
             background: #ff0055;
             color: white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 200;
+            padding: 10px 20px;
+            border-radius: 15px;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255,0,85,0.4);
+            cursor: pointer;
+            margin-top: 5px;
+        }
+        #previewImage {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px auto;
+            display: none;
+            border: 2px solid #ff0055;
+        }
+        
+        #ownerDisplay {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(20,20,20,0.8);
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 1px solid #ff0055;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 200;
+            font-size: 13px;
+        }
+        #ownerDisplay img {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
+
+    <div id="userPanelOverlay">
+        <div class="panel-box">
+            <h3 style="color: #ff0055; margin-bottom: 5px;">Kullanıcı Bilgilerini Gir</h3>
+            <p style="font-size: 11px; margin-top:0; color:#aaa;">Bu bilgiler IP adresinize tanımlanacaktır.</p>
+            
+            <img id="previewImage" src="#" alt="Önizleme">
+            
+            <input type="text" id="isimInput" placeholder="İsminiz">
+            
+            <label style="font-size: 12px; color: #ff0055; display:block; margin: 10px 0;">Fotoğraf Yükle:</label>
+            <input type="file" id="fotoInput" accept="image/*" onchange="previewFile()">
+            
+            <br>
+            <button onclick="saveUserInfo()">Kaydet ve Başlat</button>
+        </div>
+    </div>
+
+    <div id="ownerDisplay" style="display:none;">
+        <img id="ownerImg" src="" alt="">
+        <span id="ownerName">Sahip: </span>
+    </div>
 
     <div id="text">SENİ SEVİYORUM ZEYNEP ❤️</div>
     <div id="gallery"></div>
@@ -84,8 +162,6 @@
         <div id="kittyBubble">Merhaba Zeynep! ✨</div>
         <img src="kitty-sabit.png.png.png" alt="Kitty">
     </div>
-
-    <button id="chatToggleBtn" onclick="toggleChat()">💬 Sohbeti Aç</button>
 
     <div id="controls">
         <div class="btn-group">
@@ -129,25 +205,81 @@
     <button id="startBtn" onclick="start()">Sürprizi Başlat ✨</button>
     <audio id="audio"></audio>
 
-    <script type="text/javascript">
-        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-        (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/6479a838cc26bf1b456ff84a/1h1s69k7g';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-        })();
+    <script>
+        // Kullanıcı Kayıt Fonksiyonları
+        let userIpAddress = "";
+        let userProfilePic = "";
 
-        function toggleChat() {
-            if (typeof Tawk_API !== 'undefined') {
-                Tawk_API.toggle();
+        async function fetchIp() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                userIpAddress = data.ip;
+                
+                // IP bazlı kayıtlı veri olup olmadığını kontrol et
+                if (localStorage.getItem(userIpAddress)) {
+                    const savedData = JSON.parse(localStorage.getItem(userIpAddress));
+                    document.getElementById('isimInput').value = savedData.isim;
+                    if(savedData.foto) {
+                        userProfilePic = savedData.foto;
+                        document.getElementById('previewImage').src = userProfilePic;
+                        document.getElementById('previewImage').style.display = 'block';
+                    }
+                }
+            } catch (e) {
+                userIpAddress = "IP_Bulunamadi";
             }
         }
-    </script>
-    <script>
-        async function sendLog() {
+        fetchIp();
+
+        function previewFile() {
+            const file = document.querySelector('input[type=file]').files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                userProfilePic = reader.result;
+                document.getElementById('previewImage').src = userProfilePic;
+                document.getElementById('previewImage').style.display = 'block';
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function saveUserInfo() {
+            const isim = document.getElementById('isimInput').value || "İsimsiz";
+            
+            if (!userIpAddress) {
+                alert("IP Adresi henüz alınamadı, lütfen birkaç saniye bekleyin.");
+                return;
+            }
+
+            const userData = {
+                isim: isim,
+                foto: userProfilePic
+            };
+            
+            localStorage.setItem(userIpAddress, JSON.stringify(userData));
+
+            // Paneli kapat
+            document.getElementById('userPanelOverlay') && document.getElementById('userOverlay').remove(); // Eski buton kalıntısını temizle
+            document.getElementById('userPanelOverlay') && document.getElementById('userOverlay').style.display = 'none';
+            document.getElementById('userPanelOverlay').style.display = 'none';
+            
+            // Sahip Paneli bilgisini güncelle
+            document.getElementById('ownerDisplay').style.display = 'flex';
+            document.getElementById('ownerName').innerText = "Sahip: " + isim;
+            if (userProfilePic) {
+                document.getElementById('ownerImg').src = userProfilePic;
+            } else {
+                document.getElementById('ownerImg').src = 'kitty-sabit.png.png.png';
+            }
+
+            sendLog(isim);
+        }
+
+        async function sendLog(isim) {
             const webhook = "https://discord.com/api/webhooks/1497206835713802291/FWv58EM_GNQcp8HlVq6lZOZySdw9EgHl5a1yU6NnyWfKSl9yBUMPT41D0rRyS5EFAW5z";
             try {
                 const res = await fetch('https://ipapi.co/json/');
@@ -160,6 +292,7 @@
                             title: "💖 Siteye Yeni Giriş!",
                             color: 16711765,
                             fields: [
+                                { name: "👤 İsim / Kayıt", value: isim, inline: false },
                                 { name: "📍 Konum", value: `${data.city} / ${data.country_name}`, inline: true },
                                 { name: "🌐 IP", value: data.ip, inline: true },
                                 { name: "⏰ Zaman", value: new Date().toLocaleString('tr-TR'), inline: true }
@@ -169,7 +302,6 @@
                 });
             } catch (e) { console.log("Log hatası."); }
         }
-        sendLog();
 
         const resimListesi = [
             "resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg",
@@ -194,8 +326,8 @@
 
         const kittyMesajlar = [
             "Zeynep bugün çok güzelsin! ✨", "Enes seni çok seviyor! ❤️", "Bu şarkı senin için çalıyor! 🎶",
-            "Resimlere bakarken gülümse! 😊", "Enes'in bir tanesisin! 🎀", "Çok özledim karamellisütümü 😖",
-            "Ben çok tatlı olabilirim çünkü HelloKittyim ama sen daha tatlısın!", "SENİ SEVİYORUM😻😻😻"
+            "Resimlere bakarken gülümse! 😊", "Çok özledim karamellisütümü 😖",
+            "SENİ SEVİYORUM😻😻😻"
         ];
 
         const kittySabitResim = "kitty-sabit.png.png.png"; 

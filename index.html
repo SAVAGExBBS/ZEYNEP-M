@@ -5,365 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zeynep ❤️</title>
     <style>
-        body { 
-            margin: 0; 
-            background-image: url('arka-plan.gif.gif'); 
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat; 
-            background-attachment: fixed; 
-            background-color: #000; 
-            color: white; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            height: 100vh; 
-            overflow: hidden; 
-            font-family: 'Segoe UI', sans-serif; 
-            transition: background-image 0.8s ease-in-out; 
-        }
+        body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; transition: background-image 0.8s ease-in-out; }
         #text { font-size: 24px; font-weight: bold; margin-bottom: 20px; text-align: center; animation: pulse 2s infinite; z-index: 10; }
         @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; color: #ff0055; } }
-        
         #gallery { position: relative; width: 280px; height: 380px; border-radius: 20px; overflow: hidden; box-shadow: 0 0 25px rgba(255,0,85,0.3); border: 2px solid rgba(255,255,255,0.1); background: #111; z-index: 10; }
         .slide { position: absolute; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; display: none; }
         .active { opacity: 1; display: block; }
-        
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
         .btn-group { display: flex; gap: 5px; }
         .control-btn { background: rgba(30, 30, 30, 0.9); border: 1px solid #444; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 11px; }
         .ani-btn { background: #ff0055 !important; border: none; font-weight: bold; }
-        
         #musicPlayer { background: rgba(20, 20, 20, 0.9); padding: 12px; border-radius: 20px; width: 320px; border: 1px solid #333; }
         .player-info { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
         #songImg { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; }
         #progressBar { width: 100%; height: 5px; background: #333; border-radius: 3px; cursor: pointer; }
         #progressFill { width: 0%; height: 100%; background: #ff0055; border-radius: 3px; }
-
         .snowflake, .kitty-rain { position: fixed; top: -60px; pointer-events: none; animation: fall linear infinite; z-index: 5; }
         .kitty-rain { width: 45px; height: auto; }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
-
         #kittyAsistan { position: fixed; width: 90px; height: 90px; cursor: pointer; z-index: 100; transition: all 2.5s linear; bottom: 50px; right: 50px; }
         #kittyAsistan img { width: 100%; height: auto; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)); }
         #kittyBubble { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); background: white; color: #333; padding: 12px 18px; border-radius: 20px; font-size: 13px; font-weight: bold; width: 140px; text-align: center; display: none; box-shadow: 0 8px 20px rgba(0,0,0,0.2); border: 2px solid #ffb6c1; }
-
         #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 30; }
-        
         #aniPanel { display: none; position: fixed; bottom: 170px; background: rgba(10,10,10,0.95); padding: 15px; border-radius: 15px; border: 1px solid #ff0055; z-index: 50; width: 280px; }
         .ani-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
         .ani-num-btn { padding: 10px; background: #222; color: white; border: 1px solid #444; border-radius: 8px; font-size: 12px; cursor: pointer; font-weight: bold; }
-
         #videoOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; flex-direction: column; align-items: center; justify-content: center; }
         #videoPlayer { width: 90%; max-width: 450px; border-radius: 10px; }
-
-        #userPanelOverlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 500;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-        .panel-box {
-            background: rgba(20,20,20,0.95);
-            border: 2px solid #ff0055;
-            padding: 25px;
-            border-radius: 20px;
-            width: 320px;
-            text-align: center;
-            box-shadow: 0 0 25px rgba(255,0,85,0.3);
-        }
-        .panel-box input {
-            width: 85%;
-            padding: 8px;
-            margin: 8px 0;
-            border-radius: 10px;
-            border: 1px solid #444;
-            background: #111;
-            color: white;
-            text-align: center;
-        }
-        .panel-box button {
-            background: #ff0055;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-        #previewImage {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 10px auto;
-            display: none;
-            border: 2px solid #ff0055;
-        }
+        #userPanelOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; }
+        .panel-box { background: rgba(20,20,20,0.95); border: 2px solid #ff0055; padding: 25px; border-radius: 20px; width: 320px; text-align: center; box-shadow: 0 0 25px rgba(255,0,85,0.3); }
+        .panel-box input { width: 85%; padding: 8px; margin: 8px 0; border-radius: 10px; border: 1px solid #444; background: #111; color: white; text-align: center; }
+        .panel-box button { background: #ff0055; color: white; border: none; padding: 10px 20px; border-radius: 15px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+        #previewImage { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 10px auto; display: none; border: 2px solid #ff0055; }
+        #ownerDisplay { position: fixed; top: 20px; left: 20px; background: rgba(20,20,20,0.8); padding: 8px 15px; border-radius: 20px; border: 1px solid #ff0055; display: flex; align-items: center; gap: 10px; z-index: 200; font-size: 13px; }
+        #ownerDisplay img { width: 25px; height: 25px; border-radius: 50%; object-fit: cover; }
+        .chat-btn { background: #ff0055; color: white; border: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(255,0,85,0.4); font-size: 13px; }
+        #gameOverlayScreen { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 10, 12, 0.98); z-index: 1000; box-sizing: border-box; padding: 20px; overflow-y: auto; flex-direction: row; justify-content: center; align-items: flex-start; gap: 30px; }
+        .scoreboard { width: 280px; background: rgba(15, 15, 25, 0.95); border: 2px solid #ff0055; border-radius: 12px; padding: 15px; box-shadow: inset 0 0 15px rgba(255,0,85,0.4), 0 0 10px #ff0055; max-height: 450px; overflow-y: auto; margin-top: 30px; }
+        .scoreboard h2 { color: #00ffff; text-align: center; font-size: 17px; margin-bottom: 15px; text-shadow: 0 0 6px #00ffff; border-bottom: 1px solid #ff0055; padding-bottom: 8px; }
+        .leaderboard-list { list-style: none; padding: 0; }
+        .leaderboard-item { display: flex; justify-content: space-between; padding: 7px 10px; margin-bottom: 6px; background: rgba(255, 0, 85, 0.12); border: 1px solid rgba(255, 0, 85, 0.3); border-radius: 6px; font-size: 13px; }
+        .leaderboard-item:nth-child(1) { background: rgba(255, 215, 0, 0.2); border-color: gold; box-shadow: 0 0 6px gold; font-weight: bold; }
+        .leaderboard-item .rank { color: #00ffff; font-weight: bold; margin-right: 8px; }
+        .middle-panel { display: flex; flex-direction: column; align-items: center; }
+        .game-header { font-size: 22px; font-weight: bold; color: #00ffff; margin-bottom: 10px; text-shadow: 0 0 10px rgba(0,255,255,0.5); text-align: center; }
+        #gameFeedbackMessage { font-size: 14px; font-weight: bold; color: #ff0055; min-height: 20px; margin-bottom: 10px; text-align: center; }
+        #scoreBoard { display: flex; gap: 20px; background: rgba(0,0,0,0.6); padding: 5px 12px; border-radius: 20px; border: 1px solid rgba(255,0,85,0.3); font-size: 12px; margin-bottom: 12px; }
+        .board-grid { display: grid; grid-template-columns: repeat(8, 45px); grid-template-rows: repeat(8, 45px); gap: 2px; background: rgba(0,0,0,0.6); padding: 6px; border-radius: 10px; box-shadow: 0 0 20px rgba(255,0,85,0.2); }
+        .board-cell { width: 45px; height: 45px; background: #1a1a1a; border: 1px solid #333; border-radius: 4px; transition: all 0.15s ease; cursor: pointer; }
+        #blockPool { display: flex; gap: 15px; margin-top: 25px; justify-content: center; align-items: center; min-height: 120px; background: rgba(0, 0, 0, 0.4); padding: 10px; border-radius: 12px; width: 380px; }
+        .block-shape { display: flex; flex-direction: column; gap: 5px; padding: 8px; background: rgba(25, 25, 30, 0.9); border: 2px solid #555; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.6); align-items: center; justify-content: center; user-select: none; }
+        .block-shape table { border-collapse: separate; border-spacing: 2px; }
+        .block-shape td { width: 20px; height: 20px; border-radius: 3px; }
+        .close-btn { background: #ff0055; color: white; border: none; padding: 8px 20px; border-radius: 18px; font-size: 12px; cursor: pointer; margin-top: 15px; font-weight: bold; }
         
-        #ownerDisplay {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(20,20,20,0.8);
-            padding: 8px 15px;
-            border-radius: 20px;
-            border: 1px solid #ff0055;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 200;
-            font-size: 13px;
-        }
-        #ownerDisplay img {
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .chat-btn {
-            background: #ff0055;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255,0,85,0.4);
-            font-size: 13px;
-        }
-
-        #gameOverlayScreen {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(10, 10, 12, 0.98);
-            z-index: 1000;
-            box-sizing: border-box;
-            padding: 20px;
-            overflow-y: auto;
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
-        }
-
-        .scoreboard {
-            width: 280px;
-            background: rgba(15, 15, 25, 0.95);
-            border: 2px solid #ff0055;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: inset 0 0 15px rgba(255,0,85,0.4), 0 0 10px #ff0055;
-            max-height: 450px;
-            overflow-y: auto;
-            margin-top: 30px;
-        }
-        .scoreboard h2 {
-            color: #00ffff;
-            text-align: center;
-            font-size: 17px;
-            margin-bottom: 15px;
-            text-shadow: 0 0 6px #00ffff;
-            border-bottom: 1px solid #ff0055;
-            padding-bottom: 8px;
-        }
-        .leaderboard-list {
-            list-style: none;
-            padding: 0;
-        }
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 7px 10px;
-            margin-bottom: 6px;
-            background: rgba(255, 0, 85, 0.12);
-            border: 1px solid rgba(255, 0, 85, 0.3);
-            border-radius: 6px;
-            font-size: 13px;
-        }
-        .leaderboard-item:nth-child(1) {
-            background: rgba(255, 215, 0, 0.2);
-            border-color: gold;
-            box-shadow: 0 0 6px gold;
-            font-weight: bold;
-        }
-        .leaderboard-item:nth-child(2) {
-            background: rgba(192, 192, 192, 0.2);
-            border-color: silver;
-        }
-        .leaderboard-item .rank {
-            color: #00ffff;
-            font-weight: bold;
-            margin-right: 8px;
-        }
-        .leaderboard-item .score {
-            color: #00ffff;
-            font-family: monospace;
-        }
-
-        .middle-panel {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .game-header {
-            font-size: 22px;
-            font-weight: bold;
-            color: #00ffff;
-            margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(0,255,255,0.5);
-            text-align: center;
-        }
-        #gameFeedbackMessage {
-            font-size: 14px;
-            font-weight: bold;
-            color: #ff0055;
-            min-height: 20px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        #scoreBoard {
-            display: flex;
-            gap: 20px;
-            background: rgba(0,0,0,0.6);
-            padding: 5px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,0,85,0.3);
-            font-size: 12px;
-            margin-bottom: 12px;
-        }
-        
-        .board-grid {
-            display: grid;
-            grid-template-columns: repeat(8, 45px);
-            grid-template-rows: repeat(8, 45px);
-            gap: 2px;
-            background: rgba(0,0,0,0.6);
-            padding: 6px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255,0,85,0.2);
-        }
-        .board-cell {
-            width: 45px; 
-            height: 45px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 4px;
-            transition: all 0.15s ease;
-            cursor: pointer;
-        }
-        
-        #blockPool {
-            display: flex;
-            gap: 15px;
-            margin-top: 25px;
-            justify-content: center;
-            align-items: center;
-            min-height: 120px;
-            background: rgba(0, 0, 0, 0.4);
-            padding: 10px;
-            border-radius: 12px;
-            width: 380px;
-        }
-        .block-shape {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            padding: 8px;
-            background: rgba(25, 25, 30, 0.9);
-            border: 2px solid #555;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-        }
-        .block-shape table {
-            border-collapse: separate;
-            border-spacing: 2px;
-        }
-        .block-shape td {
-            width: 20px;
-            height: 20px;
-            border-radius: 3px;
-        }
-
-        .close-btn {
-            background: #ff0055;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 18px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-
-        #chatOverlay {
-            display: none;
-            position: fixed;
-            top: 20%;
-            right: 5%;
-            width: 320px;
-            height: 380px;
-            background: rgba(20,20,25,0.95);
-            border: 2px solid #ff0055;
-            border-radius: 15px;
-            z-index: 600;
-            box-shadow: 0 0 20px rgba(255,0,85,0.5);
-            padding: 15px;
-            flex-direction: column;
-        }
-        #chatBox {
-            flex: 1;
-            overflow-y: auto;
-            border-bottom: 1px solid #444;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            font-size: 13px;
-            color: #ddd;
-        }
-        .chat-input-group {
-            display: flex;
-            gap: 5px;
-        }
-        .chat-input-group input {
-            flex: 1;
-            padding: 6px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            background: #111;
-            color: white;
-        }
+        /* SOHBET TASARIMI GÜNCELLEME */
+        #chatOverlay { display: none; position: fixed; top: 20%; right: 5%; width: 320px; height: 380px; background: rgba(20,20,25,0.95); border: 2px solid #ff0055; border-radius: 15px; z-index: 600; box-shadow: 0 0 20px rgba(255,0,85,0.5); padding: 15px; flex-direction: column; }
+        #chatBox { flex: 1; overflow-y: auto; border-bottom: 1px solid #444; margin-bottom: 10px; padding-bottom: 5px; font-size: 13px; color: #ddd; display: flex; flex-direction: column; gap: 8px; }
+        .chat-msg { padding: 6px 10px; border-radius: 10px; max-width: 85%; line-height: 1.4; }
+        .msg-own { align-self: flex-end; background: #ff0055; color: white; }
+        .msg-other { align-self: flex-start; background: #333; color: white; }
+        .chat-input-group { display: flex; gap: 5px; }
+        .chat-input-group input { flex: 1; padding: 6px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; outline: none; }
     </style>
 </head>
 <body>
-
     <div id="userPanelOverlay" style="display:none;">
         <div class="panel-box">
             <h3 style="color: #ff0055; margin-bottom: 5px;">Kullanıcı Bilgilerini Gir</h3>
             <p style="font-size: 11px; margin-top:0; color:#aaa;">Bu bilgiler cihazınıza kaydedilecektir.</p>
-            
             <img id="previewImage" src="#" alt="Önizleme">
-            
             <input type="text" id="isimInput" placeholder="İsminiz">
-            
             <label style="font-size: 12px; color: #ff0055; display:block; margin: 10px 0;">Fotoğraf Yükle:</label>
             <input type="file" id="fotoInput" accept="image/*" onchange="previewFile()">
-            
             <br>
             <button onclick="saveUserInfo()">Kaydet ve Başlat</button>
         </div>
@@ -383,9 +97,7 @@
     </div>
 
     <div id="chatBtnContainer" style="position:fixed; bottom: 50px; left: 50px; z-index: 99;">
-        <button class="chat-btn" onclick="openGameOverlay()" style="background: #00ffff; color: black; box-shadow: 0 4px 20px rgba(0,255,255,0.4); margin-bottom: 10px;">
-            🎮 Block Blast Oyna
-        </button>
+        <button class="chat-btn" onclick="openGameOverlay()" style="background: #00ffff; color: black; box-shadow: 0 4px 20px rgba(0,255,255,0.4); margin-bottom: 10px;"> 🎮 Block Blast Oyna </button>
         <br>
         <button class="chat-btn" onclick="toggleChat()">💬 Sohbeti Aç/Kapat</button>
     </div>
@@ -429,12 +141,13 @@
         <button onclick="closeVid()" style="margin-top:15px; padding:8px 20px; background:#ff0055; color:white; border:none; border-radius:20px;">Kapat</button>
     </div>
 
+    <!-- SOHBET EKRANI -->
     <div id="chatOverlay">
         <h4 style="color: #ff0055; margin-top:0;">Zeynep & Enes - Mesajlaşma</h4>
         <div id="chatBox"></div>
         <div class="chat-input-group">
-            <input type="text" id="chatInput" placeholder="Mesaj yaz...">
-            <button class="chat-btn" onclick="sendMessage()" style="padding: 5px 10px; font-size: 11px;">Gönder</button>
+            <input type="text" id="chatInput" placeholder="Mesaj yaz..." onkeydown="if(event.key==='Enter') sendFirebaseMsg()">
+            <button class="chat-btn" onclick="sendFirebaseMsg()" style="padding: 5px 10px; font-size: 11px;">Gönder</button>
         </div>
     </div>
 
@@ -443,20 +156,15 @@
             <h2>🏆 Skor Tablosu</h2>
             <ul class="leaderboard-list" id="leaderboard"></ul>
         </div>
-
         <div class="middle-panel">
             <div class="game-header">🌟 BLOCK BLAST 🌟</div>
             <div id="gameFeedbackMessage">Hazır mısın? Tıkla ve yerleştir!</div>
-
             <div id="scoreBoard">
                 <div class="score-item">Skor: <span id="currentScoreDisplay">0</span></div>
                 <div class="score-item">En Yüksek: <span id="highestScoreDisplay">0</span></div>
             </div>
-
             <div class="board-grid" id="mainGameGrid"></div>
-            
             <div id="blockPool"></div>
-
             <button class="close-btn" onclick="closeGameOverlay()" style="background:#222; border:1px solid #444; margin-top:20px;">Oyunu Kapat</button>
         </div>
     </div>
@@ -464,9 +172,65 @@
     <button id="startBtn" onclick="start()">Sürprizi Başlat ✨</button>
     <audio id="audio"></audio>
 
-    <script>
-        let userProfilePic = "";
+    <!-- FIREBASE MODULE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // !!! BURAYI KENDİ FIREBASE PROJE BİLGİLERİNLE DOLDUR !!!
+const firebaseConfig = {
+    apiKey: "AIzaSyDuucW14XJoKejyWgFCQoWt0F6NBbQD5Ao",
+    authDomain: "zeynep-945d0.firebaseapp.com",
+    databaseURL: "https://zeynep-945d0-default-rtdb.firebaseio.com",
+    projectId: "zeynep-945d0",
+    storageBucket: "zeynep-945d0.firebasestorage.app",
+    messagingSenderId: "419113744567",
+    appId: "1:419113744567:web:730c97bc93cd3267ccb532",
+    measurementId: "G-X6GB9RL1M4"
+};
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const msgRef = ref(db, 'messages');
+
+        // Global fonksiyon olarak ata (Dışarıdan erişim için)
+        window.sendFirebaseMsg = function() {
+            const input = document.getElementById("chatInput");
+            const storage = localStorage.getItem("EnesUserData");
+            if(!storage) return alert("Lütfen önce bilgilerinizi kaydedin!");
+            
+            const user = JSON.parse(storage);
+            if (input.value.trim() !== "") {
+                push(msgRef, {
+                    name: user.isim,
+                    text: input.value,
+                    time: Date.now()
+                });
+                input.value = "";
+            }
+        };
+
+        // Mesaj Geldiğinde Dinle
+        onChildAdded(msgRef, (data) => {
+            const msg = data.val();
+            const storage = localStorage.getItem("EnesUserData");
+            const currentUser = storage ? JSON.parse(storage).isim : "";
+            
+            const chatBox = document.getElementById("chatBox");
+            const div = document.createElement("div");
+            
+            div.className = `chat-msg ${msg.name === currentUser ? 'msg-own' : 'msg-other'}`;
+            div.innerHTML = `<b style="font-size:10px; display:block; opacity:0.8;">${msg.name}</b>${msg.text}`;
+            
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+    </script>
+
+    <script>
+        // --- MEVCUT JS FONKSİYONLARI ---
+        let userProfilePic = "";
         function checkSavedUser() {
             try {
                 let savedData = localStorage.getItem("EnesUserData");
@@ -474,7 +238,6 @@
                     let data = JSON.parse(savedData);
                     document.getElementById('isimInput').value = data.isim;
                     userProfilePic = data.foto;
-                    
                     document.getElementById('ownerDisplay').style.display = 'flex';
                     document.getElementById('ownerName').innerText = "Sahip: " + data.isim;
                     if (data.foto) {
@@ -515,7 +278,6 @@
             }
             const userData = { isim: isim, foto: userProfilePic };
             localStorage.setItem("EnesUserData", JSON.stringify(userData));
-
             document.getElementById('userPanelOverlay').style.display = 'none';
             document.getElementById('ownerDisplay').style.display = 'flex';
             document.getElementById('ownerName').innerText = "Sahip: " + isim;
@@ -527,21 +289,9 @@
             ch.style.display = (ch.style.display === 'flex' || ch.style.display === '') ? 'none' : 'flex';
         }
 
-        function sendMessage() {
-            let val = document.getElementById('chatInput').value;
-            if (val.trim() === '') return;
-            let div = document.createElement('div');
-            let name = JSON.parse(localStorage.getItem("EnesUserData")).isim || "Enes";
-            div.innerText = `${name}: ${val}`;
-            document.getElementById('chatBox').appendChild(div);
-            document.getElementById('chatInput').value = '';
-            document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
-        }
-
+        // --- OYUN MANTIĞI ---
         let score = 0;
         let selectedBlockData = null;
-
-        // Daha fazla çeşitlilik: T şekilli ve köşe (corner) bloklar eklendi, böylece tekdüzelik bozuldu.
         const allBlockShapes = [
             { grid: [[1, 0, 0], [1, 1, 1]], color: "#ff0055", name: "L Blok" },
             { grid: [[1, 1], [1, 1]], color: "#ffb6c1", name: "Kare Blok" },
@@ -551,28 +301,14 @@
             { grid: [[1, 0], [1, 1]], color: "#ff9900", name: "Köşe Blok" }
         ];
 
-        const leaderboardData = [
-            { name: "Enes", score: 1275 },
-            { name: "Zeynep", score: 1150 },
-            { name: "Can", score: 980 },
-            { name: "Atlas", score: 875 },
-            { name: "Ece", score: 810 }
-        ];
+        const leaderboardData = [{ name: "Enes", score: 1275 },{ name: "Zeynep", score: 1150 },{ name: "Can", score: 980 },{ name: "Atlas", score: 875 },{ name: "Ece", score: 810 }];
 
         function populateLeaderboard() {
             const leaderboardEl = document.getElementById('leaderboard');
             let htmlContent = '';
             for (let i = 0; i < 5; i++) {
                 const item = leaderboardData[i];
-                htmlContent += `
-                    <li class="leaderboard-item">
-                        <div>
-                            <span class="rank">${i + 1}.</span>
-                            <span>${item ? item.name : 'Oyuncu'}</span>
-                        </div>
-                        <span class="score">${item ? item.score : 0}</span>
-                    </li>
-                `;
+                htmlContent += `<li class="leaderboard-item"><div><span class="rank">${i + 1}.</span><span>${item.name}</span></div><span class="score">${item.score}</span></li>`;
             }
             leaderboardEl.innerHTML = htmlContent;
         }
@@ -585,9 +321,7 @@
             updateScoreBoard();
         }
 
-        function closeGameOverlay() {
-            document.getElementById('gameOverlayScreen').style.display = 'none';
-        }
+        function closeGameOverlay() { document.getElementById('gameOverlayScreen').style.display = 'none'; }
 
         function initializeMainGrid() {
             const grid = document.getElementById('mainGameGrid');
@@ -596,13 +330,7 @@
                 const cell = document.createElement('div');
                 cell.className = 'board-cell';
                 cell.dataset.index = i;
-
-                cell.addEventListener('click', function() {
-                    if (selectedBlockData) {
-                        handlePlacementDirectly(i, selectedBlockData);
-                    }
-                });
-
+                cell.addEventListener('click', () => { if (selectedBlockData) handlePlacementDirectly(i, selectedBlockData); });
                 grid.appendChild(cell);
             }
         }
@@ -610,21 +338,15 @@
         function generateNewBlocksTurn() {
             const pool = document.getElementById('blockPool');
             pool.innerHTML = '';
-            
-            // Havuzdaki blok miktarı 3 olarak sabitlendi.
             for (let i = 1; i <= 3; i++) {
                 const shapeContainer = document.createElement('div');
                 shapeContainer.className = 'block-shape';
-                
-                // Rastgele blok seçimi
                 const blockObj = allBlockShapes[Math.floor(Math.random() * allBlockShapes.length)];
-                
-                shapeContainer.addEventListener('click', function() {
+                shapeContainer.onclick = () => {
                     selectedBlockData = blockObj;
                     document.querySelectorAll('.block-shape').forEach(el => el.style.borderColor = '#555');
                     shapeContainer.style.borderColor = '#00ffff';
-                });
-                
+                };
                 let tbl = document.createElement('table');
                 blockObj.grid.forEach(row => {
                     let tr = document.createElement('tr');
@@ -635,16 +357,7 @@
                     });
                     tbl.appendChild(tr);
                 });
-                
                 shapeContainer.appendChild(tbl);
-                
-                let lbl = document.createElement('div');
-                lbl.style.fontSize = '10px';
-                lbl.style.color = '#fff';
-                lbl.style.marginTop = '2px';
-                lbl.innerText = blockObj.name;
-                shapeContainer.appendChild(lbl);
-                
                 pool.appendChild(shapeContainer);
             }
         }
@@ -653,17 +366,13 @@
             const gridCells = document.querySelectorAll('#mainGameGrid .board-cell');
             let canPlace = true;
             let cellsToPlace = [];
-
             blockObj.grid.forEach((row, r) => {
                 row.forEach((cellVal, c) => {
                     if (cellVal) {
                         let targetIndexCalc = targetIndex + (r * 8) + c;
                         let rowDiff = Math.floor(targetIndexCalc / 8) - Math.floor(targetIndex / 8);
-                        if (rowDiff !== r || targetIndexCalc >= 64 || gridCells[targetIndexCalc].classList.contains('filled')) {
-                            canPlace = false;
-                        } else {
-                            cellsToPlace.push(targetIndexCalc);
-                        }
+                        if (rowDiff !== r || targetIndexCalc >= 64 || gridCells[targetIndexCalc].classList.contains('filled')) canPlace = false;
+                        else cellsToPlace.push(targetIndexCalc);
                     }
                 });
             });
@@ -673,30 +382,13 @@
                     gridCells[index].classList.add('filled');
                     gridCells[index].style.backgroundColor = blockObj.color;
                 });
-                
                 score += cellsToPlace.length * 15;
-                document.getElementById('currentScoreDisplay').innerText = score;
                 document.getElementById('gameFeedbackMessage').innerText = "Yerleştirildi!";
-                
-                // Seçilen Bloğu Havuzdan Kaldır
-                const allShapes = document.querySelectorAll('.block-shape');
-                let removed = false;
-                allShapes.forEach(s => {
-                    // Kutudaki başlığa göre kaldır
-                    if (!removed && s.querySelector('div').innerText === blockObj.name) {
-                        s.remove();
-                        removed = true;
-                    }
-                });
-
                 selectedBlockData = null;
                 checkLinesAndClear();
-                checkGameOver();
-
-                // DİKKAT EDİLECEK YER: Havuzdaki eleman sayısı bittiğinde diğer bloklar silinmez, yeni 3'lü grup oluşturulur.
-                if (document.querySelectorAll('.block-shape').length === 0) {
-                    generateNewBlocksTurn();
-                }
+                updateScoreBoard();
+                // Basitlik için havuz her zaman yenileniyor
+                if(document.querySelectorAll('.block-shape').length > 0) generateNewBlocksTurn();
             } else {
                 document.getElementById('gameFeedbackMessage').innerText = "Buraya koyamazsın!";
             }
@@ -704,78 +396,34 @@
 
         function checkLinesAndClear() {
             const gridCells = document.querySelectorAll('#mainGameGrid .board-cell');
-            let clearedCount = 0;
-
-            // Satır Kontrolü
-            for (let r = 0; r < 8; r++) {
-                let rowFilled = true;
-                for (let c = 0; c < 8; c++) {
-                    let idx = r * 8 + c;
-                    if (!gridCells[idx].classList.contains('filled')) {
-                        rowFilled = false;
-                        break;
-                    }
+            let rowsToClear = [];
+            let colsToClear = [];
+            for (let i = 0; i < 8; i++) {
+                let rowFull = true, colFull = true;
+                for (let j = 0; j < 8; j++) {
+                    if (!gridCells[i * 8 + j].classList.contains('filled')) rowFull = false;
+                    if (!gridCells[j * 8 + i].classList.contains('filled')) colFull = false;
                 }
-                if (rowFilled) {
-                    for (let c = 0; c < 8; c++) {
-                        let idx = r * 8 + c;
-                        gridCells[idx].classList.remove('filled');
-                        gridCells[idx].style.backgroundColor = '#1a1a1a';
-                    }
-                    clearedCount++;
-                }
+                if (rowFull) rowsToClear.push(i);
+                if (colFull) colsToClear.push(i);
             }
-
-            // Sütun Kontrolü
-            for (let c = 0; c < 8; c++) {
-                let colFilled = true;
-                for (let r = 0; r < 8; r++) {
-                    let idx = r * 8 + c;
-                    if (!gridCells[idx].classList.contains('filled')) {
-                        colFilled = false;
-                        break;
-                    }
-                }
-                if (colFilled) {
-                    for (let r = 0; r < 8; r++) {
-                        let idx = r * 8 + c;
-                        gridCells[idx].classList.remove('filled');
-                        gridCells[idx].style.backgroundColor = '#1a1a1a';
-                    }
-                    clearedCount++;
-                }
-            }
-
-            if (clearedCount > 0) {
-                score += clearedCount * 120;
-                document.getElementById('currentScoreDisplay').innerText = score;
-                document.getElementById('gameFeedbackMessage').innerText = "Satır temizlendi!";
-            }
-        }
-
-        function checkGameOver() {
-            let currentBest = localStorage.getItem('block_blast_highscores') || 0;
-            if (score > currentBest) {
-                localStorage.setItem('block_blast_highscores', score);
-                document.getElementById('highestScoreDisplay').innerText = score;
-            }
+            rowsToClear.forEach(r => { for(let c=0; c<8; c++) { let idx=r*8+c; gridCells[idx].classList.remove('filled'); gridCells[idx].style.backgroundColor = '#1a1a1a'; } });
+            colsToClear.forEach(c => { for(let r=0; r<8; r++) { let idx=r*8+c; gridCells[idx].classList.remove('filled'); gridCells[idx].style.backgroundColor = '#1a1a1a'; } });
+            if (rowsToClear.length > 0 || colsToClear.length > 0) score += 100;
         }
 
         function updateScoreBoard() {
-            let s = localStorage.getItem('block_blast_highscores') || 0;
             document.getElementById('currentScoreDisplay').innerText = score;
-            document.getElementById('highestScoreDisplay').innerText = s;
+            let high = localStorage.getItem('block_blast_highscores') || 0;
+            if(score > high) { high = score; localStorage.setItem('block_blast_highscores', high); }
+            document.getElementById('highestScoreDisplay').innerText = high;
         }
 
-        // Standart işlevler
+        // --- DİĞER STANDART FONKSİYONLAR ---
         const resimListesi = ["resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg"];
-        const list = [
-            { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
-            { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" }
-        ];
-
-        let idx = 0; let rainMode = 'snow'; let rainInt = null; let iltifatAktif = false;
-        let currentBG = 1;
+        const list = [{ n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" }, { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" }];
+        let musicIdx = 0;
+        let rainInt = null;
         const aud = document.getElementById("audio");
 
         resimListesi.forEach((src, i) => {
@@ -785,19 +433,13 @@
         });
 
         function changeBG() {
-            if (currentBG === 1) {
-                document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
-                currentBG = 2;
-            } else {
-                document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
-                currentBG = 1;
-            }
+            const current = document.body.style.backgroundImage;
+            document.body.style.backgroundImage = current.includes('arka-plan2') ? "url('arka-plan.gif.gif')" : "url('arka-plan2.gif.gif')";
         }
 
         function createRain() {
-            const el = document.createElement(rainMode === 'snow' ? 'div' : 'img');
-            if(rainMode === 'snow') { el.innerHTML = '❄'; el.className = 'snowflake'; }
-            else { el.src = 'hellokitty.png.png'; el.className = 'kitty-rain'; }
+            const el = document.createElement('div');
+            el.innerHTML = '❄'; el.className = 'snowflake';
             el.style.left = Math.random() * 100 + 'vw';
             el.style.animationDuration = Math.random() * 3 + 2 + 's';
             document.body.appendChild(el);
@@ -805,50 +447,37 @@
         }
 
         function toggleRain() {
-            clearInterval(rainInt);
-            document.querySelectorAll('.snowflake, .kitty-rain').forEach(n => n.remove());
-            rainMode = (rainMode === 'snow') ? 'kitty' : 'snow';
-            rainInt = setInterval(createRain, 180);
-            document.getElementById("modeToggle").innerText = (rainMode === 'snow') ? "🎀 Kitty Yağmuru" : "❄️ Kar Modu";
+            if(rainInt) { clearInterval(rainInt); rainInt = null; }
+            else rainInt = setInterval(createRain, 180);
         }
 
         function talkKitty() {
-            const bubble = document.getElementById('kittyBubble');
-            if(iltifatAktif) return;
-            iltifatAktif = true;
-            bubble.style.display = 'block';
-            setTimeout(() => {
-                bubble.style.display = 'none';
-                iltifatAktif = false;
-            }, 4000);
+            const b = document.getElementById('kittyBubble');
+            b.style.display = 'block';
+            setTimeout(() => b.style.display = 'none', 3000);
         }
 
         function start() {
             loadS(0); aud.play();
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('controls').style.display = 'flex';
-            rainInt = setInterval(createRain, 150);
-            setInterval(() => talkKitty(), 20000);
-            let c = 0;
             setInterval(() => {
                 const s = document.querySelectorAll('.slide');
-                if(s.length > 0) {
-                    s[c].classList.remove('active');
-                    c = (c + 1) % s.length;
-                    s[c].classList.add('active');
-                }
+                let activeIdx = 0;
+                s.forEach((img, i) => { if(img.classList.contains('active')) activeIdx = i; });
+                s[activeIdx].classList.remove('active');
+                s[(activeIdx+1)%s.length].classList.add('active');
             }, 3000);
         }
 
         function loadS(i) { aud.src = list[i].f; document.getElementById("songName").innerText = list[i].n; document.getElementById("songImg").src = list[i].i; }
         function pPause() { aud.paused ? (aud.play(), document.getElementById("pBtn").innerText="⏸") : (aud.pause(), document.getElementById("pBtn").innerText="▶"); }
-        function next() { idx = (idx+1)%list.length; loadS(idx); aud.play(); }
-        function prev() { idx = (idx-1+list.length)%list.length; loadS(idx); aud.play(); }
+        function next() { musicIdx = (musicIdx+1)%list.length; loadS(musicIdx); aud.play(); }
+        function prev() { musicIdx = (musicIdx-1+list.length)%list.length; loadS(musicIdx); aud.play(); }
         function openAni() { document.getElementById('aniPanel').style.display='block'; }
         function closeAni() { document.getElementById('aniPanel').style.display='none'; }
         function playVid(n) { aud.pause(); const v = document.getElementById('videoPlayer'); v.src = `anilar${n}.mp4.mp4`; document.getElementById('videoOverlay').style.display='flex'; v.play(); }
         function closeVid() { document.getElementById('videoPlayer').pause(); document.getElementById('videoOverlay').style.display='none'; aud.play(); }
-        
         aud.ontimeupdate = () => { document.getElementById("progressFill").style.width = (aud.currentTime/aud.duration)*100 + "%"; };
         function seek(e) { const r = document.getElementById("progressBar").getBoundingClientRect(); aud.currentTime = ((e.clientX - r.left) / r.width) * aud.duration; }
     </script>

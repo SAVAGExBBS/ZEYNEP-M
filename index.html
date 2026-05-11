@@ -275,7 +275,12 @@
         function toggleRain() { rainMode = (rainMode === 'snow' ? 'kitty' : 'snow'); startRain(); }
 
         let sIdx = 0;
-        const resimler = ["resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg"];
+       const resimListesi = [
+            "resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg",
+            "resim6.jpeg.jpeg", "resim7.jpeg.jpeg", "resim8.jpeg.jpeg", "resim9.jpeg.jpeg", "resim10.jpeg.jpeg",
+            "resim11.jpeg.jpeg", "resim12.jpeg.jpeg", "resim13.jpeg.jpeg", "resim14.jpeg.jpeg",
+            "resim15.jpeg.png", "resim16.jpeg.png", "resim17.jpeg.png", "resim18.jpeg.png", "resim19.jpeg.png",
+            "resim20.jpeg.png", "resim21.jpeg.png", "resim22.jpeg.png", "resim23.jpeg.jpeg"
         resimler.forEach((src, i) => {
             const img = document.createElement('img');
             img.src = src; img.className = 'slide' + (i === 0 ? ' active' : '');

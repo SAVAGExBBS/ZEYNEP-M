@@ -7,7 +7,7 @@
     <style>
         body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; transition: background-image 0.8s ease-in-out; }
         
-        /* --- GİRİŞ EKRANI (LOGIN OVERLAY) --- */
+        /* --- GİRİŞ EKRANI --- */
         #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 5000; }
         #loginOverlay input { padding: 12px; border-radius: 20px; border: 2px solid #ff0055; background: #111; color: white; margin-bottom: 15px; text-align: center; }
         
@@ -55,14 +55,12 @@
         .board-cell.filled { background: #ff0055; box-shadow: 0 0 10px #ff0055; border-color: #fff; }
         .direction-btn { width: 100px; height: 100px; font-size: 25px; border-radius: 20px; border: none; cursor: pointer; background: #333; color: white; }
         
-        #startBtn { padding: 15px 40px; font-size: 18px; background: #ff0055; color: white; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; z-index: 100; display:none; }
         #bottomBtns { display: none; position:fixed; bottom: 30px; left: 30px; z-index: 100; }
         #gamesMenu { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #111; border: 2px solid #00ffff; padding: 20px; border-radius: 15px; z-index: 2500; width: 250px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- GİRİŞ EKRANI -->
     <div id="loginOverlay">
         <h2 style="color:#ff0055">Hoş Geldin ❤️</h2>
         <input type="text" id="nameInput" placeholder="İsmini girer misin?">
@@ -169,19 +167,18 @@
         const db = getDatabase(app);
         const msgRef = ref(db, 'messages');
 
-        let userName = "Misafir";
+        window.userName = "Misafir";
 
-        // GİRİŞ FONKSİYONU
         window.startApp = function() {
             const input = document.getElementById("nameInput");
             if(input.value.trim()) {
-                userName = input.value;
+                window.userName = input.value;
                 document.getElementById("loginOverlay").style.display = "none";
                 document.getElementById("text").style.display = "block";
                 document.getElementById("gallery").style.display = "block";
                 document.getElementById("bottomBtns").style.display = "block";
                 document.getElementById("controls").style.display = "flex";
-                start(); // Uygulamayı başlat
+                start(); 
             } else {
                 alert("Lütfen bir isim gir!");
             }
@@ -190,7 +187,7 @@
         window.sendFirebaseMsg = function() {
             const input = document.getElementById("chatInput");
             if (input.value.trim()) {
-                push(msgRef, { name: userName, text: input.value });
+                push(msgRef, { name: window.userName, text: input.value });
                 input.value = "";
             }
         };
@@ -199,7 +196,7 @@
             const msg = data.val();
             const box = document.getElementById("chatBox");
             const div = document.createElement("div");
-            div.className = `chat-msg ${msg.name === userName ? 'msg-own' : 'msg-other'}`;
+            div.className = `chat-msg ${msg.name === window.userName ? 'msg-own' : 'msg-other'}`;
             div.innerHTML = `<b>${msg.name}:</b> ${msg.text}`;
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
@@ -207,7 +204,7 @@
     </script>
 
     <script>
-       const musicList = [
+        const musicList = [
             { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
             { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" },
             { n: "CAMBAZ", f: "müzik3.mp3.mp3", i: "kapak3.jpeg.png" },
@@ -219,6 +216,7 @@
             { n: "SARI SAÇLARIN", f: "müzik10.mp3.mp3", i: "kapak10.jpeg.jpeg" },
             { n: "ZEYNEPİM ♥", f: "müzik8.mp3.mp3", i: "kapak8.jpeg.jpeg" }
         ];
+        
         let mIdx = 0;
         const aud = document.getElementById("audio");
 
@@ -226,6 +224,7 @@
             loadS(0);
             aud.play();
             startRain();
+            createGallery();
             setInterval(nextSlide, 3000);
         }
 
@@ -274,18 +273,25 @@
         }
         function toggleRain() { rainMode = (rainMode === 'snow' ? 'kitty' : 'snow'); startRain(); }
 
-        let sIdx = 0;
-       const resimListesi = [
+        const resimListesi = [
             "resim1.jpeg.jpeg", "resim2.jpeg.jpeg", "resim3.jpeg.jpeg", "resim4.jpeg.jpeg", "resim5.jpeg.jpeg",
             "resim6.jpeg.jpeg", "resim7.jpeg.jpeg", "resim8.jpeg.jpeg", "resim9.jpeg.jpeg", "resim10.jpeg.jpeg",
             "resim11.jpeg.jpeg", "resim12.jpeg.jpeg", "resim13.jpeg.jpeg", "resim14.jpeg.jpeg",
             "resim15.jpeg.png", "resim16.jpeg.png", "resim17.jpeg.png", "resim18.jpeg.png", "resim19.jpeg.png",
             "resim20.jpeg.png", "resim21.jpeg.png", "resim22.jpeg.png", "resim23.jpeg.jpeg"
-        resimler.forEach((src, i) => {
-            const img = document.createElement('img');
-            img.src = src; img.className = 'slide' + (i === 0 ? ' active' : '');
-            document.getElementById("gallery").appendChild(img);
-        });
+        ];
+
+        function createGallery() {
+            const gal = document.getElementById("gallery");
+            resimListesi.forEach((src, i) => {
+                const img = document.createElement('img');
+                img.src = src; 
+                img.className = 'slide' + (i === 0 ? ' active' : '');
+                gal.appendChild(img);
+            });
+        }
+
+        let sIdx = 0;
         function nextSlide() {
             const s = document.querySelectorAll('.slide');
             if(s.length === 0) return;

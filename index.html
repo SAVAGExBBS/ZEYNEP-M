@@ -7,12 +7,10 @@
     <style>
         body { 
             margin: 0; 
-            background-image: url('sahil.jpg'); 
-            background-size: cover; 
-            background-position: center; 
-            background-repeat: no-repeat; 
-            background-attachment: fixed; 
             background-color: #000; 
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             color: white; 
             display: flex; 
             flex-direction: column; 
@@ -21,7 +19,18 @@
             height: 100vh; 
             overflow: hidden; 
             font-family: 'Segoe UI', sans-serif; 
-            transition: background-image 0.8s ease-in-out; 
+        }
+
+        /* PIXEL ART CANLI SAHİL CANVAS ARKA PLAN */
+        #pixelBgCanvas { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            z-index: 1; 
+            pointer-events: none; 
+            display: block; 
         }
 
         /* --- GİRİŞ EKRANI --- */
@@ -50,8 +59,18 @@
         .num-btn:hover { background: #ff0055; border-color: #fff; }
         .close-ani-btn { background: #ff0055; color: white; border: none; padding: 12px; width: 100%; border-radius: 12px; font-weight: bold; cursor: pointer; }
 
+        /* --- MEDYA ARŞİVİ PANELİ --- */
+        #archiveOverlay { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85vw; max-width: 700px; height: 80vh; background: rgba(12, 12, 16, 0.98); border: 2px solid #ff0055; border-radius: 20px; z-index: 4500; padding: 20px; flex-direction: column; box-shadow: 0 0 40px rgba(255,0,85,0.6); }
+        .archive-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
+        .archive-content { flex: 1; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; padding-right: 5px; }
+        .archive-item { background: #1a1a24; border: 1px solid #333; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: 8px; }
+        .archive-item img, .archive-item video { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; }
+        .archive-date { font-size: 10px; color: #ffb6c1; margin-top: 6px; text-align: center; }
+        .archive-upload-area { margin-top: 15px; border-top: 1px solid #333; padding-top: 12px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .archive-upload-area input[type="file"] { color: white; font-size: 11px; }
+
         #controls { margin-top: 15px; display: none; flex-direction: column; align-items: center; gap: 10px; z-index: 20; }
-        .btn-group { display: flex; gap: 5px; }
+        .btn-group { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
         .control-btn { background: rgba(30, 30, 30, 0.9); border: 1px solid #444; color: white; padding: 8px 15px; border-radius: 20px; cursor: pointer; font-size: 11px; }
         .ani-btn { background: #ff0055 !important; font-weight: bold; }
         
@@ -86,6 +105,9 @@
 </head>
 <body>
 
+    <!-- PIXEL ARKA PLAN CANVAS -->
+    <canvas id="pixelBgCanvas"></canvas>
+
     <!-- 1. ADIM: İSİM GİRİŞ EKRANI -->
     <div id="loginOverlay">
         <h2 style="color:#ff0055">Hoş Geldin ❤️</h2>
@@ -103,6 +125,7 @@
     <div id="text">SENİ SEVİYORUM ZEYNEP ❤️</div>
     <div id="gallery"></div>
 
+    <!-- ANILAR VİDEO MODALI -->
     <div id="anilarOverlay">
         <div class="video-container">
             <video id="aniVideo" controls></video>
@@ -118,6 +141,21 @@
             <button class="num-btn" onclick="playMemory(8)">8</button>
         </div>
         <button class="close-ani-btn" onclick="closeAnilar()">Kapat</button>
+    </div>
+
+    <!-- MEDYA ARŞİVİ PENCERESİ -->
+    <div id="archiveOverlay">
+        <div class="archive-header">
+            <h3 style="color: #ff0055; margin:0;">📸 Fotoğraf & Video Arşivi</h3>
+            <button onclick="toggleArchive()" style="background:none; border:none; color:white; font-size:18px; cursor:pointer;">✖</button>
+        </div>
+        <div class="archive-content" id="archiveGrid">
+            <!-- Otomatik ve Kalıcı Medyalar Buraya Yüklenecek -->
+        </div>
+        <div class="archive-upload-area">
+            <input type="file" id="mediaFileInput" accept="image/*,video/*">
+            <button onclick="uploadLocalMedia()" style="background:#ff0055; color:white; border:none; padding:8px 15px; border-radius:10px; font-weight:bold; cursor:pointer;">Galeriden Ekle ✨</button>
+        </div>
     </div>
 
     <div id="bottomBtns">
@@ -165,6 +203,7 @@
             <button class="control-btn" onclick="changeBG()">🖼️ Manzara Değiştir</button>
             <button class="control-btn" onclick="toggleRain()">🎀 Kitty Yağmuru</button>
             <button class="control-btn ani-btn" onclick="openAnilar()">🎬 ANILARIMIZ</button>
+            <button class="control-btn" onclick="toggleArchive()" style="background:#ff66aa; font-weight:bold;">📸 Arşiv</button>
         </div>
         <div id="musicPlayer">
             <div class="player-info">
@@ -182,7 +221,241 @@
 
     <audio id="audio"></audio>
 
-    <!-- FIREBASE İŞLEMLERİ -->
+    <!-- KANAL / CANLI PIXEL MANZARA & PLAJ GEL-GİT DALGA MOTORU -->
+    <script>
+        const pCanvas = document.getElementById('pixelBgCanvas');
+        const pCtx = pCanvas.getContext('2d');
+
+        function resizePixelCanvas() {
+            pCanvas.width = window.innerWidth;
+            pCanvas.height = window.innerHeight;
+        }
+        resizePixelCanvas();
+        window.addEventListener('resize', resizePixelCanvas);
+
+        let waveTime = 0;
+        let windTime = 0;
+        const fireworks = [];
+
+        // Havai Fişekler
+        class PixelFirework {
+            constructor() {
+                this.x = Math.random() * pCanvas.width * 0.5;
+                this.y = pCanvas.height;
+                this.targetY = Math.random() * (pCanvas.height * 0.25) + 30;
+                this.speed = Math.random() * 3 + 4;
+                this.exploded = false;
+                this.particles = [];
+                this.colors = ['#ffffff', '#ff66aa', '#d9407a', '#ff99c2'];
+            }
+
+            update() {
+                if (!this.exploded) {
+                    this.y -= this.speed;
+                    if (this.y <= this.targetY) {
+                        this.exploded = true;
+                        const pCount = 20;
+                        const baseColor = this.colors[Math.floor(Math.random() * this.colors.length)];
+                        for (let i = 0; i < pCount; i++) {
+                            const angle = (Math.PI * 2 / pCount) * i;
+                            const force = Math.random() * 2 + 1;
+                            this.particles.push({
+                                x: this.x,
+                                y: this.y,
+                                vx: Math.cos(angle) * force,
+                                vy: Math.sin(angle) * force,
+                                life: 25 + Math.random() * 15,
+                                color: baseColor
+                            });
+                        }
+                    }
+                } else {
+                    this.particles.forEach(p => {
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.04;
+                        p.life--;
+                    });
+                }
+            }
+
+            draw() {
+                const px = 4;
+                if (!this.exploded) {
+                    pCtx.fillStyle = '#ffffff';
+                    pCtx.fillRect(Math.floor(this.x / px) * px, Math.floor(this.y / px) * px, px, px * 2);
+                } else {
+                    this.particles.forEach(p => {
+                        if (p.life > 0) {
+                            pCtx.fillStyle = p.color;
+                            pCtx.fillRect(Math.floor(p.x / px) * px, Math.floor(p.y / px) * px, px, px);
+                        }
+                    });
+                }
+            }
+        }
+
+        // Palmiye Çizimi
+        function drawPixelPalmTree(x, y, scale) {
+            pCtx.fillStyle = '#0a0a0a';
+            for (let i = 0; i < 35; i++) {
+                let sway = Math.sin(windTime + i * 0.1) * (i / 12);
+                pCtx.fillRect(x - i * 0.8 + sway, y - i * 3, scale * 3.5, scale * 3.5);
+            }
+            const topX = x - 28 + Math.sin(windTime + 3) * 2;
+            const topY = y - 105;
+            pCtx.fillStyle = '#d9407a';
+            for (let angle = 0; angle < Math.PI * 2; angle += 0.6) {
+                for (let d = 0; d < 26; d++) {
+                    let px = topX + Math.cos(angle) * d * 2.2;
+                    let py = topY + Math.sin(angle) * d * 1.3;
+                    pCtx.fillRect(px, py, scale * 2, scale * 2);
+                }
+            }
+        }
+
+        // Pixel Deniz Yıldızı Çizimi
+        function drawStarfish(x, y, color) {
+            pCtx.fillStyle = color;
+            pCtx.fillRect(x, y - 4, 3, 11);
+            pCtx.fillRect(x - 4, y, 11, 3);
+            pCtx.fillRect(x - 2, y - 2, 7, 7);
+        }
+
+        // Pixel Yengeç Çizimi
+        function drawCrab(x, y, timeOffset) {
+            let legWalk = Math.sin(windTime * 5 + timeOffset) > 0 ? 2 : 0;
+            pCtx.fillStyle = '#ff2a75';
+            pCtx.fillRect(x, y, 10, 6); // Gövde
+            pCtx.fillRect(x - 3, y - 3, 3, 3); // Sol kıskaç
+            pCtx.fillRect(x + 10, y - 3, 3, 3); // Sağ kıskaç
+            pCtx.fillStyle = '#ffffff';
+            pCtx.fillRect(x + 2, y + 1, 2, 2); // Göz 1
+            pCtx.fillRect(x + 6, y + 1, 2, 2); // Göz 2
+            pCtx.fillStyle = '#0a0a0a';
+            pCtx.fillRect(x - 1, y + 6 + legWalk, 2, 2); // Bacaklar
+            pCtx.fillRect(x + 9, y + 6 - legWalk, 2, 2);
+        }
+
+        function drawPixelScene() {
+            if (pCanvas.style.display === 'none') return; // Eğer başka arka fon aktifse canvas'ı yorma
+
+            const w = pCanvas.width;
+            const h = pCanvas.height;
+
+            waveTime += 0.025;
+            windTime += 0.02;
+
+            // 1. Siyah Gökyüzü Zemin
+            pCtx.fillStyle = '#050206';
+            pCtx.fillRect(0, 0, w, h);
+
+            // Havai Fişekler
+            if (Math.random() < 0.018) {
+                fireworks.push(new PixelFirework());
+            }
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw();
+                if (fireworks[i].exploded && fireworks[i].particles.every(p => p.life <= 0)) {
+                    fireworks.splice(i, 1);
+                }
+            }
+
+            // Beyaz Bulutlar
+            pCtx.fillStyle = '#ffffff';
+            pCtx.fillRect(w * 0.15, h * 0.18, 110, 16);
+            pCtx.fillRect(w * 0.18, h * 0.14, 60, 14);
+
+            // 2. Sağ Dağ & Orman Tepesi
+            pCtx.fillStyle = '#260815';
+            pCtx.beginPath();
+            pCtx.moveTo(w * 0.48, h * 0.58);
+            pCtx.lineTo(w * 0.75, h * 0.25);
+            pCtx.lineTo(w, h * 0.38);
+            pCtx.lineTo(w, h * 0.58);
+            pCtx.fill();
+
+            pCtx.fillStyle = '#400d23';
+            pCtx.beginPath();
+            pCtx.moveTo(w * 0.55, h * 0.58);
+            pCtx.lineTo(w * 0.82, h * 0.32);
+            pCtx.lineTo(w, h * 0.45);
+            pCtx.lineTo(w, h * 0.58);
+            pCtx.fill();
+
+            // Palmiye Ağacı
+            drawPixelPalmTree(w * 0.82, h * 0.56, 2.8);
+
+            // 3. Sol Kayalıklar
+            pCtx.fillStyle = '#121212';
+            pCtx.beginPath();
+            pCtx.moveTo(0, h * 0.56);
+            pCtx.lineTo(w * 0.25, h * 0.46);
+            pCtx.lineTo(w * 0.42, h * 0.56);
+            pCtx.lineTo(0, h * 0.56);
+            pCtx.fill();
+
+            // 4. PEMBE DENİZ (Üst Durgun Su)
+            const seaY = h * 0.56;
+            pCtx.fillStyle = '#801a47';
+            pCtx.fillRect(0, seaY, w, h * 0.12);
+
+            // --- 5. KUMSAL VE GEL-GİT DALGA ALANI ---
+            const beachTopY = h * 0.65;
+            const beachHeight = h * 0.18;
+            const beachBottomY = beachTopY + beachHeight;
+
+            pCtx.fillStyle = '#2a0a18';
+            pCtx.fillRect(0, beachTopY, w, beachHeight + 10);
+
+            const waveReach = (Math.sin(waveTime) + 1) / 2; 
+            const tideY = beachTopY + waveReach * (beachHeight * 0.85);
+
+            pCtx.fillStyle = '#48102a';
+            pCtx.fillRect(0, beachTopY, w, tideY - beachTopY);
+
+            pCtx.fillStyle = '#a6245c';
+            pCtx.beginPath();
+            pCtx.moveTo(0, beachTopY);
+            for (let x = 0; x <= w; x += 10) {
+                const waveRipple = Math.sin(x * 0.02 + waveTime * 2) * 5;
+                pCtx.lineTo(x, tideY + waveRipple);
+            }
+            pCtx.lineTo(w, beachTopY);
+            pCtx.closePath();
+            pCtx.fill();
+
+            pCtx.fillStyle = '#ffffff';
+            for (let x = 0; x <= w; x += 6) {
+                const waveRipple = Math.sin(x * 0.02 + waveTime * 2) * 5;
+                const foamY = tideY + waveRipple;
+                pCtx.fillRect(x, foamY, 8, 3);
+                if (waveReach < 0.5 && Math.random() < 0.3) {
+                    pCtx.fillRect(x, foamY - Math.random() * 15, 3, 2);
+                }
+            }
+
+            pCtx.fillStyle = '#0a0a0a';
+            pCtx.fillRect(0, beachBottomY, w, h - beachBottomY);
+
+            drawStarfish(w * 0.15, beachBottomY - 20, '#ff66aa');
+            drawStarfish(w * 0.72, beachBottomY - 15, '#ff2a75');
+            drawStarfish(w * 0.88, beachBottomY - 35, '#ffffff');
+
+            const crab1X = (w * 0.25 + Math.cos(windTime) * 30);
+            drawCrab(crab1X, beachBottomY - 25, 0);
+
+            const crab2X = (w * 0.62 + Math.sin(windTime * 0.8) * 20);
+            drawCrab(crab2X, beachBottomY - 18, 1.5);
+
+            requestAnimationFrame(drawPixelScene);
+        }
+
+        drawPixelScene();
+    </script>
+
+    <!-- FIREBASE & ARŞİV İŞLEMLERİ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -200,25 +473,18 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const msgRef = ref(db, 'messages');
+        const mediaRef = ref(db, 'mediaArchive');
 
         window.userName = "Misafir";
 
+        // Sohbet Mesajı Gönderme
         window.sendFirebaseMsg = function() {
             const input = document.getElementById("chatInput");
             if (input.value.trim()) {
                 const now = new Date();
-                const day = String(now.getDate()).padStart(2, '0');
-                const month = String(now.getMonth() + 1).padStart(2, '0');
-                const year = now.getFullYear();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const timeString = `${day}.${month}.${year} ${hours}:${minutes}`;
+                const timeString = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-                push(msgRef, { 
-                    name: window.userName, 
-                    text: input.value,
-                    time: timeString 
-                });
+                push(msgRef, { name: window.userName, text: input.value, time: timeString });
                 input.value = "";
             }
         };
@@ -228,14 +494,73 @@
             const box = document.getElementById("chatBox");
             const div = document.createElement("div");
             div.className = `chat-msg ${msg.name === window.userName ? 'msg-own' : 'msg-other'}`;
-            
-            div.innerHTML = `
-                <div><b>${msg.name}:</b> ${msg.text}</div>
-                <div class="msg-time">${msg.time || ''}</div>
-            `;
-            
+            div.innerHTML = `<div><b>${msg.name}:</b> ${msg.text}</div><div class="msg-time">${msg.time || ''}</div>`;
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
+        });
+
+        // --- ARŞİV VERİLERİNİ YÖNETME ---
+        const defaultMediaList = [
+            ...Array.from({length: 23}, (_, i) => ({
+                url: `resim${i+1}.jpeg.${i+1 >= 15 && i+1 <= 23 ? 'png' : 'jpeg'}`, 
+                type: 'image', 
+                date: '01.05.2026 12:00'
+            })),
+            ...Array.from({length: 8}, (_, i) => ({
+                url: `anilar${i+1}.mp4.mp4`, 
+                type: 'video', 
+                date: '01.05.2026 12:30'
+            }))
+        ];
+
+        // Galeriden Dosya Seçip Yükleme Fonksiyonu (Base64 / Firebase Kalıcı Kayıt)
+        window.uploadLocalMedia = function() {
+            const fileInput = document.getElementById("mediaFileInput");
+            if (fileInput.files && fileInput.files[0]) {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const base64Data = e.target.result;
+                    const fileType = file.type.startsWith('video') ? 'video' : 'image';
+                    
+                    const now = new Date();
+                    const dateStr = `${String(now.getDate()).padStart(2, '0')}.${String(now.getMonth() + 1).padStart(2, '0')}.${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+                    
+                    push(mediaRef, {
+                        url: base64Data,
+                        type: fileType,
+                        date: dateStr
+                    });
+
+                    fileInput.value = "";
+                    alert("Medya galeriden başarıyla seçildi, arşive eklendi ve kaydedildi! ✨");
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                alert("Lütfen önce galeriden bir fotoğraf veya video seç!");
+            }
+        };
+
+        function renderArchiveItem(url, type, date) {
+            const grid = document.getElementById("archiveGrid");
+            const div = document.createElement("div");
+            div.className = "archive-item";
+            
+            if(type === 'image') {
+                div.innerHTML = `<img src="${url}" alt="Arşiv Foto" onerror="this.src='kapak8.jpeg.jpeg'"><div class="archive-date">${date}</div>`;
+            } else {
+                div.innerHTML = `<video src="${url}" controls preload="metadata"></video><div class="archive-date">${date}</div>`;
+            }
+            grid.appendChild(div);
+        }
+
+        defaultMediaList.forEach(m => renderArchiveItem(m.url, m.type, m.date));
+
+        onChildAdded(mediaRef, (data) => {
+            const m = data.val();
+            renderArchiveItem(m.url, m.type, m.date);
         });
     </script>
 
@@ -469,16 +794,28 @@
             v.play();
         }
 
+        // Arşiv Penceresi Aç/Kapat
+        function toggleArchive() {
+            const arch = document.getElementById('archiveOverlay');
+            arch.style.display = (arch.style.display === 'flex' ? 'none' : 'flex');
+        }
+
         /* MANZARA DEĞİŞTİRME LİSTESİ */
-        const bgList = [
-            'sahil.jpg',
-            'arka-plan.gif.gif',
-            'arka-plan2.gif.gif'
-        ];
-        let bgIdx = 0;
+        let bgMode = 0;
         function changeBG() {
-            bgIdx = (bgIdx + 1) % bgList.length;
-            document.body.style.backgroundImage = `url('${bgList[bgIdx]}')`;
+            bgMode = (bgMode + 1) % 3;
+            const pCanvasEl = document.getElementById('pixelBgCanvas');
+            if (bgMode === 0) {
+                pCanvasEl.style.display = 'block';
+                document.body.style.backgroundImage = 'none';
+                drawPixelScene();
+            } else if (bgMode === 1) {
+                pCanvasEl.style.display = 'none';
+                document.body.style.backgroundImage = "url('arka-plan.gif.gif')";
+            } else if (bgMode === 2) {
+                pCanvasEl.style.display = 'none';
+                document.body.style.backgroundImage = "url('arka-plan2.gif.gif')";
+            }
         }
 
         let rainMode = 'snow';

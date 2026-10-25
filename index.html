@@ -43,9 +43,10 @@
 
         #chatOverlay { display: none; position: fixed; top: 15%; right: 5%; width: 300px; height: 400px; background: rgba(15,15,20,0.95); border: 2px solid #ff0055; border-radius: 15px; z-index: 2000; flex-direction: column; padding: 10px; }
         #chatBox { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 10px; padding: 5px; }
-        .chat-msg { padding: 8px 12px; border-radius: 12px; max-width: 80%; font-size: 13px; word-wrap: break-word; }
+        .chat-msg { padding: 8px 12px; border-radius: 12px; max-width: 80%; font-size: 13px; word-wrap: break-word; display: flex; flex-direction: column; }
         .msg-own { align-self: flex-end; background: #ff0055; color: white; }
         .msg-other { align-self: flex-start; background: #333; color: white; }
+        .msg-time { font-size: 9px; opacity: 0.7; margin-top: 4px; align-self: flex-end; }
         #chatInputArea { display: flex; gap: 5px; }
         #chatInput { flex: 1; padding: 8px; border-radius: 20px; border: none; background: #222; color: white; }
 
@@ -187,7 +188,19 @@
         window.sendFirebaseMsg = function() {
             const input = document.getElementById("chatInput");
             if (input.value.trim()) {
-                push(msgRef, { name: window.userName, text: input.value });
+                const now = new Date();
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const year = now.getFullYear();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const timeString = `${day}.${month}.${year} ${hours}:${minutes}`;
+
+                push(msgRef, { 
+                    name: window.userName, 
+                    text: input.value,
+                    time: timeString 
+                });
                 input.value = "";
             }
         };
@@ -197,7 +210,12 @@
             const box = document.getElementById("chatBox");
             const div = document.createElement("div");
             div.className = `chat-msg ${msg.name === window.userName ? 'msg-own' : 'msg-other'}`;
-            div.innerHTML = `<b>${msg.name}:</b> ${msg.text}`;
+            
+            div.innerHTML = `
+                <div><b>${msg.name}:</b> ${msg.text}</div>
+                <div class="msg-time">${msg.time || ''}</div>
+            `;
+            
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
         });

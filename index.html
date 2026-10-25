@@ -5,8 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zeynep ❤️</title>
     <style>
-        body { margin: 0; background-image: url('arka-plan.gif.gif'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed; background-color: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; font-family: 'Segoe UI', sans-serif; transition: background-image 0.8s ease-in-out; }
-        
+        body { 
+            margin: 0; 
+            background-image: url('sahil.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            background-attachment: fixed; 
+            background-color: #000; 
+            color: white; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            overflow: hidden; 
+            font-family: 'Segoe UI', sans-serif; 
+            transition: background-image 0.8s ease-in-out; 
+        }
+
         /* --- GİRİŞ EKRANI --- */
         #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 6000; transition: opacity 0.8s ease; }
         #loginOverlay input { padding: 12px 20px; border-radius: 20px; border: 2px solid #ff0055; background: #111; color: white; margin-bottom: 15px; text-align: center; font-size: 16px; outline: none; box-shadow: 0 0 15px rgba(255, 0, 85, 0.4); }
@@ -165,6 +182,7 @@
 
     <audio id="audio"></audio>
 
+    <!-- FIREBASE İŞLEMLERİ -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
@@ -221,8 +239,8 @@
         });
     </script>
 
+    <!-- SİTE FONKSİYONLARI -->
     <script>
-        // --- 1. İSİM ALMA VE ANIMASYONU BAŞLATMA ---
         function submitName() {
             const input = document.getElementById("nameInput");
             if(input.value.trim()) {
@@ -237,7 +255,6 @@
             }
         }
 
-        // --- 2. KALP ANIMASYON MOTORU ---
         let animId;
         function startHeartAnimation(name) {
             const overlay = document.getElementById("heartAnimOverlay");
@@ -248,11 +265,6 @@
             
             let width = canvas.width = window.innerWidth;
             let height = canvas.height = window.innerHeight;
-
-            window.addEventListener('resize', () => {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            });
 
             const particles = [];
             const particleCount = 1200;
@@ -394,7 +406,6 @@
             animate();
         }
 
-        // --- 3. ANA SİTEYE GEÇİŞ ---
         function enterMainSite() {
             const overlay = document.getElementById("heartAnimOverlay");
             overlay.style.opacity = "0";
@@ -411,7 +422,6 @@
             }, 1000);
         }
 
-        // --- MÜZİK VE DİĞER FONKSİYONLAR ---
         const musicList = [
             { n: "SONSUZ OL", f: "müzik.mp3.mp3", i: "kapak8.jpeg.jpeg" },
             { n: "KAR BEYAZ", f: "müzik2.mp3.mp3", i: "kapak2.jpeg.png" },
@@ -459,11 +469,11 @@
             v.play();
         }
 
-        // Şık Arka Plan Listesi (Manzara Değiştir Butonu İçin Döngü)
+        /* MANZARA DEĞİŞTİRME LİSTESİ */
         const bgList = [
+            'sahil.jpg',
             'arka-plan.gif.gif',
             'arka-plan2.gif.gif'
-            // Dilersen buraya yeni arka plan dosya isimlerini ekleyebilirsin, örn: 'arka-plan3.gif.gif'
         ];
         let bgIdx = 0;
         function changeBG() {
